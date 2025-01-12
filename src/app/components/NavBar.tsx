@@ -1,6 +1,6 @@
 export default function NavBar() {
     return (
-        <nav className="top-5 fixed w-[calc(100%-5rem)] text-xl bg-white p-5 rounded-3xl shadow-2xl font-semibold">
+        <nav className="top-5 fixed w-[calc(100%-5rem)] text-xl bg-white p-5 rounded-3xl shadow-2xl font-semibold backdrop-blur-[35px] opacity-85">
             <ul className="flex w-full justify-between">
                 <li className="hover:text-accent transition"><a href="#home">Logo</a></li>
 
