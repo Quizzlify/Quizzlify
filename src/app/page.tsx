@@ -1,6 +1,8 @@
 'use client'
 
 import { useRouter } from "next/navigation";
+import NavBar from "./components/NavBar"
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export default function Home() {
 
@@ -9,6 +11,7 @@ export default function Home() {
     return (
         <>
             <div className="flex flex-col items-center justify-center min-h-screen py-2">
+                <NavBar />
                 <h1 className="text-6xl font-bold">
                     Welcome to <a href="https://nextjs.org">Next.js!</a>
                 </h1>

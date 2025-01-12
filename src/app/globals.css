@@ -3,13 +3,10 @@
 @tailwind utilities;
 
 :root {
-    --background: #ffffff;
+    --background: #FFF4E3;
     --foreground: #171717;
-}
+    --accent: #FD9061;
+    font-family: "HvDTrial Brevia", sans-serif;
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background: #0a0a0a;
-        --foreground: #ededed;
-    }
+    background-color: #FFF4E3;
 }
