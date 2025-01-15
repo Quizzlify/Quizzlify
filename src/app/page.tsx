@@ -10,41 +10,28 @@ export default function Home() {
 
     return (
         <>
-            <div className="flex flex-col items-center justify-center min-h-screen py-2">
-                <NavBar />
-                <h1 className="text-6xl font-bold">
-                    Welcome to <a href="https://nextjs.org">Next.js!</a>
+            <div className="flex flex-col items-center justify-center min-h-screen">
+                <NavBar/>
+                <h1 className="text-[40px] font-bold">
+                    Améliorez vos connaissances, un quiz à la fois.
                 </h1>
 
-                <p className="mt-3 text-2xl">
-                    Get started by editing{" "}
-                    <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">
-                        pages/index.js
-                    </code>
-                </p>
+                <h2 className="mt-3 text-[30px] flex justify-center items-center flex-col">
+                    Tout en s'amusant.
+                    <svg width="244" height="19" viewBox="0 0 244 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M4 14C26 5.50003 52.7129 1.81453 84.5 5.50007C124 10.0799 121.688 19.5002 161.5 11.5002C201.312 3.50023 225.275 5.50002 240 5.50002"
+                            stroke="#FD9061" stroke-width="8" stroke-linecap="round"/>
+                    </svg>
+                </h2>
 
-                <div className="flex flex-wrap items-center justify-around max-w-4xl mt-[100rem] sm:w-full">
-                    <a
-                        href="https://nextjs.org/docs"
-                        className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-                    >
-                        <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-                        <p className="mt-4 text-xl">
-                            Find in-depth information about Next.js features and API.
-                        </p>
-                    </a>
+                <button className="w-[300px] h-[55px] bg-accent rounded-2xl text-[25px] mt-10 shadow-default hover:bg-[#CE6B40] hover:shadow-hover transition ">
+                    Créer un compte
+                </button>
 
-                    <a
-                        href="https://nextjs.org/learn"
-                        className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-                    >
-                        <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-                        <p className="mt-4 text-xl">
-                            Learn about Next.js in an interactive course with quizzes!
-                        </p>
-                    </a>
-                </div>
+                <hr className="bg-accent h-[6px] w-[calc(100%-8rem)] rounded-xl bottom-20 absolute"/>
             </div>
+
         </>
     );
 }
