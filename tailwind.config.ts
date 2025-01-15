@@ -13,10 +13,10 @@ export default {
         foreground: "var(--foreground)",
         accent: "var(--accent)",
       },
-
       boxShadow: {
         default: '0 8px 1px rgba(253, 144, 97, 0.4)',
         hover: '0 8px 1px rgba(206, 107, 64, 0.45)',
+        'navbar': '0px 12px 10.2px 4px rgba(0, 0, 0, 0.25)',
       }
     },
   },

@@ -1,3 +1,5 @@
+@import url("https://use.typekit.net/ikj8lgs.css");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,7 +8,6 @@
     --background: #FFF4E3;
     --foreground: #171717;
     --accent: #FD9061;
-    font-family: "HvDTrial Brevia", sans-serif;
-
+    font-family: "brevia", sans-serif;
     background-color: #FFF4E3;
 }
