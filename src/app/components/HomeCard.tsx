@@ -1,13 +1,14 @@
+
 type CardProps = {
     title: string,
     description: string,
-    right: boolean
+    position: 'left' | 'right'
 }
 
-const CardAccueil: React.FC<CardProps> = ({ title, description, right }) => {
+const HomeCard: React.FC<CardProps> = ({ title, description, position }) => {
     return (
         <div className="flex flex-row justify-center items-center">
-            {right ? (
+            {position === 'right' ? (
                 <>
                     <div className="flex flex-col mr-10">
                         <h2 className="font-bold text-3xl underline">{title}</h2>
@@ -28,4 +29,4 @@ const CardAccueil: React.FC<CardProps> = ({ title, description, right }) => {
     );
 }
 
-export default CardAccueil;
+export default HomeCard;

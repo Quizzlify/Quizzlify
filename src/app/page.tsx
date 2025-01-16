@@ -1,9 +1,9 @@
 'use client'
 
-import { useRouter } from "next/navigation";
-import NavBar from "./components/NavBar"
-import CardAccueil from "./components/card-accueil"
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import { useRouter } from "next/navigation";
+import HomeCard from './components/HomeCard';
+import NavBar from "./components/NavBar";
 
 export default function Home() {
 
@@ -26,17 +26,17 @@ export default function Home() {
                     </svg>
                 </h2>
 
-                <button className="w-[300px] h-[55px] bg-accent rounded-2xl text-[25px] mt-10 shadow-default hover:bg-[#CE6B40] hover:shadow-hover transition ">
+                <button className="w-[300px] h-[55px] bg-accent rounded-2xl text-[25px] mt-10 shadow-default hover:shadow transition ">
                     Créer un compte
                 </button>
-
-                <hr className="bg-accent h-[6px] w-[calc(100%-8rem)] rounded-xl bottom-20 absolute"/>
+                
+                <hr className="bg-accent h-[5px] w-[calc(100%-8rem)] rounded-xl bottom-20 absolute"/>
             </div>
 
-            <div className="flex flex-col justify-center items-center gap-[8rem]">
-                <CardAccueil title={"Jouez à des quiz originaux!"} description={"Générez vos quiz par IA dans tous les domaines possibles."} right={true}/>
-                <CardAccueil title={"Créez vos propres quiz!"} description={"En créant gratuitement un compte, générez vos quiz entièrement personnalisés."} right={false}/>
-                <CardAccueil title={"Soyez parmi les plus hauts classés!"} description={"Grâce au classement, vous pouvez voir (ou faire partie) des meilleurs de nos joueurs."} right={true}/>
+            <div className="flex flex-col justify-center items-center gap-[8rem] pb-8">
+                <HomeCard title={"Jouez à des quiz originaux!"} description={"Générez vos quiz par IA dans tous les domaines possibles."} position='right'/>
+                <HomeCard title={"Créez vos propres quiz!"} description={"En créant gratuitement un compte, générez vos quiz entièrement personnalisés."} position='left'/>
+                <HomeCard title={"Soyez parmi les plus hauts classés!"} description={"Grâce au classement, vous pouvez voir (ou faire partie) des meilleurs de nos joueurs."} position='right'/>
             </div>
 
         </>
