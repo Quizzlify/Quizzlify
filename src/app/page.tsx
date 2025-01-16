@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import NavBar from "./components/NavBar"
+import CardAccueil from "./components/card-accueil"
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export default function Home() {
@@ -30,6 +31,12 @@ export default function Home() {
                 </button>
 
                 <hr className="bg-accent h-[6px] w-[calc(100%-8rem)] rounded-xl bottom-20 absolute"/>
+            </div>
+
+            <div className="flex flex-col justify-center items-center gap-[8rem]">
+                <CardAccueil title={"Jouez à des quiz originaux!"} description={"Générez vos quiz par IA dans tous les domaines possibles."} right={true}/>
+                <CardAccueil title={"Créez vos propres quiz!"} description={"En créant gratuitement un compte, générez vos quiz entièrement personnalisés."} right={false}/>
+                <CardAccueil title={"Soyez parmi les plus hauts classés!"} description={"Grâce au classement, vous pouvez voir (ou faire partie) des meilleurs de nos joueurs."} right={true}/>
             </div>
 
         </>
