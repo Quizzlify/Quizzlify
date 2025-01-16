@@ -1,19 +1,54 @@
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
 export default function NavBar() {
+
+    const router = useRouter();
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 20) setIsScrolled(true);
+            else setIsScrolled(false);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+    function goTo(route: string) {
+        router.push(route);
+    }
+
     return (
-        <nav className="top-5 fixed w-[calc(100%-5rem)] text-xl bg-[#ffffff70] p-5 rounded-3xl shadow-navbar font-semibold backdrop-blur-[6px]">
+        <nav className={`fixed text-xl text-[#0f0f0f] p-5 font-semibold transition-all duration-200 z-[1000]
+            ${isScrolled
+                ? 'bg-[#ffffff70] shadow-navbar backdrop-blur-[6px] top-5 w-[calc(100%-5rem)] rounded-3xl'
+                : 'bg-transparent backdrop-blur-[4px] top-0 w-screen'
+            }`}>
+
             <ul className="flex w-full justify-between">
                 <li className="hover:text-accent transition"><a href="#home">Logo</a></li>
 
                 <li className="hover:text-accent transition">
-                    <i className="fa-solid fa-square-plus"></i><a href="#create_quiz"> Créer votre quiz</a>
+                    <button className="flex items-center gap-2.5" onClick={() => goTo('/create')}>
+                        <i className="fa-solid fa-square-plus"></i><a href="#create_quiz"> Créer votre quiz</a>
+                    </button>
                 </li>
 
                 <li className="hover:text-accent transition">
-                    <i className="fa-solid fa-question"></i><a href="#quiz"> Quiz</a>
+                    <button className="flex items-center gap-2.5" onClick={() => goTo('/quiz')}>
+                        <i className="fa-solid fa-lightbulb"></i><a href="#quiz"> Quiz</a>
+                    </button>
                 </li>
 
                 <li className="hover:text-accent transition">
-                    <i className="fa-solid fa-ranking-star"></i><a href="#leaderboard"> Classement</a>
+                    <button className="flex items-center gap-2.5" onClick={() => goTo('/leaderboard')}>
+                        <i className="fa-solid fa-ranking-star"></i><a href="#leaderboard">Classement</a>
+                    </button>
                 </li>
 
                 <li className="hover:text-accent transition">
@@ -21,6 +56,5 @@ export default function NavBar() {
                 </li>
             </ul>
         </nav>
-
     )
 }
