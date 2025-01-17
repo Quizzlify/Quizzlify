@@ -14,7 +14,7 @@ interface BreadcrumbProps {
     onStepChange: (step: string) => void;
 }
 
-export const BreadcrumbList: BreadCrumbInterface[] = [
+const QuizList: BreadCrumbInterface[] = [
     {
         title: "Catégorie",
         icon: <i className="fa-solid fa-layer-group fa-xl"></i>
@@ -37,12 +37,27 @@ export const BreadcrumbList: BreadCrumbInterface[] = [
     }
 ];
 
-
+const CreerQuizList: BreadCrumbInterface[] = [
+    {
+        title: "Détails",
+        icon: <i className="fa-solid fa-circle-info fa-xl"></i>
+    },
+    {
+        title: "Niveau",
+        icon: <i className="fa-solid fa-baby-carriage fa-xl"></i>
+    },
+    {
+        title: "Catégorie",
+        icon: <i className="fa-solid fa-layer-group fa-xl"></i>
+    },
+    {
+        title: "Questions",
+        icon: <i className="fa-solid fa-circle-question fa-xl"></i>
+    }
+];
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({isCreateQuiz = false, activeStep, onStepChange}) => {
-    const displayedItems = isCreateQuiz
-        ? BreadcrumbList.slice(0, 4)
-        : BreadcrumbList;
+    const displayedItems = isCreateQuiz ? CreerQuizList : QuizList;
 
     const previousStep = displayedItems.findIndex(
         (breadcrumb) => breadcrumb.title === activeStep

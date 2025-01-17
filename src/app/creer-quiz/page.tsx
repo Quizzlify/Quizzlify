@@ -17,20 +17,20 @@ const Details = () => (
 
 const Level: React.FC<Props> = ({ nextStep }) => (
     <div className="mt-5 w-full max-w-2xl flex items-center flex-col">
-        <h2 className="text-xl mb-4 mb-20">Choisissez le niveau dans laquelle vous voulez jouer.</h2>
-        <Cards isNiveau={true} nextStep={nextStep} />
+        <h2 className="text-xl mb-4">Choisissez le niveau dans laquelle vous voulez jouer.</h2>
+        <Cards isNiveau={true} nextStep={nextStep} isCreateQuiz={true} />
     </div>
 );
 
 const Categorie: React.FC<Props> = ({ nextStep }) => (
     <div className="mt-5 w-full max-w-2xl flex items-center flex-col">
         <h2 className="text-xl mb-4">Choisissez la catégorie dans laquelle vous voulez créer le quiz.</h2>
-        <Cards isNiveau={false} nextStep={nextStep} />
+        <Cards isNiveau={false} nextStep={nextStep} isCreateQuiz={true} />
     </div>
 );
 
 const Questions = () => (
-    <div className="mt-5 w-full max-w-2xl flex items-center">
+    <div className="mt-5 w-full max-w-2xl flex items-center flex-col">
         <h2 className="text-xl mb-4">Créez votre quiz.</h2>
     </div>
 );
@@ -42,7 +42,7 @@ const Error = () => (
 )
 
 export default function Page() {
-    const [activeStep, setActiveStep] = useState("Catégorie");
+    const [activeStep, setActiveStep] = useState("Détails");
 
     const renderStepContent = () => {
         switch (activeStep) {

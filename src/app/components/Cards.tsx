@@ -3,6 +3,7 @@ import {ReactElement} from "react";
 interface CardsProps {
     isNiveau?: boolean;
     nextStep: (step: string) => void;
+    isCreateQuiz?: boolean;
 }
 
 interface Interface {
@@ -52,7 +53,7 @@ const CategoriesList: Interface[] = [
     }
 ];
 
-const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep }) => {
+const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep, isCreateQuiz }) => {
     return (
         <div>
             {isNiveau ? (
@@ -61,7 +62,7 @@ const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep }) => {
                         <button
                             className="w-[350px] h-[200px] bg-white rounded-2xl flex flex-col justify-center items-center gap-5 text-2xl group hover:text-accent transition"
                             key={index}
-                            onClick={() => nextStep('Détails')}
+                            onClick={() => isCreateQuiz ? nextStep('Catégorie') : nextStep('Détails')}
                         >
                             <div className="flex items-center justify-center">{niveau.icon}</div>
 
@@ -72,13 +73,15 @@ const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep }) => {
                         </button>
                     ))}
                 </div>
+
             ) : (
+
                 <div className="grid grid-rows-2 grid-cols-3 gap-5 w-[70rem] h-auto">
                     {CategoriesList.map((categorie, index) => (
                         <button
                             className="w-[350px] h-[200px] bg-white rounded-2xl flex flex-col justify-center items-center gap-5 text-2xl group hover:text-accent transition"
                             key={index}
-                            onClick={() => nextStep('Niveau')}
+                            onClick={() => isCreateQuiz ? nextStep('Questions') : nextStep('Niveau')}
                         >
                             <div className="flex items-center justify-center">{categorie.icon}</div>
 
