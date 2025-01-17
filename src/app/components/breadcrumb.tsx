@@ -37,28 +37,22 @@ export const BreadcrumbList: BreadCrumbInterface[] = [
     }
 ];
 
-const Breadcrumb: React.FC<BreadcrumbProps> = ({
-    isCreateQuiz = false,
-    activeStep,
-    onStepChange
-}) => {
+
+
+const Breadcrumb: React.FC<BreadcrumbProps> = ({isCreateQuiz = false, activeStep, onStepChange}) => {
     const displayedItems = isCreateQuiz
         ? BreadcrumbList.slice(0, 4)
         : BreadcrumbList;
 
-    const currentLevel = displayedItems.findIndex(
+    const previousStep = displayedItems.findIndex(
         (breadcrumb) => breadcrumb.title === activeStep
     ) + 1;
-
-    const handleSetActiveStep = (step: string) => {
-        onStepChange(step);
-    }
 
     return (
         <div className="flex flex-row items-center gap-2 text-[#333333] font-semibold">
             {displayedItems.map((step, index) => {
                 const isActive = activeStep === step.title;
-                const isBeforeOrEqualCurrentLevel = index < currentLevel;
+                const isBeforeOrEqualCurrentStep = index < previousStep;
 
                 return (
                     <Fragment key={step.title}>
@@ -67,16 +61,16 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
                                 className={`px-[16px] py-[11px] rounded-xl flex gap-[16px] items-center ${
                                     isActive
                                         ? "bg-accent text-white"
-                                        : isBeforeOrEqualCurrentLevel ? "text-accent" : ""
+                                        : isBeforeOrEqualCurrentStep ? "text-accent" : ""
                                 }`}
-                                onClick={() => handleSetActiveStep(step.title)}
+                                onClick={() => onStepChange(step.title)}
                                 tabIndex={0}
                             >
                                 {step.icon}
                                 <span>{step.title}</span>
                             </button>
                             {index < displayedItems.length - 1 && (
-                                <span className={`mx-2 ${index < currentLevel - 1 ? "text-accent" : ""}`}>
+                                <span className={`mx-2 ${index < previousStep - 1 ? "text-accent" : ""}`}>
                                     <i className="fa-solid fa-caret-right fa-xs"></i>
                                 </span>
                             )}

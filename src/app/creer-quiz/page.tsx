@@ -44,16 +44,12 @@ const Error = () => (
 export default function Page() {
     const [activeStep, setActiveStep] = useState("Catégorie");
 
-    const handleStepChange = (step: string) => {
-        setActiveStep(step);
-    };
-
     const renderStepContent = () => {
         switch (activeStep) {
             case "Catégorie":
-                return <Categorie nextStep={handleStepChange} />;
+                return <Categorie nextStep={setActiveStep} />;
             case "Niveau":
-                return <Level nextStep={handleStepChange} />;
+                return <Level nextStep={setActiveStep} />;
             case "Détails":
                 return <Details />;
             case "Questions":
@@ -71,7 +67,7 @@ export default function Page() {
                     <Breadcrumb
                         isCreateQuiz={true}
                         activeStep={activeStep}
-                        onStepChange={handleStepChange}
+                        onStepChange={setActiveStep}
                     />
                     {renderStepContent()}
                 </div>
