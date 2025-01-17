@@ -1,7 +1,7 @@
 "use client"
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import { Fragment, ReactElement, useState } from "react";
+import { Fragment, ReactElement } from "react";
 
 interface BreadCrumbInterface {
     title: string;
@@ -10,7 +10,7 @@ interface BreadCrumbInterface {
 
 interface BreadcrumbProps {
     isCreateQuiz?: boolean;
-    level: number;
+    activeStep: string;
     onStepChange: (step: string) => void;
 }
 
@@ -38,39 +38,37 @@ export const BreadcrumbList: BreadCrumbInterface[] = [
 ];
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({
-                                                   isCreateQuiz = false,
-                                                   level,
-                                                   onStepChange
-                                               }) => {
-    if (level + 1 > BreadcrumbList.length) {
-        throw new Error(`Level ${level} exceeds the number of breadcrumb items.`);
-    }
-
-    const [currentLevel, setCurrentLevel] = useState<number>(level+1);
-
+    isCreateQuiz = false,
+    activeStep,
+    onStepChange
+}) => {
     const displayedItems = isCreateQuiz
         ? BreadcrumbList.slice(0, 4)
         : BreadcrumbList;
 
+    const currentLevel = displayedItems.findIndex(
+        (breadcrumb) => breadcrumb.title === activeStep
+    ) + 1;
+
     const handleSetActiveStep = (step: string) => {
-        setCurrentLevel(displayedItems.findIndex((breadcrumb) => breadcrumb.title === step) + 1);
         onStepChange(step);
     }
 
     return (
         <div className="flex flex-row items-center gap-2 text-[#333333] font-semibold">
             {displayedItems.map((step, index) => {
-
-                const isActive = level === index;
+                const isActive = activeStep === step.title;
                 const isBeforeOrEqualCurrentLevel = index < currentLevel;
 
                 return (
                     <Fragment key={step.title}>
-                        <div key={step.title} className="flex flex-row items-center text-[20px] font-semibold">
+                        <div className="flex flex-row items-center text-[20px] font-semibold">
                             <button
-                                className={`px-[16px] py-[11px] rounded-xl flex gap-[16px] items-center ${isActive
-                                    ? "bg-accent text-white"
-                                    : isBeforeOrEqualCurrentLevel ? "text-accent" : ""}`}
+                                className={`px-[16px] py-[11px] rounded-xl flex gap-[16px] items-center ${
+                                    isActive
+                                        ? "bg-accent text-white"
+                                        : isBeforeOrEqualCurrentLevel ? "text-accent" : ""
+                                }`}
                                 onClick={() => handleSetActiveStep(step.title)}
                                 tabIndex={0}
                             >
@@ -85,7 +83,6 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
                         </div>
                     </Fragment>
                 )
-
             })}
         </div>
     );

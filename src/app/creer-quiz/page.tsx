@@ -1,10 +1,9 @@
 "use client"
 
-import { useState } from "react";
 import Breadcrumb from "@/app/components/breadcrumb";
 import Cards from "@/app/components/Cards";
 import NavBar from "@/app/components/NavBar";
-import { BreadcrumbList } from "@/app/components/breadcrumb"
+import { useState } from "react";
 
 interface Props {
     nextStep: (step: string) => void;
@@ -16,17 +15,17 @@ const Details = () => (
     </div>
 );
 
-const Level:React.FC<Props> = ({nextStep}) => (
+const Level: React.FC<Props> = ({ nextStep }) => (
     <div className="mt-5 w-full max-w-2xl flex items-center flex-col">
         <h2 className="text-xl mb-4 mb-20">Choisissez le niveau dans laquelle vous voulez jouer.</h2>
-        <Cards isNiveau={true} nextStep={nextStep}/>
+        <Cards isNiveau={true} nextStep={nextStep} />
     </div>
 );
 
-const Categorie:React.FC<Props> = ({nextStep}) => (
+const Categorie: React.FC<Props> = ({ nextStep }) => (
     <div className="mt-5 w-full max-w-2xl flex items-center flex-col">
         <h2 className="text-xl mb-4">Choisissez la catégorie dans laquelle vous voulez créer le quiz.</h2>
-        <Cards isNiveau={false} nextStep={nextStep}/>
+        <Cards isNiveau={false} nextStep={nextStep} />
     </div>
 );
 
@@ -36,23 +35,31 @@ const Questions = () => (
     </div>
 );
 
+const Error = () => (
+    <div className="mt-5 w-full max-w-2xl flex items-center">
+        <h2 className="text-xl mb-4">Une erreur est survenue.</h2>
+    </div>
+)
+
 export default function Page() {
     const [activeStep, setActiveStep] = useState("Catégorie");
-    const activeItemIndex = BreadcrumbList.findIndex((breadcrumb) => breadcrumb.title === activeStep);
 
+    const handleStepChange = (step: string) => {
+        setActiveStep(step);
+    };
 
     const renderStepContent = () => {
         switch (activeStep) {
-            case "Catégories":
-                return <Categorie nextStep={setActiveStep} />;
+            case "Catégorie":
+                return <Categorie nextStep={handleStepChange} />;
             case "Niveau":
-                return <Level nextStep={setActiveStep} />;
+                return <Level nextStep={handleStepChange} />;
             case "Détails":
                 return <Details />;
             case "Questions":
                 return <Questions />;
             default:
-                return <Categorie nextStep={setActiveStep}/>;
+                return <Error />;
         }
     };
 
@@ -64,8 +71,7 @@ export default function Page() {
                     <Breadcrumb
                         isCreateQuiz={true}
                         activeStep={activeStep}
-                        level={activeItemIndex}
-                        onStepChange={setActiveStep}
+                        onStepChange={handleStepChange}
                     />
                     {renderStepContent()}
                 </div>
