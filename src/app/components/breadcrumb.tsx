@@ -1,6 +1,6 @@
 "use client"
 
-import { ReactElement, useState } from "react";
+import { ReactElement } from "react";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 interface BreadCrumbInterface {
@@ -10,6 +10,8 @@ interface BreadCrumbInterface {
 
 interface BreadcrumbProps {
     isCreateQuiz?: boolean;
+    activeItem: string;
+    onItemChange: (item: string) => void;
 }
 
 const BreadcrumbList: BreadCrumbInterface[] = [
@@ -35,25 +37,27 @@ const BreadcrumbList: BreadCrumbInterface[] = [
     }
 ];
 
-const Breadcrumb: React.FC<BreadcrumbProps> = ({ isCreateQuiz = false }) => {
+const Breadcrumb: React.FC<BreadcrumbProps> = ({
+                                                   isCreateQuiz = false,
+                                                   activeItem,
+                                                   onItemChange
+                                               }) => {
     const displayedItems = isCreateQuiz
-        ? BreadcrumbList.slice(0, 4) // correspond à Détails, Niveau, Catégories et Questions
-        : BreadcrumbList;
-
-    const [activeItem, setActiveItem] = useState<string>("Détails");
+        ? BreadcrumbList.slice(0, 4) : BreadcrumbList;
 
     return (
         <div className="flex flex-row items-center gap-4">
             {displayedItems.map((item, index) => (
-                <div className="flex flex-row items-center">
+                <div key={item.title} className="flex flex-row items-center">
                     <div
-                        className={`p-2 rounded-lg flex gap-2 items-center ${activeItem === item.title ? "bg-accent" : ""}`}
-                        onClick={() => setActiveItem(item.title)}
+                        className={`p-2 rounded-lg flex gap-2 items-center cursor-pointer
+                            ${activeItem === item.title ? "bg-accent" : ""}`}
+                        onClick={() => onItemChange(item.title)}
                     >
                         {item.icon}
                         <span>{item.title}</span>
                     </div>
-                    {index !== displayedItems.length - 1 && ( // pour ne pas afficher la flèche si on est au dernier élement
+                    {index !== displayedItems.length - 1 && (
                         <i className="fa-solid fa-caret-right ml-4"></i>
                     )}
                 </div>
