@@ -11,7 +11,7 @@ interface BreadCrumbInterface {
 interface BreadcrumbProps {
     isCreateQuiz?: boolean;
     level: number;
-    onItemChange: (item: string) => void;
+    onStepChange: (step: string) => void;
 }
 
 export const BreadcrumbList: BreadCrumbInterface[] = [
@@ -38,44 +38,44 @@ export const BreadcrumbList: BreadCrumbInterface[] = [
 ];
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({
-    isCreateQuiz = false,
-    level,
-    onItemChange
-}) => {
+                                                   isCreateQuiz = false,
+                                                   level,
+                                                   onStepChange
+                                               }) => {
     if (level + 1 > BreadcrumbList.length) {
         throw new Error(`Level ${level} exceeds the number of breadcrumb items.`);
     }
 
-    const [currentLevel, setCurrentLevel] = useState<number>(level);
+    const [currentLevel, setCurrentLevel] = useState<number>(level+1);
 
     const displayedItems = isCreateQuiz
         ? BreadcrumbList.slice(0, 4)
         : BreadcrumbList;
 
-    const handleSetActiveItem = (item: string) => {
-        setCurrentLevel(displayedItems.findIndex((breadcrumb) => breadcrumb.title === item) + 1);
-        onItemChange(item);
+    const handleSetActiveStep = (step: string) => {
+        setCurrentLevel(displayedItems.findIndex((breadcrumb) => breadcrumb.title === step) + 1);
+        onStepChange(step);
     }
 
     return (
         <div className="flex flex-row items-center gap-2 text-[#333333] font-semibold">
-            {displayedItems.map((item, index) => {
+            {displayedItems.map((step, index) => {
 
                 const isActive = level === index;
                 const isBeforeOrEqualCurrentLevel = index < currentLevel;
 
                 return (
-                    <Fragment key={item.title}>
-                        <div key={item.title} className="flex flex-row items-center text-[20px] font-semibold">
+                    <Fragment key={step.title}>
+                        <div key={step.title} className="flex flex-row items-center text-[20px] font-semibold">
                             <button
                                 className={`px-[16px] py-[11px] rounded-xl flex gap-[16px] items-center ${isActive
                                     ? "bg-accent text-white"
                                     : isBeforeOrEqualCurrentLevel ? "text-accent" : ""}`}
-                                onClick={() => handleSetActiveItem(item.title)}
+                                onClick={() => handleSetActiveStep(step.title)}
                                 tabIndex={0}
                             >
-                                {item.icon}
-                                <span>{item.title}</span>
+                                {step.icon}
+                                <span>{step.title}</span>
                             </button>
                             {index < displayedItems.length - 1 && (
                                 <span className={`mx-2 ${index < currentLevel - 1 ? "text-accent" : ""}`}>
