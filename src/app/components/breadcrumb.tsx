@@ -43,14 +43,19 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ isCreateQuiz = false }) => {
     const [activeItem, setActiveItem] = useState<string>("Détails");
 
     return (
-        <div className="flex flex-row items-center gap-2">
-            {displayedItems.map((item) => (
-                <div
-                    className={`p-2 rounded-lg flex gap-2 items-center ${activeItem === item.title ? "bg-accent" : ""}`}
-                    onClick={() => setActiveItem(item.title)}
-                >
-                    {item.icon}
-                    <span>{item.title}</span>
+        <div className="flex flex-row items-center gap-4">
+            {displayedItems.map((item, index) => (
+                <div className="flex flex-row items-center">
+                    <div
+                        className={`p-2 rounded-lg flex gap-2 items-center ${activeItem === item.title ? "bg-accent" : ""}`}
+                        onClick={() => setActiveItem(item.title)}
+                    >
+                        {item.icon}
+                        <span>{item.title}</span>
+                    </div>
+                    {index !== displayedItems.length - 1 && ( // pour ne pas afficher la flèche si on est au dernier élement
+                        <i className="fa-solid fa-caret-right ml-4"></i>
+                    )}
                 </div>
             ))}
         </div>
