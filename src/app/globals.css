@@ -8,6 +8,7 @@
     --background: #FFF4E3;
     --foreground: #171717;
     --accent: #FD9061;
+    --secondary: rgba(253, 209, 141, 0.6);
     font-family: "brevia", sans-serif;
     background-color: #FFF4E3;
 }

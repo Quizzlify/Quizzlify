@@ -12,6 +12,7 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
         accent: "var(--accent)",
+        secondary: "var(--secondary)"
       },
       boxShadow: {
         default: '0 8px 1px rgba(253, 144, 97, 0.4)',
