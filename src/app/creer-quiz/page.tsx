@@ -3,10 +3,16 @@
 import Breadcrumb from "@/app/components/breadcrumb";
 import Cards from "@/app/components/Cards";
 import NavBar from "@/app/components/NavBar";
+import CreateQuestion from "@/app/components/CreateQuestion"
 import { useState } from "react";
+import QButton from "@/app/components/QButton"
 
-interface Props {
+interface StepProps {
     nextStep: (step: string) => void;
+}
+
+interface QuestionProps {
+    questionNum: number;
 }
 
 const Details = () => (
@@ -15,23 +21,29 @@ const Details = () => (
     </div>
 );
 
-const Level: React.FC<Props> = ({ nextStep }) => (
+const Level: React.FC<StepProps> = ({ nextStep }) => (
     <div className="mt-5 w-full max-w-2xl flex items-center flex-col">
         <h2 className="text-xl mb-4">Choisissez le niveau dans laquelle vous voulez jouer.</h2>
         <Cards isNiveau={true} nextStep={nextStep} isCreateQuiz={true} />
     </div>
 );
 
-const Categorie: React.FC<Props> = ({ nextStep }) => (
+const Categorie: React.FC<StepProps> = ({ nextStep }) => (
     <div className="mt-5 w-full max-w-2xl flex items-center flex-col">
         <h2 className="text-xl mb-4">Choisissez la catégorie dans laquelle vous voulez créer le quiz.</h2>
         <Cards isNiveau={false} nextStep={nextStep} isCreateQuiz={true} />
     </div>
 );
 
-const Questions = () => (
-    <div className="mt-5 w-full max-w-2xl flex items-center flex-col">
+const Questions: React.FC<QuestionProps> = ({questionNum}) => (
+    <div className="mt-5 flex items-center w-screen flex-col">
         <h2 className="text-xl mb-4">Créez votre quiz.</h2>
+        <CreateQuestion questionNum={questionNum}/>
+        <div className="flex space-between items-center mt-14 w-screen">
+            <hr className="bg-accent h-[5px] w-[30%] rounded-xl ml-5 mr-5"/>
+            <QButton className="w-[40rem]" text="Ajouter une question" icon={<i className="fa-solid fa-plus"></i>} disabled={false} iconPosition={'left'}/>
+            <hr className="bg-accent h-[5px] w-[30%] rounded-xl mr-5 ml-5"/>
+        </div>
     </div>
 );
 
@@ -43,6 +55,7 @@ const Error = () => (
 
 export default function Page() {
     const [activeStep, setActiveStep] = useState("Détails");
+    const questionNum = 1;
 
     const renderStepContent = () => {
         switch (activeStep) {
@@ -53,7 +66,7 @@ export default function Page() {
             case "Détails":
                 return <Details />;
             case "Questions":
-                return <Questions />;
+                return <Questions questionNum={questionNum}/>;
             default:
                 return <Error />;
         }
