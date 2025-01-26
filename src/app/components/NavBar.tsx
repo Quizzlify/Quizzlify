@@ -1,3 +1,5 @@
+"use client";
+
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -31,10 +33,10 @@ export default function NavBar() {
             }`}>
 
             <ul className="flex w-full justify-between">
-                <li className="hover:text-accent transition"><a href="#home">Logo</a></li>
+                <li className="hover:text-accent transition"><a href="/">Logo</a></li>
 
                 <li className="hover:text-accent transition">
-                    <button className="flex items-center gap-2.5" onClick={() => goTo('/create')}>
+                    <button className="flex items-center gap-2.5" onClick={() => goTo('/creer-quiz')}>
                         <i className="fa-solid fa-square-plus"></i><a href="#create_quiz"> Créer votre quiz</a>
                     </button>
                 </li>

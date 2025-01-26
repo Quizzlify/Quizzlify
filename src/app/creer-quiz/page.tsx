@@ -2,17 +2,18 @@
 
 import Breadcrumb from "@/app/components/breadcrumb";
 import Cards from "@/app/components/Cards";
+import CreateQuestion from "@/app/components/CreateQuestion";
 import NavBar from "@/app/components/NavBar";
-import CreateQuestion from "@/app/components/CreateQuestion"
+import QButton from "@/app/components/QButton";
 import { useState } from "react";
-import QButton from "@/app/components/QButton"
 
 interface StepProps {
     nextStep: (step: string) => void;
 }
 
 interface QuestionProps {
-    questionNum: number;
+    questionIndices: number[];
+    setQuestionIndices: (indices: number[]) => void;
 }
 
 const Details = () => (
@@ -35,17 +36,41 @@ const Categorie: React.FC<StepProps> = ({ nextStep }) => (
     </div>
 );
 
-const Questions: React.FC<QuestionProps> = ({questionNum}) => (
-    <div className="mt-5 flex items-center w-screen flex-col">
-        <h2 className="text-xl mb-4">Créez votre quiz.</h2>
-        <CreateQuestion questionNum={questionNum}/>
-        <div className="flex space-between items-center mt-14 w-screen">
-            <hr className="bg-accent h-[5px] w-[30%] rounded-xl ml-5 mr-5"/>
-            <QButton className="w-[40rem]" text="Ajouter une question" icon={<i className="fa-solid fa-plus"></i>} disabled={false} iconPosition={'left'}/>
-            <hr className="bg-accent h-[5px] w-[30%] rounded-xl mr-5 ml-5"/>
+const Questions: React.FC<QuestionProps> = ({ questionIndices, setQuestionIndices }) => {
+
+    const addQuestions = () => {
+        setQuestionIndices([...questionIndices, questionIndices.length + 1]);
+    }
+
+    const removeQuestion = (index: number) => {
+        setQuestionIndices(questionIndices.filter((_, i) => i !== index));
+    };
+
+    return (
+        <div className="mt-5 flex items-center w-screen flex-col">
+            <h2 className="text-xl mb-4">Créez votre quiz.</h2>
+            {questionIndices.map((_, index) => (
+                <div className="p-2" key={index}>
+                    <CreateQuestion questionNum={index + 1} removeQuestion={() => removeQuestion(index)} />
+                </div>
+            ))}
+            <div className="flex items-center justify-center mt-14 w-full">
+                <div className="flex items-center w-full">
+                    <hr className="bg-accent h-[5px] flex-grow rounded-xl mx-5" />
+                    <QButton
+                        className="w-[40rem]"
+                        text="Ajouter une question"
+                        icon={<i className="fa-solid fa-plus"></i>}
+                        disabled={false}
+                        iconPosition={'left'}
+                        onClick={addQuestions}
+                    />
+                    <hr className="bg-accent h-[5px] flex-grow rounded-xl mx-5" />
+                </div>
+            </div>
         </div>
-    </div>
-);
+    )
+};
 
 const Error = () => (
     <div className="mt-5 w-full max-w-2xl flex items-center">
@@ -55,7 +80,7 @@ const Error = () => (
 
 export default function Page() {
     const [activeStep, setActiveStep] = useState("Détails");
-    const questionNum = 1;
+    const [questionIndices, setQuestionIndices] = useState<number[]>([1]);
 
     const renderStepContent = () => {
         switch (activeStep) {
@@ -66,14 +91,14 @@ export default function Page() {
             case "Détails":
                 return <Details />;
             case "Questions":
-                return <Questions questionNum={questionNum}/>;
+                return <Questions questionIndices={questionIndices} setQuestionIndices={setQuestionIndices} />;
             default:
                 return <Error />;
         }
     };
 
     return (
-        <>
+        <div className="flex flex-col items-center justify-center min-h-screen">
             <NavBar />
             <div className="absolute top-40 w-full">
                 <div className="flex flex-col items-center">
@@ -85,6 +110,6 @@ export default function Page() {
                     {renderStepContent()}
                 </div>
             </div>
-        </>
+        </div>
     );
 }

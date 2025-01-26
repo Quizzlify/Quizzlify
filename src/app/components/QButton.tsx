@@ -12,7 +12,7 @@ type ButtonProps = {
 }
 
 const QButton: React.FC<ButtonProps> = ({ text, className = '', icon, iconPosition, ...rest }) => {
-  let baseClasses = 'group text-white px-[16px] py-[12px] text-center justify-center bg-accent rounded-[12px] text-[20px] font-semibold mt-10 transition-all duration-300';
+  let baseClasses = 'group text-white px-[16px] py-[12px] text-center justify-center bg-accent rounded-[12px] text-[20px] font-semibold transition-all duration-300 cursor-pointer';
 
   if (rest.disabled) {
     baseClasses += ' cursor-not-allowed opacity-50';
