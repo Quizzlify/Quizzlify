@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type NavbarProp = {
-    currentPage: string;
+    currentPage: 'leaderboard' | 'quiz' | 'creer-quiz';
 }
 
 const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {

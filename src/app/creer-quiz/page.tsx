@@ -16,9 +16,17 @@ interface QuestionProps {
     setQuestionIndices: (indices: number[]) => void;
 }
 
-const Details = () => (
+const Details: React.FC<StepProps> = ({ nextStep }) => (
     <div className="mt-5 w-full max-w-2xl flex items-center flex-col gap-10">
         <h2 className="text-xl mb-4">Quelques détails à propos du quiz que vous voulez créer.</h2>
+        <QButton
+            className="w-[300px]"
+            text="Créer un quiz"
+            icon={<i className="fa-solid fa-circle-plus"></i>}
+            disabled={false}
+            iconPosition={'left'}
+            onClick={() => nextStep('Niveau')}
+        />
     </div>
 );
 
@@ -90,7 +98,7 @@ export default function Page() {
             case "Niveau":
                 return <Niveau nextStep={setActiveStep} />;
             case "Détails":
-                return <Details />;
+                return <Details nextStep={setActiveStep} />;
             case "Questions":
                 return <Questions questionIndices={questionIndices} setQuestionIndices={setQuestionIndices} />;
             default:

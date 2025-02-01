@@ -78,7 +78,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({isCreateQuiz = false, activeStep
                                         ? "bg-accent text-white"
                                         : isBeforeOrEqualCurrentStep ? "text-accent" : ""
                                 }`}
-                                onClick={() => onStepChange(step.title)}
+                                onClick={() => { if(isBeforeOrEqualCurrentStep) { onStepChange(step.title) } }}
                                 tabIndex={0}
                             >
                                 {step.icon}
