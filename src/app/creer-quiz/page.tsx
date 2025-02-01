@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Breadcrumb from "@/app/components/breadcrumb";
 import Cards from "@/app/components/Cards";
@@ -39,22 +39,23 @@ const Categorie: React.FC<StepProps> = ({ nextStep }) => (
 const Questions: React.FC<QuestionProps> = ({ questionIndices, setQuestionIndices }) => {
 
     const addQuestions = () => {
-        setQuestionIndices([...questionIndices, questionIndices.length + 1]);
+        const newId = Date.now();
+        setQuestionIndices([...questionIndices, newId]);
     }
 
-    const removeQuestion = (index: number) => {
-        setQuestionIndices(questionIndices.filter((_, i) => i !== index));
+    const removeQuestion = (id: number) => {
+        setQuestionIndices(questionIndices.filter((questionId) => questionId !== id));
     };
 
     return (
         <div className="mt-5 flex items-center w-screen flex-col">
             <h2 className="text-xl mb-4">Créez votre quiz.</h2>
-            {questionIndices.map((_, index) => (
-                <div className="p-2" key={index}>
-                    <CreateQuestion questionNum={index + 1} removeQuestion={() => removeQuestion(index)} />
+            {questionIndices.map((id, index) => (
+                <div className="p-2" key={`q-${id}`}>
+                    <CreateQuestion questionNum={index + 1} removeQuestion={() => removeQuestion(id)} />
                 </div>
             ))}
-            <div className="flex items-center justify-center mt-14 w-full">
+            <div className="flex items-center justify-center my-14 w-full">
                 <div className="flex items-center w-full">
                     <hr className="bg-accent h-[5px] flex-grow rounded-xl mx-5" />
                     <QButton
@@ -72,7 +73,7 @@ const Questions: React.FC<QuestionProps> = ({ questionIndices, setQuestionIndice
     )
 };
 
-const Error = () => (
+const ErrorMessage = () => (
     <div className="mt-5 w-full max-w-2xl flex items-center">
         <h2 className="text-xl mb-4">Une erreur est survenue.</h2>
     </div>
@@ -93,7 +94,7 @@ export default function Page() {
             case "Questions":
                 return <Questions questionIndices={questionIndices} setQuestionIndices={setQuestionIndices} />;
             default:
-                return <Error />;
+                return <ErrorMessage />;
         }
     };
 
