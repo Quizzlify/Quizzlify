@@ -22,7 +22,7 @@ const Details = () => (
     </div>
 );
 
-const Level: React.FC<StepProps> = ({ nextStep }) => (
+const Niveau: React.FC<StepProps> = ({ nextStep }) => (
     <div className="mt-5 w-full max-w-2xl flex items-center flex-col">
         <h2 className="text-xl mb-4">Choisissez le niveau dans laquelle vous voulez jouer.</h2>
         <Cards isNiveau={true} nextStep={nextStep} isCreateQuiz={true} />
@@ -88,7 +88,7 @@ export default function Page() {
             case "Catégorie":
                 return <Categorie nextStep={setActiveStep} />;
             case "Niveau":
-                return <Level nextStep={setActiveStep} />;
+                return <Niveau nextStep={setActiveStep} />;
             case "Détails":
                 return <Details />;
             case "Questions":
@@ -100,7 +100,7 @@ export default function Page() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
-            <NavBar />
+            <NavBar currentPage="creer-quiz"/>
             <div className="absolute top-40 w-full">
                 <div className="flex flex-col items-center">
                     <Breadcrumb

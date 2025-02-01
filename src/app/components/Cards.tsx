@@ -51,7 +51,7 @@ const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep, isCreateQuiz }) => {
                     {[...Array(maxLevel)].map((_, index) => {
                         const level = index + 1;
                         return (
-                            <button
+                            <div
                                 className="w-[350px] h-[200px] bg-[#ffffff99] hover:bg-white rounded-2xl flex flex-col justify-center items-center gap-5 text-2xl group hover:text-accent transition relative"
                                 key={level}
                                 onClick={() => isCreateQuiz ? nextStep('Catégorie') : nextStep('Questions')}
@@ -87,7 +87,7 @@ const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep, isCreateQuiz }) => {
                                     <div>Niveau {level}</div>
                                     <i className="fa-solid fa-arrow-right text-lg absolute right-[3rem] transition-all group-hover:right-[2rem] group-hover:text-accent"></i>
                                 </div>
-                            </button>
+                            </div>
                         )
                     })}
                 </div>

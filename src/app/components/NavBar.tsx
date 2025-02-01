@@ -3,8 +3,11 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function NavBar() {
+type NavbarProp = {
+    currentPage: string;
+}
 
+const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
     const router = useRouter();
     const [isScrolled, setIsScrolled] = useState(false);
 
@@ -36,20 +39,20 @@ export default function NavBar() {
                 <li className="hover:text-accent transition"><a href="/">Logo</a></li>
 
                 <li className="hover:text-accent transition">
-                    <button className="flex items-center gap-2.5" onClick={() => goTo('/creer-quiz')}>
-                        <i className="fa-solid fa-square-plus"></i><a href="#create_quiz"> Créer votre quiz</a>
+                    <button className={`flex items-center gap-2.5 ${currentPage == "creer-quiz" ? "text-accent" : ""}`} onClick={() => goTo('/creer-quiz')}>
+                        <i className="fa-solid fa-square-plus"></i><a>Créer votre quiz</a>
                     </button>
                 </li>
 
                 <li className="hover:text-accent transition">
-                    <button className="flex items-center gap-2.5" onClick={() => goTo('/quiz')}>
-                        <i className="fa-solid fa-lightbulb"></i><a href="#quiz"> Quiz</a>
+                    <button className={`flex items-center gap-2.5 ${currentPage == "quiz" ? "text-accent" : ""}`} onClick={() => goTo('/quiz')}>
+                        <i className="fa-solid fa-lightbulb"></i><a>Quiz</a>
                     </button>
                 </li>
 
                 <li className="hover:text-accent transition">
-                    <button className="flex items-center gap-2.5" onClick={() => goTo('/leaderboard')}>
-                        <i className="fa-solid fa-ranking-star"></i><a href="#leaderboard">Classement</a>
+                    <button className={`flex items-center gap-2.5 ${currentPage == "leaderboard" ? "text-accent" : ""}`} onClick={() => goTo('/leaderboard')}>
+                        <i className="fa-solid fa-ranking-star"></i><a>Classement</a>
                     </button>
                 </li>
 
@@ -60,3 +63,5 @@ export default function NavBar() {
         </nav>
     )
 }
+
+export default NavBar

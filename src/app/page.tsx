@@ -3,7 +3,7 @@
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { useRouter } from "next/navigation";
 import HomeCard from './components/HomeCard';
-import NavBar from "./components/NavBar";
+import NavBar from "@/app/components/NavBar";
 
 export default function Home() {
 
@@ -12,7 +12,7 @@ export default function Home() {
     return (
         <>
             <div className="flex flex-col items-center justify-center min-h-screen">
-                <NavBar/>
+                <NavBar currentPage='home'/>
                 <h1 className="text-[40px] font-bold">
                     Améliorez vos connaissances, un quiz à la fois.
                 </h1>
