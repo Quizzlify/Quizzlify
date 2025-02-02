@@ -56,7 +56,7 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
                     </button>
                 </li>
 
-                <li className={`hover:text-accent transition ${currentPage == "user" ? "text-accent" : ""}`} onClick={() => goTo('/user')}>
+                <li className={`hover:text-accent transition ${currentPage == "user" ? "text-accent" : ""}`} onClick={() => goTo('/user/connexion')}>
                     <i className="fa-regular fa-user fa-xl"></i>
                 </li>
             </ul>

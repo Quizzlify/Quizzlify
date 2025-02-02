@@ -21,7 +21,7 @@ const QButton: React.FC<ButtonProps> = ({ text, className = '', icon, iconPositi
   const combinedClasses = `${baseClasses} ${className}`;
 
   return (
-    <a className={`${combinedClasses}`} rel="noopener noreferrer" {...rest}>
+    <a className={`${combinedClasses} flex items-center justify-center`} rel="noopener noreferrer" {...rest}>
       {icon && iconPosition === 'left' && (
         <span className={`icon-left ${text && 'mr-[9px]'} group-hover:mr-[14px] transition-all duration-300`}>
           {icon}
