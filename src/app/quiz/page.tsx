@@ -4,14 +4,17 @@ import NavBar from "@/app/components/NavBar";
 import Breadcrumb from "@/app/components/Breadcrumb";
 import Cards from "@/app/components/Cards";
 import { useState } from "react";
+import { Input } from "@heroui/input";
+import QButton from "@/app/components/QButton";
 
 interface StepProps {
     nextStep: (step: string) => void;
 }
 
-const Details = () => (
-    <div className="mt-5 w-full max-w-2xl flex items-center flex-col gap-10">
-        <h2 className="text-xl mb-4">Quelques détails:</h2>
+const Categorie: React.FC<StepProps> = ({ nextStep }) => (
+    <div className="mt-5 w-full max-w-2xl flex items-center flex-col">
+        <h2 className="text-xl mb-4">Choisissez la catégorie dans laquelle vous voulez jouer.</h2>
+        <Cards isNiveau={false} nextStep={nextStep} isCreateQuiz={false} />
     </div>
 );
 
@@ -22,10 +25,21 @@ const Niveau: React.FC<StepProps> = ({ nextStep }) => (
     </div>
 );
 
-const Categorie: React.FC<StepProps> = ({ nextStep }) => (
-    <div className="mt-5 w-full max-w-2xl flex items-center flex-col">
-        <h2 className="text-xl mb-4">Choisissez la catégorie dans laquelle vous voulez jouer.</h2>
-        <Cards isNiveau={false} nextStep={nextStep} isCreateQuiz={false} />
+const Details: React.FC<StepProps> = ({ nextStep }) => (
+    <div className="mt-5 w-full max-w-2xl flex items-center flex-col gap-10">
+        <h2 className="text-xl mb-4">Quelques détails:</h2>
+        <div className="flex flex-row gap-5">
+            <Input label="Plus de détails sur le quiz ?" type="input" variant="bordered" size={"sm"} className="max-w-[15rem] [&>div]:!border-neutral-500 h-[3rem]" />
+            <Input label="Nombre de questions" isInvalid={false} type="input" variant="bordered" size={"sm"} defaultValue="1" className="max-w-[15rem] [&>div]:!border-neutral-500 h-[3rem]" isRequired />
+        </div>
+        <QButton
+            className="w-[300px]"
+            text="Commencer le quiz"
+            icon={<i className="fa-solid fa-play"></i>}
+            disabled={false}
+            iconPosition={'left'}
+            onClick={() => nextStep('Questions')}
+        />
     </div>
 );
 
@@ -57,7 +71,7 @@ export default function Page() {
             case "Niveau":
                 return <Niveau nextStep={setActiveStep} />;
             case "Détails":
-                return <Details />;
+                return <Details nextStep={setActiveStep} />;
             case "Questions":
                 return <Questions />;
             case "Résultats":

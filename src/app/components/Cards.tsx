@@ -54,7 +54,7 @@ const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep, isCreateQuiz }) => {
                             <div
                                 className="w-[350px] h-[200px] bg-[#ffffff99] hover:bg-white rounded-2xl flex flex-col justify-center items-center gap-5 text-2xl group hover:text-accent transition relative"
                                 key={level}
-                                onClick={() => isCreateQuiz ? nextStep('Catégorie') : nextStep('Questions')}
+                                onClick={() => isCreateQuiz ? nextStep('Catégorie') : nextStep('Détails')}
                             >
                                 {level >= 3 && (
                                     <button
