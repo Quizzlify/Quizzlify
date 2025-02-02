@@ -1,7 +1,7 @@
 "use client";
 
 import NavBar from "@/app/components/NavBar";
-import Breadcrumb from "@/app/components/breadcrumb";
+import Breadcrumb from "@/app/components/Breadcrumb";
 import Cards from "@/app/components/Cards";
 import { useState } from "react";
 
@@ -11,7 +11,7 @@ interface StepProps {
 
 const Details = () => (
     <div className="mt-5 w-full max-w-2xl flex items-center flex-col gap-10">
-        <h2 className="text-xl mb-4">Quelques détails à propos du quiz que vous voulez créer.</h2>
+        <h2 className="text-xl mb-4">Quelques détails:</h2>
     </div>
 );
 
@@ -24,7 +24,7 @@ const Niveau: React.FC<StepProps> = ({ nextStep }) => (
 
 const Categorie: React.FC<StepProps> = ({ nextStep }) => (
     <div className="mt-5 w-full max-w-2xl flex items-center flex-col">
-        <h2 className="text-xl mb-4">Choisissez la catégorie dans laquelle vous voulez créer le quiz.</h2>
+        <h2 className="text-xl mb-4">Choisissez la catégorie dans laquelle vous voulez jouer.</h2>
         <Cards isNiveau={false} nextStep={nextStep} isCreateQuiz={false} />
     </div>
 );

@@ -9,6 +9,9 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+.idea
+package-lock.json
+
 
 # testing
 /coverage
