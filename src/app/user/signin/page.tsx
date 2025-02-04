@@ -39,7 +39,7 @@ export default function Page() {
                         />
                     </div>
 
-                    <p className="mt-[4rem] ml-auto mr-auto">Vous n'avez pas encore de compte? <a className="text-accent font-bold cursor-pointer" onClick={() => goTo('/user/inscription')}>Créez-en un gratuitement</a>.</p>
+                    <p className="mt-[4rem] ml-auto mr-auto">Vous n'avez pas encore de compte? <a className="text-accent font-bold cursor-pointer" onClick={() => goTo('/user/signup')}>Créez-en un gratuitement</a>.</p>
                 </div>
             </div>
         </>

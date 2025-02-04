@@ -121,7 +121,7 @@ export default function Page() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
-            <NavBar currentPage="creer-quiz"/>
+            <NavBar currentPage="create-quiz"/>
             <div className="absolute top-40 w-full">
                 <div className="flex flex-col items-center">
                     <Breadcrumb

@@ -6,8 +6,11 @@ import HomeCard from './components/HomeCard';
 import NavBar from "@/app/components/NavBar";
 
 export default function Home() {
-
     const router = useRouter();
+
+    function goTo(route: string) {
+        router.push(route);
+    }
 
     return (
         <>
@@ -26,7 +29,7 @@ export default function Home() {
                     </svg>
                 </h2>
 
-                <button className="w-[300px] h-[55px] bg-accent rounded-2xl text-[25px] mt-10 shadow-default hover:shadow transition ">
+                <button onClick={() => goTo('/user/signup')} className="w-[300px] h-[55px] bg-accent rounded-2xl text-[25px] mt-10 shadow-default hover:shadow transition">
                     Créer un compte
                 </button>
                 

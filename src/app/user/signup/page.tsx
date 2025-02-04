@@ -41,7 +41,7 @@ export default function Page() {
                         />
                     </div>
 
-                    <p className="ml-auto mr-auto">Vous avez déjà un compte? <a className="text-accent font-bold cursor-pointer" onClick={() => goTo('/user/connexion')}>Connectez-vous</a>.</p>
+                    <p className="ml-auto mr-auto">Vous avez déjà un compte? <a className="text-accent font-bold cursor-pointer" onClick={() => goTo('/user/signin')}>Connectez-vous</a>.</p>
 
                 </div>
             </div>

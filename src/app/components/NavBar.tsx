@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type NavbarProp = {
-    currentPage: 'leaderboard' | 'quiz' | 'creer-quiz' | 'user' | 'home';
+    currentPage: 'leaderboard' | 'quiz' | 'create-quiz' | 'user' | 'home';
 }
 
 const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
@@ -39,7 +39,7 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
                 <li className="hover:text-accent transition"><a href="/">Logo</a></li>
 
                 <li className="hover:text-accent transition">
-                    <button className={`flex items-center gap-2.5 ${currentPage == "creer-quiz" ? "text-accent" : ""}`} onClick={() => goTo('/creer-quiz')}>
+                    <button className={`flex items-center gap-2.5 ${currentPage == "create-quiz" ? "text-accent" : ""}`} onClick={() => goTo('/create-quiz/default')}> {/* TODO: faudra check si l'user est connecté ou non*/}
                         <i className="fa-solid fa-square-plus"></i><a>Créer votre quiz</a>
                     </button>
                 </li>
@@ -56,7 +56,7 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
                     </button>
                 </li>
 
-                <li className={`hover:text-accent transition cursor-pointer ${currentPage == "user" ? "text-accent" : ""}`} onClick={() => goTo('/user/connexion')}>
+                <li className={`hover:text-accent transition cursor-pointer ${currentPage == "user" ? "text-accent" : ""}`} onClick={() => goTo('/user/signin')}>
                     <i className="fa-regular fa-user fa-xl"></i>
                 </li>
             </ul>
