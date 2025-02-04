@@ -1,12 +1,12 @@
 import { Input } from "@heroui/input";
 import { Switch } from "@heroui/switch";
 
-interface QuestionProps {
+interface CreateQuestionProps {
     questionNum: number;
     removeQuestion: (num: number) => void;
 }
 
-const CreateQuestion: React.FC<QuestionProps> = ({ questionNum, removeQuestion }) => {
+const CreateQuestion: React.FC<CreateQuestionProps> = ({ questionNum, removeQuestion }) => {
     return (
         <div className="bg-secondary w-[1400px] pb-3 rounded-xl border-2 border-orange-600 relative">
             <div className="flex flex-row items-center ml-5 mt-5 gap-3">
@@ -27,12 +27,12 @@ const CreateQuestion: React.FC<QuestionProps> = ({ questionNum, removeQuestion }
                 </div>
 
                 <div className="flex flex-row gap-5">
-                    <Input label="Réponse C" type="input" variant="bordered" size={"sm"} className="max-w-[480px] [&>div]:!border-neutral-500" />
+                    <Input label="Réponse C" type="input" variant="bordered" size={"sm"} className="max-w-[480px] [&>div]:!border-neutral-500" isRequired/>
                     <Switch color={'warning'}>Réponse vraie</Switch>
                 </div>
 
                 <div className="flex flex-row gap-5">
-                    <Input label="Réponse D" type="input" variant="bordered" size={"sm"} className="max-w-[480px] [&>div]:!border-neutral-500" />
+                    <Input label="Réponse D" type="input" variant="bordered" size={"sm"} className="max-w-[480px] [&>div]:!border-neutral-500" isRequired/>
                     <Switch color={'warning'}>Réponse vraie</Switch>
                 </div>
             </div>
