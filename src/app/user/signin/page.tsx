@@ -4,12 +4,36 @@ import NavBar from "@/app/components/NavBar";
 import { Input } from "@heroui/input";
 import QButton from "@/app/components/QButton";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Page() {
     const router = useRouter();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     function goTo(route: string) {
         router.push(route);
+    }
+
+    async function handleLogin() {
+        try {
+            const res = await fetch("/api/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            });
+    
+            const response = await res.json();
+            if (response.success) {
+              // Compte créé code
+              console.log("Connexion établie.");
+            } else {
+              // Erreur survenue
+              console.log("Une erreur est survenue.");
+            }
+        } catch (error) {
+            console.log("Une erreur est survenue avec la connexion à la DB: ", error);
+        }
     }
 
     return (
@@ -24,8 +48,10 @@ export default function Page() {
 
                 
                     <div className="flex flex-col gap-3 items-center mt-[4rem]">
-                        <Input label="Adresse e-mail" type="input" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired/>
-                        <Input label="Mot de passe" type="input" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired/>
+                        <Input label="Adresse e-mail" type="input" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired
+                            value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        <Input label="Mot de passe" type="input" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired
+                            value={password} onChange={(e) => setPassword(e.target.value)}/>
                     </div>
 
                     <div className="mt-5 mr-6 self-end">
@@ -35,7 +61,7 @@ export default function Page() {
                         icon={<i className="fa-solid fa-right-to-bracket"></i>}
                         disabled={false}
                         iconPosition="left"
-                        //onClick={() => }
+                        onClick={handleLogin}
                         />
                     </div>
 

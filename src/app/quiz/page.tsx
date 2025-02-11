@@ -8,8 +8,6 @@ import { Input } from "@heroui/input";
 import QButton from "@/app/components/QButton";
 import Question from "@/app/components/Question";
 import CountdownTimer from "@/app/components/Clock";
-import TrueAnswer from "@/app/components/TrueAnswer";
-import { h1 } from "framer-motion/client";
 
 interface StepProps {
     nextStep: (step: string) => void;
@@ -47,26 +45,31 @@ const Details: React.FC<StepProps> = ({ nextStep }) => (
     </div>
 );
 
-const questions:Record<string, { answers: string[]; correctAnswer: number }> = {
+const questions:Record<string, { answers: string[]; correctAnswer: number, maxPoints: number }> = {
     'Question 1?': {
-      answers: ['Réponse A', 'Réponse B', 'Réponse C', 'Réponse D'],
-      correctAnswer: 1
+        answers: ['Réponse A', 'Réponse B', 'Réponse C', 'Réponse D'],
+        correctAnswer: 1,
+        maxPoints: 5
     },
     'Question 2?': {
-      answers: ['Réponse A', 'Réponse B', 'Réponse C', 'Réponse D'],
-      correctAnswer: 2
+        answers: ['Réponse A', 'Réponse B', 'Réponse C', 'Réponse D'],
+        correctAnswer: 2,
+        maxPoints: 2
     },
     'Question 3?': {
-      answers: ['Réponse A', 'Réponse B', 'Réponse C', 'Réponse D'],
-      correctAnswer: 0
+        answers: ['Réponse A', 'Réponse B', 'Réponse C', 'Réponse D'],
+        correctAnswer: 0,
+        maxPoints: 3
     },
     'Question 4?': {
-      answers: ['Réponse A', 'Réponse B', 'Réponse C', 'Réponse D'],
-      correctAnswer: 3
+        answers: ['Réponse A', 'Réponse B', 'Réponse C', 'Réponse D'],
+        correctAnswer: 3,
+        maxPoints: 4
     },
     'Question 5?': {
-      answers: ['Réponse A', 'Réponse B', 'Réponse C', 'Réponse D'],
-      correctAnswer: 1
+        answers: ['Réponse A', 'Réponse B', 'Réponse C', 'Réponse D'],
+        correctAnswer: 1,
+        maxPoints: 1
     }
   };
 
@@ -115,9 +118,9 @@ const Questions = () => {
 
             {selectedAnswer !== questions[questionKeys[questionIndex]].correctAnswer && (
                 <div className="bg-red-100 p-4 rounded-lg mb-4">
-                <p className="text-red-700">
-                    Votre réponse était: {questions[questionKeys[questionIndex]].answers[selectedAnswer!]}
-                </p>
+                    <p className="text-red-700">
+                        Votre réponse était: {questions[questionKeys[questionIndex]].answers[selectedAnswer!]}
+                    </p>
                 </div>
             )}
 
