@@ -11,10 +11,10 @@ const Question: React.FC<QuestionProps> = ({answers, onAnswerSelect}) => {
                 <div
                     key={index}
                     onClick={() => onAnswerSelect(index)}
-                    className={`${index === 0 ? 'bg-[#FD6161] hover:bg-[#D84747]' : index === 1 ? 'bg-accent hover:bg-[#E3855C]' : index === 2 ? 'bg-[#AD61FD] hover:bg-[#8F52D0]' : index == 3 ? 'bg-[#6169FD] hover:bg-[#545AD1]' : ''}
+                    className={`${index === 0 ? 'bg-[#FD6161] hover:bg-[#D84747]' : index === 1 ? 'bg-accent hover:bg-[#E3855C]' : index === 2 ? 'bg-[#AD61FD] hover:bg-[#8F52D0]' : index === 3 ? 'bg-[#6169FD] hover:bg-[#545AD1]' : ''}
                         w-[423px] h-[79px] text-white p-6 flex items-center justify-center rounded-lg shadow-md transition-all`}
                 >
-                    <strong>{String.fromCharCode(65 + index)}.&nbsp;</strong>{answer}
+                    <strong>{index === 0 ? 'A' : index === 1 ? 'B' : index === 2 ? 'C' : index === 3 ? 'D' :}</strong>{answer}
                 </div>
             ))}
         </div>
