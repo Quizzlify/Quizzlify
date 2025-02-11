@@ -101,7 +101,6 @@ const Questions = () => {
             <Question
                 answers={questions[questionKeys[questionIndex]].answers}
                 onAnswerSelect={handleAnswerSelection}
-                selectedAnswer={selectedAnswer}
             />
 
         ) : (
