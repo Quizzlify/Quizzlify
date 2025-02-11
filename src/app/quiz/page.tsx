@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Input } from "@heroui/input";
 import QButton from "@/app/components/QButton";
 import Question from "@/app/components/Question";
+import CountdownTimer from "@/app/components/Clock"
 
 interface StepProps {
     nextStep: (step: string) => void;
@@ -72,6 +73,7 @@ const Questions = () => {
                     <span className="text-lg text-gray-500">{questionIndex + 1}/{questionKeys.length}</span>
                 </div>
                 <Question answers={questions['Question 1?']} incrementQuestionIndex={incrementQuestionIndex} />
+                <CountdownTimer onTimeout={incrementQuestionIndex} />
             </div>
         </>
     );
