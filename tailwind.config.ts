@@ -6,7 +6,7 @@ export default {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/@heroui/theme/dist/components/(input|toggle|form).js"
+    "./node_modules/@heroui/theme/dist/components/(alert|input|toggle|button|ripple|spinner|form).js"
   ],
   theme: {
     extend: {

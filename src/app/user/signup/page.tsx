@@ -4,9 +4,36 @@ import NavBar from "@/app/components/NavBar";
 import { Input } from "@heroui/input";
 import QButton from "@/app/components/QButton";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Page() {
     const router = useRouter();
+
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+
+    async function handleSignup() {
+        try {
+          const res = await fetch("/api/signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, email, password })
+          });
+          const response = await res.json();
+          
+          if (response.success) {
+            console.log("Inscription réussie.");
+            
+          } else {
+            console.log("Une erreur est survenue: ", response.error);
+          }
+        } catch (error) {
+            console.log("Une erreur est survenue avec la connexion à la DB: ", error);
+            
+        }
+    }
 
     function goTo(route: string) {
         router.push(route);
@@ -24,10 +51,14 @@ export default function Page() {
 
                 
                     <div className="flex flex-col gap-3 items-center mt-[2rem]">
-                        <Input label="Pseudonyme" type="input" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired/>
-                        <Input label="Adresse e-mail" type="input" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired/>
-                        <Input label="Mot de passe" type="input" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired/>
-                        <Input label="Confirmation du mot de passe" type="input" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired/>
+                        <Input label="Pseudonyme" type="input" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired
+                                value={username} onChange={(e) => setUsername(e.target.value)}/>
+                        <Input label="Adresse e-mail" type="mail" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired
+                                value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        <Input label="Mot de passe" type="password" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired
+                                value={password} onChange={(e) => setPassword(e.target.value)}/>
+                        <Input label="Confirmation du mot de passe" type="password" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired
+                                value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
                     </div>
 
                     <div className="mt-5 mb-[2rem] mr-6 self-end">
@@ -37,7 +68,7 @@ export default function Page() {
                         icon={<i className="fa-solid fa-right-to-bracket"></i>}
                         disabled={false}
                         iconPosition="left"
-                        //onClick={() => }
+                        onClick={handleSignup}
                         />
                     </div>
 
