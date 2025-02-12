@@ -3,20 +3,25 @@
 import NavBar from "@/app/components/NavBar";
 import Breadcrumb from "@/app/components/Breadcrumb";
 import Cards from "@/app/components/Cards";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@heroui/input";
 import QButton from "@/app/components/QButton";
 import Question from "@/app/components/Question";
 import CountdownTimer from "@/app/components/Clock";
+import { FaRegTired } from "react-icons/fa";
 
 interface StepProps {
     nextStep: (step: string) => void;
 }
 
-const Categorie: React.FC<StepProps> = ({ nextStep }) => (
+interface CategorieProps extends StepProps {
+    setChoosenCategory: (category: string) => void;
+}
+
+const Categorie: React.FC<CategorieProps> = ({ nextStep, setChoosenCategory }) => (
     <div className="mt-5 w-full max-w-2xl flex items-center flex-col">
         <h2 className="text-xl mb-4">Choisissez la catégorie dans laquelle vous voulez jouer.</h2>
-        <Cards isNiveau={false} nextStep={nextStep} isCreateQuiz={false} />
+        <Cards isNiveau={false} nextStep={nextStep} isCreateQuiz={false} setChoosenCategory={setChoosenCategory} />
     </div>
 );
 
@@ -109,7 +114,7 @@ const Questions = () => {
         ) : (
 
         <div className="flex flex-col p-4">
-            <div className="bg-green-100 p-4 rounded-lg mb-4">
+            <div className="bg-green-100 p-4 rounded-lg mb-4 w-[30rem]">
                 <h2 className="text-xl font-semibold mb-2">Réponse correcte:</h2>
                 <p className="text-green-700">
                     {questions[questionKeys[questionIndex]].answers[questions[questionKeys[questionIndex]].correctAnswer]}
@@ -151,11 +156,39 @@ const ErrorMessage = () => (
 
 export default function Page() {
     const [activeStep, setActiveStep] = useState("Catégorie");
+    const [choosenCategory, setChoosenCategory] = useState("");
+    const [quiz, setQuiz] = useState<Quiz | null>(null);
+    
+    async function getQuiz(category: string) {
+        try {
+            const res = await fetch("/api/quiz", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ category })
+            });
+          
+            const response = await res.json();
+            if (response.success) {
+                  setQuiz(response.data);
+            } else {
+                console.log("Une erreur est survenue: ", response.error);
+            }
+        } catch (error) {
+            console.log("Une erreur est survenue avec la connexion à la DB: ", error);
+        }
+    }
+
+    if (choosenCategory) {
+        getQuiz(choosenCategory)
+        console.log(quiz)
+    }
+        
+    
 
     const renderStepContent = () => {
         switch (activeStep) {
             case "Catégorie":
-                return <Categorie nextStep={setActiveStep} />;
+                return <Categorie nextStep={setActiveStep} setChoosenCategory={setChoosenCategory} />;
             case "Niveau":
                 return <Niveau nextStep={setActiveStep} />;
             case "Détails":

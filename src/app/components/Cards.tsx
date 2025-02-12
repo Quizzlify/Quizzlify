@@ -4,6 +4,7 @@ interface CardsProps {
     isNiveau?: boolean;
     nextStep: (step: string) => void;
     isCreateQuiz?: boolean;
+    setChoosenCategory: (category: string) => void;
 }
 
 interface Interface {
@@ -40,7 +41,7 @@ const CategoriesList: Interface[] = [
     }
 ];
 
-const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep, isCreateQuiz }) => {
+const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep, isCreateQuiz, setChoosenCategory }) => {
 
     const [isHovering, setIsHovering] = useState(false);
 
@@ -99,7 +100,10 @@ const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep, isCreateQuiz }) => {
                         <button
                             className="w-[350px] h-[200px] bg-white rounded-2xl flex flex-col justify-center items-center gap-5 text-2xl group hover:text-accent transition"
                             key={index}
-                            onClick={() => isCreateQuiz ? nextStep('Questions') : nextStep('Niveau')}
+                            onClick={() => {
+                                isCreateQuiz ? nextStep('Questions') : nextStep('Niveau')
+                                setChoosenCategory(categorie.title)
+                            }}
                         >
                             <div className="flex items-center justify-center">{categorie.icon}</div>
 

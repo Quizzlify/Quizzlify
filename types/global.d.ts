@@ -12,6 +12,20 @@ declare global {
         role: string;
         created_at: Date;
         updated_at: Date;
-        updated_by: string;
     };
+
+    interface Quiz {
+        _id: ObjectId;
+        index: number;
+        author: ObjectId;
+        created_at: Date;
+        category: string;
+        content: {
+          [key: number]: {
+            question: string;
+            answers: string[];
+            points: number;
+          };
+        };
+      }      
 };
