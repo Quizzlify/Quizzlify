@@ -34,12 +34,12 @@ export default function LoginPage() {
         
       } else {
         console.log("Une erreur est survenue: ", response.error);
-        setAlertMessage("Échec de la connexion");
+        setAlertMessage(`Échec de la connexion: ${response.error}`);
         setShowAlert(true);
       }
     } catch (error) {
       console.log("Une erreur est survenue avec la connexion à la DB: ", error);
-      setAlertMessage("Erreur de connexion au serveur");
+      setAlertMessage(`Erreur de connexion au serveur: ${error}`);
       setShowAlert(true);
     }
   }
@@ -48,7 +48,7 @@ export default function LoginPage() {
     <>
       <NavBar currentPage="user" />
       <div className="flex justify-center items-center h-screen">
-        <div className="flex flex-col w-[574px] h-[fit-content] bg-secondary rounded-3xl border border-4 border-accent">
+        <div className="flex flex-col w-[574px] h-fit bg-secondary rounded-3xl border border-4 border-accent">
           <div className="flex flex-row gap-10 justify-center mt-10">
             <i className="fa-regular fa-user text-6xl text-accent"></i>
             <h2 className="text-4xl font-semibold">Se Connecter</h2>
@@ -73,7 +73,7 @@ export default function LoginPage() {
           </div>
           
           {showAlert && (
-            <Alert color="primary" variant="faded" className="mt-5">
+            <Alert color="primary" variant="faded" className="mt-2">
               {alertMessage}
             </Alert>
           )}

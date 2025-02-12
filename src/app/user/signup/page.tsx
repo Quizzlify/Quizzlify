@@ -5,6 +5,7 @@ import { Input } from "@heroui/input";
 import QButton from "@/app/components/QButton";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Alert } from "@heroui/alert";
 
 export default function Page() {
     const router = useRouter();
@@ -13,6 +14,8 @@ export default function Page() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [alertMessage, setAlertMessage] = useState("");
+    const [showAlert, setShowAlert] = useState(false);
 
     async function handleSignup() {
         try {
@@ -25,13 +28,19 @@ export default function Page() {
           
           if (response.success) {
             console.log("Inscription réussie.");
+            setAlertMessage("Le compte a été créé avec succès.");
+            setShowAlert(true);
             
           } else {
             console.log("Une erreur est survenue: ", response.error);
+            setAlertMessage(`Échec de la connexion: ${response.error}`);
+            setShowAlert(true);
+
           }
         } catch (error) {
             console.log("Une erreur est survenue avec la connexion à la DB: ", error);
-            
+            setAlertMessage(`Erreur de connexion au serveur: ${error}`);
+            setShowAlert(true);
         }
     }
 
@@ -43,7 +52,7 @@ export default function Page() {
         <>
             <NavBar currentPage="user"/>
             <div className="flex justify-center items-center h-screen">
-                <div className="flex flex-col w-[574px] h-[495px] bg-secondary rounded-3xl border border-4 border-accent">
+                <div className="flex flex-col w-[574px] h-fit bg-secondary rounded-3xl border border-4 border-accent">
                     <div className="flex flex-row gap-10 justify-center mt-10">
                         <i className="fa-regular fa-user text-6xl text-accent"></i>
                         <h2 className="text-4xl font-semibold">Créer un compte</h2>
@@ -72,7 +81,13 @@ export default function Page() {
                         />
                     </div>
 
-                    <p className="ml-auto mr-auto">Vous avez déjà un compte? <a className="text-accent font-bold cursor-pointer" onClick={() => goTo('/user/signin')}>Connectez-vous</a>.</p>
+                    {showAlert && (
+                        <Alert color="primary" variant="faded" className="mt-2">
+                        {alertMessage}
+                        </Alert>
+                    )}
+
+                    <p className="mt-5 ml-auto mr-auto mb-3">Vous avez déjà un compte? <a className="text-accent font-bold cursor-pointer" onClick={() => goTo('/user/signin')}>Connectez-vous</a>.</p>
 
                 </div>
             </div>
