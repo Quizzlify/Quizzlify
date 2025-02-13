@@ -15,17 +15,18 @@ declare global {
     };
 
     interface Quiz {
-        _id: ObjectId;
-        index: number;
-        author: ObjectId;
-        created_at: Date;
-        category: string;
-        content: {
-          [key: number]: {
-            question: string;
-            answers: string[];
-            points: number;
-          };
+      _id: string;
+      index: number;
+      author: string;
+      created_at: string;
+      content: {
+        [key: string]: {
+          question: string;
+          points: number;
+          correctAnswer: number;
+          answers: string[];
         };
-      }      
+      };
+      category: string;
+    }
 };

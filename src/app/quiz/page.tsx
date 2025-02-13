@@ -8,10 +8,13 @@ import { Input } from "@heroui/input";
 import QButton from "@/app/components/QButton";
 import Question from "@/app/components/Question";
 import CountdownTimer from "@/app/components/Clock";
-import { FaRegTired } from "react-icons/fa";
 
 interface StepProps {
     nextStep: (step: string) => void;
+}
+
+interface QuestionComponentProps {
+    questions: Quiz['content'];
 }
 
 interface CategorieProps extends StepProps {
@@ -28,7 +31,7 @@ const Categorie: React.FC<CategorieProps> = ({ nextStep, setChoosenCategory }) =
 const Niveau: React.FC<StepProps> = ({ nextStep }) => (
     <div className="mt-5 w-full max-w-2xl flex items-center flex-col">
         <h2 className="text-xl mb-4">Choisissez le niveau dans laquelle vous voulez jouer.</h2>
-        <Cards isNiveau={true} nextStep={nextStep} isCreateQuiz={false} />
+        <Cards isNiveau={true} nextStep={nextStep} isCreateQuiz={false} setChoosenCategory={() => {}} />
     </div>
 );
 
@@ -50,41 +53,13 @@ const Details: React.FC<StepProps> = ({ nextStep }) => (
     </div>
 );
 
-const questions:Record<string, { answers: string[]; correctAnswer: number, maxPoints: number }> = {
-    'Question 1?': {
-        answers: ['Réponse A', 'Réponse B', 'Réponse C', 'Réponse D'],
-        correctAnswer: 1,
-        maxPoints: 5
-    },
-    'Question 2?': {
-        answers: ['Réponse A', 'Réponse B', 'Réponse C', 'Réponse D'],
-        correctAnswer: 2,
-        maxPoints: 2
-    },
-    'Question 3?': {
-        answers: ['Réponse A', 'Réponse B', 'Réponse C', 'Réponse D'],
-        correctAnswer: 0,
-        maxPoints: 3
-    },
-    'Question 4?': {
-        answers: ['Réponse A', 'Réponse B', 'Réponse C', 'Réponse D'],
-        correctAnswer: 3,
-        maxPoints: 4
-    },
-    'Question 5?': {
-        answers: ['Réponse A', 'Réponse B', 'Réponse C', 'Réponse D'],
-        correctAnswer: 1,
-        maxPoints: 1
-    }
-  };
-
-const questionKeys = Object.keys(questions); // return les clés du dictionnaire questions sous forme d'une array
-
-const Questions = () => {
+const Questions: React.FC<QuestionComponentProps> = ({ questions }) => {
     const [questionIndex, setQuestionIndex] = useState(0);
     const [showAnswer, setShowAnswer] = useState(false);
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  
+
+    const questionKeys = Object.keys(questions);
+
     function handleAnswerSelection(answerIndex: number) {
         setSelectedAnswer(answerIndex);
         setShowAnswer(true);
@@ -97,14 +72,13 @@ const Questions = () => {
         setSelectedAnswer(null);
       }
     }
-  
+
     return (
         <div className="flex flex-col mb-4 mt-[5rem]">
             <div className="flex flex-row justify-between w-[calc(100%-5rem)] items-center ml-5">
-            <h1 className="text-3xl font-bold">{questionKeys[questionIndex]}</h1>
+            <h1 className="text-3xl font-bold">{questions[questionIndex].question}</h1>
             <span className="text-lg text-gray-500">{questionIndex + 1}/{questionKeys.length}</span>
         </div>
-  
         {!showAnswer ? (
             <Question
                 answers={questions[questionKeys[questionIndex]].answers}
@@ -139,6 +113,7 @@ const Questions = () => {
         <CountdownTimer onTimeout={incrementQuestionIndex} />
       )}
       </div>
+
     );
 };
 
@@ -158,7 +133,7 @@ export default function Page() {
     const [activeStep, setActiveStep] = useState("Catégorie");
     const [choosenCategory, setChoosenCategory] = useState("");
     const [quiz, setQuiz] = useState<Quiz | null>(null);
-    
+
     async function getQuiz(category: string) {
         try {
             const res = await fetch("/api/quiz", {
@@ -166,10 +141,12 @@ export default function Page() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ category })
             });
-          
+
             const response = await res.json();
             if (response.success) {
-                  setQuiz(response.data);
+                const randomIndex = Math.floor(Math.random() * response.data.length);
+                const randomQuiz = response.data[randomIndex];
+                setQuiz(randomQuiz);
             } else {
                 console.log("Une erreur est survenue: ", response.error);
             }
@@ -178,12 +155,11 @@ export default function Page() {
         }
     }
 
-    if (choosenCategory) {
-        getQuiz(choosenCategory)
-        console.log(quiz)
-    }
-        
-    
+    useEffect(() => {
+        if (choosenCategory) {
+            getQuiz(choosenCategory);
+        }
+    }, [choosenCategory]);
 
     const renderStepContent = () => {
         switch (activeStep) {
@@ -194,7 +170,7 @@ export default function Page() {
             case "Détails":
                 return <Details nextStep={setActiveStep} />;
             case "Questions":
-                return <Questions />;
+                return quiz && quiz.content ? <Questions questions={quiz.content} /> : null;
             case "Résultats":
                 return <Resultats />;
             default:

@@ -1,0 +1,141 @@
+[{
+  "_id": {
+    "$oid": "67acc8f85d1aeab60ae0402f"
+  },
+  "index": {
+    "$numberLong": "0"
+  },
+  "author": {
+    "$oid": "67aca92669ccf378994c3e7e"
+  },
+  "created_at": {
+    "$date": "2023-12-31T23:00:00.000Z"
+  },
+  "content": {
+    "0": {
+      "question": "De quand date la découverte de l'Amérique par les Européens ?",
+      "points": {
+        "$numberLong": "5"
+      },
+      "correctAnswer": {
+        "$numberLong": "0"
+      },
+      "answers": [
+        " De 2054",
+        " 50 ans avant J.C.",
+        "1491",
+        "1492"
+      ]
+    },
+    "1": {
+      "question": "Question 2?",
+      "points": {
+        "$numberLong": "3"
+      },
+      "correctAnswer": {
+        "$numberLong": "1"
+      },
+      "answers": [
+        "Réponse A",
+        "Réponse B",
+        "Réponse C",
+        "Réponse D"
+      ]
+    }
+  },
+  "category": "Histoire"
+},
+{
+  "_id": {
+    "$oid": "67ae0a72e58eb3a009d4e6bf"
+  },
+  "index": {
+    "$numberLong": "0"
+  },
+  "author": {
+    "$oid": "67aca92669ccf378994c3e7e"
+  },
+  "created_at": {
+    "$date": "2023-12-31T23:00:00.000Z"
+  },
+  "content": {
+    "0": {
+      "question": "A combien se joue le basketball ?",
+      "points": {
+        "$numberLong": "5"
+      },
+      "correctAnswer": {
+        "$numberLong": "0"
+      },
+      "answers": [
+        "A 10",
+        "Tout seul",
+        "A 3",
+        "Sans joueurs"
+      ]
+    },
+    "1": {
+      "question": "Question 2?",
+      "points": {
+        "$numberLong": "3"
+      },
+      "correctAnswer": {
+        "$numberLong": "1"
+      },
+      "answers": [
+        "Réponse A",
+        "Réponse B",
+        "Réponse C",
+        "Réponse D"
+      ]
+    }
+  },
+  "category": "Sports"
+},
+{
+  "_id": {
+    "$oid": "67ae0b03e58eb3a009d4e6c0"
+  },
+  "index": {
+    "$numberLong": "0"
+  },
+  "author": {
+    "$oid": "67aca92669ccf378994c3e7e"
+  },
+  "created_at": {
+    "$date": "2023-12-31T23:00:00.000Z"
+  },
+  "content": {
+    "0": {
+      "question": "Quand s'est passé la première guerre mondiale ?",
+      "points": {
+        "$numberLong": "5"
+      },
+      "correctAnswer": {
+        "$numberLong": "0"
+      },
+      "answers": [
+        "14-18",
+        "1939-1945",
+        "1423",
+        "1914-1918"
+      ]
+    },
+    "1": {
+      "question": "Question 2?",
+      "points": {
+        "$numberLong": "3"
+      },
+      "correctAnswer": {
+        "$numberLong": "1"
+      },
+      "answers": [
+        "Réponse A",
+        "Réponse B",
+        "Réponse C",
+        "Réponse D"
+      ]
+    }
+  },
+  "category": "Histoire"
+}]

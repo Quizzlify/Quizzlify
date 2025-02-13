@@ -1,0 +1,29 @@
+[{
+  "_id": {
+    "$oid": "67aca92669ccf378994c3e7e"
+  },
+  "username": "dams",
+  "email": "daamsssssss@gmail.com",
+  "password": "a",
+  "confirmPassword": "a",
+  "created_at": {
+    "$date": "2025-02-12T13:59:02.893Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-12T13:59:02.893Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67acafccfb16fee07e410699"
+  },
+  "username": "aa",
+  "email": "rifflartdamien68@gmail.com",
+  "password": "a",
+  "created_at": {
+    "$date": "2025-02-12T14:27:24.713Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-12T14:27:24.713Z"
+  }
+}]
