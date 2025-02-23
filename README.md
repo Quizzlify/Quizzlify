@@ -61,7 +61,7 @@ Envie d'améliorer **Quizzlify** ? C'est simple :
 5. **Ouvrez une pull request**.
 
 ## 📜 License
-
+Quizzlify est open-source, sous la ![license](LICENSE) GPL v3.0. 
 ---
 
 🎯 **Prêt à défier vos connaissances ? Rejoignez Quizzlify dès maintenant !** 🚀
