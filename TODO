@@ -1,3 +1,9 @@
 TODO:
-- Connect with MongoDB to create a quiz
-- Connect with MongoDB to link with the leaderboard
+- Connect to MongoDB to create a quiz
+- Update the answer page to display 4 squares and gray out incorrect answers
+- Complete the result page (design & code)
+- Add the logo
+- Add image support for quizzes
+- Add a "Forgot Password" button
+- Add email and password verification
+- Hash the password
