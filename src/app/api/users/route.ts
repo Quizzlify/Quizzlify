@@ -3,21 +3,20 @@ import clientPromise from "@/config/MongoDB";
 
 export async function POST(req: Request) {
     try {
-        const { category } = await req.json();
         const client = await clientPromise;
         const db = client.db("quizzlify");
-        const collection = db.collection<Quiz>("quiz");
+        const collection = db.collection<User>("users");
   
-        const quizzes = await collection.find({ category }).toArray();
+        const users = await collection.find().toArray();
   
-        if (!quizzes.length) {
+        if (!users.length) {
             return NextResponse.json(
-                { success: false, error: "Aucun quiz trouvé dans cette catégorie." },
+                { success: false, error: "Aucun utilisateur trouvé." },
                 { status: 401 }
             );
         }
   
-        return NextResponse.json({ success: true, data: quizzes });
+        return NextResponse.json({ success: true, data: users });
       
     } catch (error) {
         console.error("Erreur lors de la récupération:", error);

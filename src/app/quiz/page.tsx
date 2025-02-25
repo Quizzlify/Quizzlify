@@ -13,7 +13,7 @@ interface StepProps {
     nextStep: (step: string) => void;
 }
 
-interface QuestionComponentProps {
+interface QuestionComponentProps extends StepProps {
     questions: Quiz['content'];
 }
 
@@ -53,7 +53,7 @@ const Details: React.FC<StepProps> = ({ nextStep }) => (
     </div>
 );
 
-const Questions: React.FC<QuestionComponentProps> = ({ questions }) => {
+const Questions: React.FC<QuestionComponentProps> = ({ questions, nextStep }) => {
     const [questionIndex, setQuestionIndex] = useState(0);
     const [showAnswer, setShowAnswer] = useState(false);
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -72,6 +72,8 @@ const Questions: React.FC<QuestionComponentProps> = ({ questions }) => {
         setSelectedAnswer(null);
       }
     }
+
+    const isLastQuestion = questionIndex+1 === questionKeys.length
 
     return (
         <div className="flex flex-col mb-4 mt-[5rem]">
@@ -103,8 +105,8 @@ const Questions: React.FC<QuestionComponentProps> = ({ questions }) => {
                 </div>
             )}
 
-            <button onClick={incrementQuestionIndex} className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 hover:bg-blue-600 w-fit">
-                Question suivante
+            <button onClick={isLastQuestion ? () => nextStep('Résultats') : incrementQuestionIndex} className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 hover:bg-blue-600 w-fit">
+                {isLastQuestion ? 'Voir les résultats.': 'Question suivante.'}
             </button>
         </div>
       )}
@@ -170,7 +172,7 @@ export default function Page() {
             case "Détails":
                 return <Details nextStep={setActiveStep} />;
             case "Questions":
-                return quiz && quiz.content ? <Questions questions={quiz.content} /> : null;
+                return quiz && quiz.content ? <Questions questions={quiz.content} nextStep={setActiveStep} /> : null;
             case "Résultats":
                 return <Resultats />;
             default:

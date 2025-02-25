@@ -1,6 +1,6 @@
 
 interface CardsProps {
-    list: { name: string; score: number; }[];
+    list: { username: string; score: number; }[];
 }
 
 const LeaderBoard: React.FC<CardsProps> = ({ list }) => {
@@ -9,7 +9,7 @@ const LeaderBoard: React.FC<CardsProps> = ({ list }) => {
 
     return (
         <div className="w-full flex flex-col items-center">
-            {sortedList.map((item: { name: string; score: number; you?: boolean; }, index: number) => {
+            {sortedList.map((item: { username: string; score: number; you?: boolean; }, index: number) => {
                 return (
                     <div
                         className={`w-[calc(100%-16rem)]
@@ -32,7 +32,7 @@ const LeaderBoard: React.FC<CardsProps> = ({ list }) => {
                             <div className="w-[60px] h-[60px] rounded-2xl bg-[#404040] flex  text-center text-white items-center justify-center">
                                 #{index + 1}
                             </div>
-                            {item?.you ? <span className="text-[#7B61FF] font-bold">Toi</span> : <span>{item.name}</span>}
+                            {item?.you ? <span className="text-[#7B61FF] font-bold">Toi</span> : <span>{item.username}</span>}
                         </span>
                         <span className="flex justify-end text-[#7B61FF] font-medium italic">{item.score}</span>
                     </div>

@@ -8,7 +8,8 @@ declare global {
         email: string;
         username: string;
         password: string;
-        points: number;
+        score: number;
+        rank: number;
         role: string;
         created_at: Date;
         updated_at: Date;

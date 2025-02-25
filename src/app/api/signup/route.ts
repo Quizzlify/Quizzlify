@@ -21,7 +21,8 @@ export async function POST(req: Request) {
             );
         }
 
-        await collection.insertOne({ username, email, password, created_at, updated_at });
+        const userCount = await collection.countDocuments();
+        await collection.insertOne({ email, username, password, score: 0, rank: userCount + 1, role: 'user', created_at, updated_at });
 
         return NextResponse.json(
             { success: true, message: "Inscription réussie." },
