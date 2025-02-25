@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧠 Quizzlify 
 
-## Getting Started
+Bienvenue sur **Quizzlify**, la plateforme ultime pour créer et jouer à des quiz ! Testez vos connaissances, défiez vos amis et grimpez dans le classement ! 🚀
 
-First, run the development server:
+![Quizzlify Banner](screenshots/banner.png)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Fonctionnalités principales
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+🎨 **Créer un quiz** :
+- 📝 Ajoutez vos propres questions et réponses.
+- 🎯 Choisissez une catégorie et un niveau de difficulté.
+- 📥 Sauvegardez votre quiz pour le partager à d'autres joueurs.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+🕹️ **Jouer à un quiz** :
+- 🔍 Sélectionnez une catégorie et un niveau.
+- 🤓 Testez vos connaissances sur les quiz créés par la communauté.
+- 🏆 Gagnez des points pour chaque bonne réponse !
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🏅 **Classement des joueurs** :
+- 📊 Montez dans le classement en accumulant des points.
+- 🏅 Comparez vos scores avec vos amis et la communauté.
+- 🥇 Qui sera le meilleur des quizzers ?
 
-## Learn More
+## 🚀 Installation et exécution
+Comme le projet est en cours de construction, il n'est pas encore disponible en ligne.
+En revanche, vous pouvez le tester en local avec les fichiers de la base de donnée Mongo DB dans le dossier db.
 
-To learn more about Next.js, take a look at the following resources:
+1. **Cloner le dépôt** :
+   ```bash
+   git clone https://github.com/
+   cd quizzlify
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Installer les dépendances** :
+   ```bash
+   npm install
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Lancer le projet** :
+   ```bash
+   npm start
+   ```
 
-## Deploy on Vercel
+## 🤝 Contribuer
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Envie d'améliorer **Quizzlify** ? C'est simple :
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Forkez le projet**.
+2. **Créez une branche pour vos modifications** :
+   ```bash
+   git checkout -b feature
+   ```
+3. **Apportez vos améliorations et committez** :
+   ```bash
+   git commit -m "Ajout d'une nouvelle fonctionnalité 🎉"
+   ```
+4. **Push votre branche** :
+   ```bash
+   git push origin feature-nouvelle-fonctionnalité
+   ```
+5. **Ouvrez une pull request**.
+
+## 📜 License
+Quizzlify est open-source, sous la ![license](LICENSE) GPL v3.0. 
+---
+
+🎯 **Prêt à défier vos connaissances ? Rejoignez Quizzlify dès maintenant !** 🚀
+
