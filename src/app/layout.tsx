@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ToastProvider } from "./provider/ToastProvider";
+import ToastContainer from "./components/Toast/ToastContainer";
 
 export const metadata: Metadata = {
   title: "Quizzlify"
@@ -15,7 +17,10 @@ export default function RootLayout({
       <body
         className={`m-0`}
       >
-        {children}
+        <ToastProvider>
+          {children}
+          <ToastContainer />
+        </ToastProvider>
       </body>
     </html>
   );
