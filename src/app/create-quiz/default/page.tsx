@@ -46,14 +46,14 @@ const Details: React.FC<StepProps> = ({ nextStep }) => (
 const Niveau: React.FC<StepProps> = ({ nextStep }) => (
     <div className="mt-5 w-full max-w-2xl flex items-center flex-col">
         <h2 className="text-xl mb-4">Choisissez le niveau dans laquelle vous voulez jouer.</h2>
-        <Cards isNiveau={true} nextStep={nextStep} isCreateQuiz={true} />
+        <Cards isNiveau={true} nextStep={nextStep} isCreateQuiz={true} setChoosenCategory={() => {}} />
     </div>
 );
 
 const Categorie: React.FC<StepProps> = ({ nextStep }) => (
     <div className="mt-5 w-full max-w-2xl flex items-center flex-col">
         <h2 className="text-xl mb-4">Choisissez la catégorie dans laquelle vous voulez créer le quiz.</h2>
-        <Cards isNiveau={false} nextStep={nextStep} isCreateQuiz={true} />
+        <Cards isNiveau={false} nextStep={nextStep} isCreateQuiz={true} setChoosenCategory={() => {}} />
     </div>
 );
 

@@ -18,6 +18,7 @@ declare global {
     interface Quiz {
       _id: string;
       index: number;
+      title: string;
       author: string;
       created_at: string;
       content: {

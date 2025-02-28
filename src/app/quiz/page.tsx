@@ -78,32 +78,28 @@ const Questions: React.FC<QuestionComponentProps> = ({ questions, nextStep }) =>
     return (
         <div className="flex flex-col mb-4 mt-[5rem]">
             <div className="flex flex-row justify-between w-[calc(100%-5rem)] items-center ml-5">
-            <h1 className="text-3xl font-bold">{questions[questionIndex].question}</h1>
+            <h1 className="text-3xl font-bold">{questions[questionIndex].question}{showAnswer ? " Correction" : ""}</h1>
             <span className="text-lg text-gray-500">{questionIndex + 1}/{questionKeys.length}</span>
         </div>
         {!showAnswer ? (
             <Question
                 answers={questions[questionKeys[questionIndex]].answers}
+                correctAnswer={questions[questionKeys[questionIndex]].correctAnswer}
+                selectedAnswer={selectedAnswer}
+                showAnswer={showAnswer}
                 onAnswerSelect={handleAnswerSelection}
             />
 
         ) : (
 
         <div className="flex flex-col p-4">
-            <div className="bg-green-100 p-4 rounded-lg mb-4 w-[30rem]">
-                <h2 className="text-xl font-semibold mb-2">Réponse correcte:</h2>
-                <p className="text-green-700">
-                    {questions[questionKeys[questionIndex]].answers[questions[questionKeys[questionIndex]].correctAnswer]}
-                </p>
-            </div>
-
-            {selectedAnswer !== questions[questionKeys[questionIndex]].correctAnswer && (
-                <div className="bg-red-100 p-4 rounded-lg mb-4">
-                    <p className="text-red-700">
-                        Votre réponse était: {questions[questionKeys[questionIndex]].answers[selectedAnswer!]}
-                    </p>
-                </div>
-            )}
+            <Question
+                answers={questions[questionKeys[questionIndex]].answers}
+                correctAnswer={questions[questionKeys[questionIndex]].correctAnswer}
+                selectedAnswer={selectedAnswer}
+                showAnswer={showAnswer}
+                onAnswerSelect={handleAnswerSelection}
+            />
 
             <button onClick={isLastQuestion ? () => nextStep('Résultats') : incrementQuestionIndex} className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 hover:bg-blue-600 w-fit">
                 {isLastQuestion ? 'Voir les résultats.': 'Question suivante.'}
@@ -118,6 +114,7 @@ const Questions: React.FC<QuestionComponentProps> = ({ questions, nextStep }) =>
 
     );
 };
+
 
 const Resultats = () => (
     <div className="mt-5 w-full max-w-2xl flex items-center flex-col gap-10">
