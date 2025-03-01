@@ -18,20 +18,24 @@ interface QuestionComponentProps extends StepProps {
 }
 
 interface CategorieProps extends StepProps {
-    setChoosenCategory: (category: string) => void;
+    setCategory: (category: string) => void;
 }
 
-const Categorie: React.FC<CategorieProps> = ({ nextStep, setChoosenCategory }) => (
+interface LevelProps extends StepProps {
+    setLevel: (niveau: number) => void;
+}
+
+const Categorie: React.FC<CategorieProps> = ({ nextStep, setCategory }) => (
     <div className="mt-5 w-full max-w-2xl flex items-center flex-col">
         <h2 className="text-xl mb-4">Choisissez la catégorie dans laquelle vous voulez jouer.</h2>
-        <Cards isNiveau={false} nextStep={nextStep} isCreateQuiz={false} setChoosenCategory={setChoosenCategory} />
+        <Cards isNiveau={false} nextStep={nextStep} isCreateQuiz={false} setCategory={setCategory} setLevel={() => {}} />
     </div>
 );
 
-const Niveau: React.FC<StepProps> = ({ nextStep }) => (
+const Niveau: React.FC<LevelProps> = ({ nextStep, setLevel }) => (
     <div className="mt-5 w-full max-w-2xl flex items-center flex-col">
         <h2 className="text-xl mb-4">Choisissez le niveau dans laquelle vous voulez jouer.</h2>
-        <Cards isNiveau={true} nextStep={nextStep} isCreateQuiz={false} setChoosenCategory={() => {}} />
+        <Cards isNiveau={true} nextStep={nextStep} isCreateQuiz={false} setCategory={() => {}} setLevel={setLevel} />
     </div>
 );
 
@@ -58,7 +62,7 @@ const Questions: React.FC<QuestionComponentProps> = ({ questions, nextStep }) =>
     const [showAnswer, setShowAnswer] = useState(false);
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
 
-    const questionKeys = Object.keys(questions);
+    const questionKeys = Object.keys(questions).map(Number);
 
     function handleAnswerSelection(answerIndex: number) {
         setSelectedAnswer(answerIndex);
@@ -74,11 +78,10 @@ const Questions: React.FC<QuestionComponentProps> = ({ questions, nextStep }) =>
     }
 
     const isLastQuestion = questionIndex+1 === questionKeys.length
-
     return (
         <div className="flex flex-col mb-4 mt-[5rem]">
             <div className="flex flex-row justify-between w-[calc(100%-5rem)] items-center ml-5">
-            <h1 className="text-3xl font-bold">{questions[questionIndex].question}{showAnswer ? " Correction" : ""}</h1>
+            <h1 className="text-3xl font-bold">{questions[questionKeys[questionIndex]].question}{showAnswer ? " Correction" : ""}</h1>
             <span className="text-lg text-gray-500">{questionIndex + 1}/{questionKeys.length}</span>
         </div>
         {!showAnswer ? (
@@ -130,15 +133,16 @@ const ErrorMessage = () => (
 
 export default function Page() {
     const [activeStep, setActiveStep] = useState("Catégorie");
-    const [choosenCategory, setChoosenCategory] = useState("");
+    const [category, setCategory] = useState<string>('');
+    const [level, setLevel] = useState<number>(0);
     const [quiz, setQuiz] = useState<Quiz | null>(null);
 
-    async function getQuiz(category: string) {
+    async function getQuiz(category: string, level: number) {
         try {
             const res = await fetch("/api/quiz", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ category })
+                body: JSON.stringify({ category, level })
             });
 
             const response = await res.json();
@@ -155,17 +159,17 @@ export default function Page() {
     }
 
     useEffect(() => {
-        if (choosenCategory) {
-            getQuiz(choosenCategory);
+        if (category && level) {
+            getQuiz(category, level);
         }
-    }, [choosenCategory]);
+    }, [category, level]);
 
     const renderStepContent = () => {
         switch (activeStep) {
             case "Catégorie":
-                return <Categorie nextStep={setActiveStep} setChoosenCategory={setChoosenCategory} />;
+                return <Categorie nextStep={setActiveStep} setCategory={setCategory} />;
             case "Niveau":
-                return <Niveau nextStep={setActiveStep} />;
+                return <Niveau nextStep={setActiveStep} setLevel={setLevel} />;
             case "Détails":
                 return <Details nextStep={setActiveStep} />;
             case "Questions":
