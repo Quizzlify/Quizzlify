@@ -1,6 +1,6 @@
 "use client";
 
-import { useToast } from "@/app/provider/ToastProvider";
+import { useToast } from "@/provider/ToastProvider";
 import { FC } from "react";
 import Toast from "./Toast";
 

@@ -4,23 +4,8 @@ import { Switch } from "@heroui/switch";
 interface CreateQuestionProps {
     questionNum: number;
     removeQuestion: (num: number) => void;
-    content: {
-        [key: string]: {
-            question: string;
-            points: number;
-            correctAnswer: number;
-            answers: string[];
-        };
-    };
-
-    setContent: React.Dispatch<React.SetStateAction<{
-        [key: string]: {
-            question: string;
-            points: number;
-            correctAnswer: number;
-            answers: string[];
-        };
-    }>>;
+    content: Quiz['content'];
+    setContent: (content: Quiz['content']) => void;
 }
 
 const CreateQuestion: React.FC<CreateQuestionProps> = ({ questionNum, removeQuestion, content, setContent }) => {

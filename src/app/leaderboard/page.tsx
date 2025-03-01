@@ -1,7 +1,7 @@
 "use client"
 
-import NavBar from "@/app/components/NavBar";
-import LeaderBoard from "../components/LeaderBoard";
+import NavBar from "@/components/Home/NavBar";
+import LeaderBoard from "../../components/Leaderboard/Leaderboard";
 import { useEffect, useState } from "react";
 
 interface UserList {

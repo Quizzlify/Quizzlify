@@ -1,13 +1,13 @@
 "use client";
 
-import NavBar from "@/app/components/NavBar";
-import Breadcrumb from "@/app/components/Breadcrumb";
-import Cards from "@/app/components/Cards";
+import NavBar from "@/components/Home/NavBar";
+import Breadcrumb from "@/components/Quiz/Breadcrumb";
+import Cards from "@/components/Quiz/Cards";
 import { useEffect, useState } from "react";
 import { Input } from "@heroui/input";
-import QButton from "@/app/components/QButton";
-import Question from "@/app/components/Question";
-import CountdownTimer from "@/app/components/Clock";
+import QButton from "@/components/Utilities/QButton";
+import Question from "@/components/Quiz/Question";
+import CountdownTimer from "@/components/Quiz/Countdown";
 
 interface StepProps {
     nextStep: (step: string) => void;

@@ -2,8 +2,8 @@
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { useRouter } from "next/navigation";
-import HomeCard from './components/HomeCard';
-import NavBar from "@/app/components/NavBar";
+import HomeCard from '../components/Home/HomeCard';
+import NavBar from "@/components/Home/NavBar";
 
 export default function Home() {
     const router = useRouter();

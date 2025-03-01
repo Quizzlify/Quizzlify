@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ToastProvider } from "./provider/ToastProvider";
-import ToastContainer from "./components/Toast/ToastContainer";
+import { ToastProvider } from "../provider/ToastProvider";
+import ToastContainer from "../components/Utilities/Toast/ToastContainer";
 
 export const metadata: Metadata = {
   title: "Quizzlify"

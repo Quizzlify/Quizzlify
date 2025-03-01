@@ -1,8 +1,8 @@
 "use client"
 
-import NavBar from "@/app/components/NavBar";
+import NavBar from "@/components/Home/NavBar";
 import { Input } from "@heroui/input";
-import QButton from "@/app/components/QButton";
+import QButton from "@/components/Utilities/QButton";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Alert } from "@heroui/alert";
