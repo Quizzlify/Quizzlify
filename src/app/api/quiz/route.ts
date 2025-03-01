@@ -8,11 +8,10 @@ export async function POST(req: Request) {
         const db = client.db("quizzlify");
         const collection = db.collection<Quiz>("quiz");
         const quizzes = await collection.find({ category, level }).toArray();
-        console.log(category, level)
 
         if (!quizzes.length) {
             return NextResponse.json(
-                { success: false, error: "Aucun quiz trouvé dans cette catégorie." },
+                { success: false, error: "Aucun quiz trouvé avec ces spécifications." },
                 { status: 401 }
             );
         }

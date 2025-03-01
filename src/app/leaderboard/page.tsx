@@ -9,7 +9,7 @@ interface UserList {
     score: number,
     rank: number,
     you: boolean
-}
+};
 
 export default function Page() {
     const [userList, setUserList] = useState<UserList[] | null>(null)
@@ -24,7 +24,7 @@ export default function Page() {
 
             const response = await res.json();
             if (response.success) {
-                const formattedUsers = (response.data).map((user: {username: string, score: number, rank:number, you: boolean}) => {
+                const formattedUsers = (response.data).map((user: UserList) => {
                     return {
                         username: user.username,
                         score: user.score,
@@ -55,7 +55,7 @@ export default function Page() {
                     <h1 className="flex text-center text-2xl font-semibold justify-end">Votre place: {userList?.find(user => user.you)?.rank ?? "N/A"}</h1>
                 </div>
                 <div className="flex-1 w-full h-full justify-center">
-                    {userList !== null ? <LeaderBoard list={userList} /> : null}
+                    {userList !== null ? <LeaderBoard list={userList} /> : <h1 className="text-2xl absolute ml-[15rem]">Il n'y a aucun utilisateurs.</h1>}
                 </div>
             </div>
         </div>

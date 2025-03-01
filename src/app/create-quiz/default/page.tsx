@@ -51,8 +51,6 @@ export default function Page() {
         }
     }, [category, level, title, content, create]);
 
-    console.log(questionIndices)
-
     const renderStepContent = () => {
         switch (activeStep) {
             case "Catégorie":

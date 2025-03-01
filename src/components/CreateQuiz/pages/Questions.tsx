@@ -30,7 +30,7 @@ const Questions: React.FC<QuestionsProps> = ({ questionIndices, setQuestionIndic
             ))}
 
             <div className="flex items-center justify-center my-14 w-full">
-                <div className="flex items-center w-full">
+                <div className="flex items-center w-full justify-evenly">
                     <QButton
                         className="w-[40rem]"
                         text="Ajouter une question"

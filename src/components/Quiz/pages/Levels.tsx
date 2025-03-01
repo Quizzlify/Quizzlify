@@ -8,7 +8,7 @@ interface LevelsProps {
 const Levels: React.FC<LevelsProps> = ({ nextStep, setLevel }) => (
     <div className="mt-5 w-full max-w-2xl flex items-center flex-col">
         <h2 className="text-xl mb-4">Choisissez le niveau dans laquelle vous voulez jouer.</h2>
-        <Cards isNiveau={true} nextStep={nextStep} isCreateQuiz={true} setCategory={() => {}} setLevel={setLevel} />
+        <Cards isNiveau={true} nextStep={nextStep} isCreateQuiz={false} setCategory={() => {}} setLevel={setLevel} />
     </div>
 );
 
