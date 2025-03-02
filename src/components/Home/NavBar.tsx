@@ -36,7 +36,7 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
             }`}>
 
             <ul className="flex w-full justify-between">
-                <li className="hover:text-accent transition"><a href="/">Logo</a></li>
+                <li className="hover:text-accent transition"><a href="/"><img src={'/logo.png'} className="w-10" alt="Logo" /></a></li>
 
                 <li className="hover:text-accent transition">
                     <button className={`flex items-center gap-2.5 ${currentPage == "create-quiz" ? "text-accent" : ""}`} onClick={() => goTo('/create-quiz/default')}> {/* TODO: faudra check si l'user est connecté ou non*/}

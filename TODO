@@ -1,9 +1,7 @@
 TODO:
 - Complete the result page (design & code)
-- Add the logo
-- Add image support for quizzes
 - Add a "Forgot Password" button
 - Add email and password verification
 - Hash the password
 - Add cookies for user
-- API avec openAI pour jouer à un quiz
+- API with OpenAI to play a quiz

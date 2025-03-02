@@ -5,11 +5,11 @@ interface CountdownTimerProps {
 }
 
 const CountdownTimer: React.FC<CountdownTimerProps> = ({ onTimeout }) => {
-  const [timeLeft, setTimeLeft] = useState(3);
+  const [timeLeft, setTimeLeft] = useState(10);
 
   useEffect(() => {
     // pour reset le timer
-    setTimeLeft(3);
+    setTimeLeft(10);
     
     const timer = setInterval(() => {
       setTimeLeft((prevTime) => {
