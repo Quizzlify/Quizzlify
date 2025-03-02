@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import Question from "@/components/Quiz/Question";
 import CountdownTimer from "@/components/Quiz/Countdown";
+import { SiCoronaengine } from "react-icons/si";
 
 interface QuestionsProps {
     nextStep: (step: string) => void;
     questions: Quiz['content'];
-    score: number;
+    score: number | null;
     setScore: (score: number) => void;
 }
 
@@ -33,7 +34,7 @@ const Questions: React.FC<QuestionsProps> = ({ nextStep, questions, score, setSc
 
     useEffect(() => {
         if (showAnswer && selectedAnswer === questions[questionKeys[questionIndex]].correctAnswer) {
-            setScore(score + questions[questionKeys[questionIndex]].points);
+            setScore(score? + questions[questionKeys[questionIndex]].points : 0);
         }
     }, [showAnswer, selectedAnswer, questionIndex]);
 
@@ -70,7 +71,12 @@ const Questions: React.FC<QuestionsProps> = ({ nextStep, questions, score, setSc
       )}
 
       {!showAnswer && (
-        <CountdownTimer onTimeout={incrementQuestionIndex} />
+        <div className="flex items-center justify-center p-6 bg-white rounded-lg shadow-md">
+            <CountdownTimer onTimeout={incrementQuestionIndex} />
+            <div className="ml-auto">
+                <span className="text-lg font-semibold">Points: {questions[questionKeys[questionIndex]].points}</span>
+            </div>
+        </div>
       )}
       </div>
 

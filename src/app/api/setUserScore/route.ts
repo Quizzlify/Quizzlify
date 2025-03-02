@@ -9,6 +9,7 @@ export async function POST(req: Request) {
         const client = await clientPromise;
         const db = client.db("quizzlify");
         const collection = db.collection("users");
+        const newScore = score + 
 
         await collection.updateOne(
             { _id: new ObjectId(id) },

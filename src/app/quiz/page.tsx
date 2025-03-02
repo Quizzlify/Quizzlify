@@ -14,7 +14,7 @@ export default function Page() {
     const [category, setCategory] = useState<string>('');
     const [level, setLevel] = useState<number>();
     const [id, setId] = useState<string>();
-    const [score, setScore] = useState<number>(0);
+    const [score, setScore] = useState<number | null>(null);
     const [quiz, setQuiz] = useState<Quiz | null>(null);
 
     async function getQuiz(category: string, level: number) {
@@ -82,14 +82,14 @@ export default function Page() {
     }, [category, level]);
 
     useEffect(() => {
-        // if (id && score) {
-            setUserScore('67c43c95c5fab60d7f5f6dbe', score);
-        // }
+        if (score) {
+            setUserScore('67c49155ef3cfca0c1da10b7', score);
+        }
     }, [score]);
 
     useEffect(() => {
         //if (id) {
-            getUserScore('67c43c95c5fab60d7f5f6dbe');
+            getUserScore('67c49155ef3cfca0c1da10b7');
         //}
     }, []);
 

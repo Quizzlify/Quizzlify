@@ -33,11 +33,9 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ onTimeout }) => {
   }, [onTimeout]);
 
   return (
-    <div className="flex items-center justify-center p-6 bg-white rounded-lg shadow-md">
-      <div className="text-6xl font-bold text-blue-600">
+      <div className="text-6xl font-bold text-blue-600 absolute">
         {timeLeft}
       </div>
-    </div>
   );
 };
 
