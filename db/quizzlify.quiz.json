@@ -1,141 +1,242 @@
-[{
-  "_id": {
-    "$oid": "67acc8f85d1aeab60ae0402f"
-  },
-  "index": {
-    "$numberLong": "0"
-  },
-  "author": {
-    "$oid": "67aca92669ccf378994c3e7e"
-  },
-  "created_at": {
-    "$date": "2023-12-31T23:00:00.000Z"
-  },
-  "content": {
-    "0": {
-      "question": "De quand date la découverte de l'Amérique par les Européens ?",
-      "points": {
-        "$numberLong": "5"
-      },
-      "correctAnswer": {
-        "$numberLong": "0"
-      },
-      "answers": [
-        " De 2054",
-        " 50 ans avant J.C.",
-        "1491",
-        "1492"
-      ]
+[
+  {
+    "_id": {
+      "$oid": "67b123456d1aeab60ae0402f"
     },
-    "1": {
-      "question": "Question 2?",
-      "points": {
-        "$numberLong": "3"
-      },
-      "correctAnswer": {
-        "$numberLong": "1"
-      },
-      "answers": [
-        "Réponse A",
-        "Réponse B",
-        "Réponse C",
-        "Réponse D"
-      ]
-    }
-  },
-  "category": "Histoire"
-},
-{
-  "_id": {
-    "$oid": "67ae0a72e58eb3a009d4e6bf"
-  },
-  "index": {
-    "$numberLong": "0"
-  },
-  "author": {
-    "$oid": "67aca92669ccf378994c3e7e"
-  },
-  "created_at": {
-    "$date": "2023-12-31T23:00:00.000Z"
-  },
-  "content": {
-    "0": {
-      "question": "A combien se joue le basketball ?",
-      "points": {
-        "$numberLong": "5"
-      },
-      "correctAnswer": {
-        "$numberLong": "0"
-      },
-      "answers": [
-        "A 10",
-        "Tout seul",
-        "A 3",
-        "Sans joueurs"
-      ]
+    "index": {
+      "$numberLong": "0"
     },
-    "1": {
-      "question": "Question 2?",
-      "points": {
-        "$numberLong": "3"
-      },
-      "correctAnswer": {
-        "$numberLong": "1"
-      },
-      "answers": [
-        "Réponse A",
-        "Réponse B",
-        "Réponse C",
-        "Réponse D"
-      ]
-    }
-  },
-  "category": "Sports"
-},
-{
-  "_id": {
-    "$oid": "67ae0b03e58eb3a009d4e6c0"
-  },
-  "index": {
-    "$numberLong": "0"
-  },
-  "author": {
-    "$oid": "67aca92669ccf378994c3e7e"
-  },
-  "created_at": {
-    "$date": "2023-12-31T23:00:00.000Z"
-  },
-  "content": {
-    "0": {
-      "question": "Quand s'est passé la première guerre mondiale ?",
-      "points": {
-        "$numberLong": "5"
-      },
-      "correctAnswer": {
-        "$numberLong": "0"
-      },
-      "answers": [
-        "14-18",
-        "1939-1945",
-        "1423",
-        "1914-1918"
-      ]
+    "author": {
+      "$oid": "67aca92669ccf378994c3e7e"
     },
-    "1": {
-      "question": "Question 2?",
-      "points": {
-        "$numberLong": "3"
+    "created_at": {
+      "$date": "2024-03-02T23:00:00.000Z"
+    },
+    "content": {
+      "0": {
+        "question": "Quelle est la capitale de l'Australie ?",
+        "points": {
+          "$numberLong": "5"
+        },
+        "correctAnswer": {
+          "$numberLong": "2"
+        },
+        "answers": [
+          "Sydney",
+          "Melbourne",
+          "Canberra",
+          "Brisbane"
+        ]
       },
-      "correctAnswer": {
-        "$numberLong": "1"
-      },
-      "answers": [
-        "Réponse A",
-        "Réponse B",
-        "Réponse C",
-        "Réponse D"
-      ]
-    }
+      "1": {
+        "question": "Quel est le plus grand océan du monde ?",
+        "points": {
+          "$numberLong": "3"
+        },
+        "correctAnswer": {
+          "$numberLong": "0"
+        },
+        "answers": [
+          "Océan Pacifique",
+          "Océan Atlantique",
+          "Océan Indien",
+          "Océan Arctique"
+        ]
+      }
+    },
+    "category": "Histoire",
+    "level": 1
   },
-  "category": "Histoire"
-}]
+  {
+    "_id": {
+      "$oid": "67b123457d1aeab60ae04030"
+    },
+    "index": {
+      "$numberLong": "0"
+    },
+    "author": {
+      "$oid": "67aca92669ccf378994c3e7e"
+    },
+    "created_at": {
+      "$date": "2024-03-02T23:00:00.000Z"
+    },
+    "content": {
+      "0": {
+        "question": "Quel sport se joue avec un ballon ovale ?",
+        "points": {
+          "$numberLong": "5"
+        },
+        "correctAnswer": {
+          "$numberLong": "1"
+        },
+        "answers": [
+          "Football",
+          "Rugby",
+          "Basketball",
+          "Tennis"
+        ]
+      },
+      "1": {
+        "question": "Combien de joueurs y a-t-il dans une équipe de football ?",
+        "points": {
+          "$numberLong": "3"
+        },
+        "correctAnswer": {
+          "$numberLong": "0"
+        },
+        "answers": [
+          "11",
+          "7",
+          "5",
+          "9"
+        ]
+      }
+    },
+    "category": "Sports",
+    "level": 2
+  },
+  {
+    "_id": {
+      "$oid": "67b123458d1aeab60ae04031"
+    },
+    "index": {
+      "$numberLong": "0"
+    },
+    "author": {
+      "$oid": "67aca92669ccf378994c3e7e"
+    },
+    "created_at": {
+      "$date": "2024-03-02T23:00:00.000Z"
+    },
+    "content": {
+      "0": {
+        "question": "Quel est l'instrument principal de Mozart ?",
+        "points": {
+          "$numberLong": "5"
+        },
+        "correctAnswer": {
+          "$numberLong": "0"
+        },
+        "answers": [
+          "Piano",
+          "Guitare",
+          "Violon",
+          "Flûte"
+        ]
+      },
+      "1": {
+        "question": "Quel groupe a chanté 'Bohemian Rhapsody' ?",
+        "points": {
+          "$numberLong": "3"
+        },
+        "correctAnswer": {
+          "$numberLong": "0"
+        },
+        "answers": [
+          "Queen",
+          "The Beatles",
+          "The Rolling Stones",
+          "U2"
+        ]
+      }
+    },
+    "category": "Musique",
+    "level": 2
+  },
+  {
+    "_id": {
+      "$oid": "67b123459d1aeab60ae04032"
+    },
+    "index": {
+      "$numberLong": "0"
+    },
+    "author": {
+      "$oid": "67aca92669ccf378994c3e7e"
+    },
+    "created_at": {
+      "$date": "2024-03-02T23:00:00.000Z"
+    },
+    "content": {
+      "0": {
+        "question": "Quel est le premier jeu vidéo de l'histoire ?",
+        "points": {
+          "$numberLong": "5"
+        },
+        "correctAnswer": {
+          "$numberLong": "1"
+        },
+        "answers": [
+          "Pac-Man",
+          "Pong",
+          "Super Mario Bros",
+          "Tetris"
+        ]
+      },
+      "1": {
+        "question": "Quel studio a créé la série 'The Legend of Zelda' ?",
+        "points": {
+          "$numberLong": "3"
+        },
+        "correctAnswer": {
+          "$numberLong": "0"
+        },
+        "answers": [  
+          "Nintendo",
+          "Sony",
+          "Microsoft",
+          "Ubisoft"
+        ]
+      }
+    },
+    "category": "Jeux vidéo",
+    "level": 3
+  },
+  {
+    "_id": {
+      "$oid": "67b123459d1aeab60ae04031"
+    },
+    "index": {
+      "$numberLong": "0"
+    },
+    "author": {
+      "$oid": "67aca92669ccf378994c3e7e"
+    },
+    "created_at": {
+      "$date": "2024-03-02T23:00:00.000Z"
+    },
+    "content": {
+      "0": {
+        "question": "Quelle est la planète la plus grande du système solaire ?",
+        "points": {
+          "$numberLong": "5"
+        },
+        "correctAnswer": {
+          "$numberLong": "1"
+        },
+        "answers": [
+          "Saturne",
+          "Jupiter",
+          "Terre",
+          "Mars"
+        ]
+      },
+      "1": {
+        "question": "Quel scientifique a formulé la théorie de la relativité ?",
+        "points": {
+          "$numberLong": "3"
+        },
+        "correctAnswer": {
+          "$numberLong": "0"
+        },
+        "answers": [
+          "Albert Einstein",
+          "Isaac Newton",
+          "Galilée",
+          "Nikola Tesla"
+        ]
+      }
+    },
+    "category": "Science",
+    "level": 3
+  }
+]

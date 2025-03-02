@@ -13,6 +13,8 @@ export default function Page() {
     const [activeStep, setActiveStep] = useState<string>("Catégorie");
     const [category, setCategory] = useState<string>('');
     const [level, setLevel] = useState<number>();
+    const [id, setId] = useState<string>();
+    const [score, setScore] = useState<number>(0);
     const [quiz, setQuiz] = useState<Quiz | null>(null);
 
     async function getQuiz(category: string, level: number) {
@@ -22,6 +24,7 @@ export default function Page() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ category, level })
             });
+            
 
             const response = await res.json();
             if (response.success) {
@@ -36,11 +39,59 @@ export default function Page() {
         }
     }
 
+    async function getUserScore(id: string) {
+        try {
+            const res = await fetch("/api/getUserScore", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id })
+            });
+            const response = await res.json();
+            if (response.success) {
+                setScore(response.score);
+            } else {
+                console.log("Une erreur est survenue: ", response.error);
+            }
+        } catch (error) {
+            console.log("Une erreur est survenue avec la connexion à la DB: ", error);
+        }
+    }
+
+    async function setUserScore(id: string, score: number) {
+        try {
+            const res = await fetch("/api/setUserScore", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id, score })
+            });
+            const response = await res.json();
+            if (!response.success) {
+                console.log("Une erreur est survenue: ", response.error);
+            }
+
+        } catch (error) {
+            console.log("Une erreur est survenue avec la connexion à la DB: ", error);
+        }
+    }
+
     useEffect(() => {
         if (category && level) {
+            setQuiz(null);
             getQuiz(category, level);
         }
     }, [category, level]);
+
+    useEffect(() => {
+        // if (id && score) {
+            setUserScore('67c43c95c5fab60d7f5f6dbe', score);
+        // }
+    }, [score]);
+
+    useEffect(() => {
+        //if (id) {
+            getUserScore('67c43c95c5fab60d7f5f6dbe');
+        //}
+    }, []);
 
     const renderStepContent = () => {
         switch (activeStep) {
@@ -51,7 +102,7 @@ export default function Page() {
             case "Détails":
                 return <Details nextStep={setActiveStep} />;
             case "Questions":
-                return quiz?.content ? <Questions questions={quiz.content} nextStep={setActiveStep} /> : <h1 className="text-2xl mt-10">Aucun quiz ne correspond à la catégorie ou au niveau choisi.</h1>;
+                return quiz?.content ? <Questions questions={quiz.content} nextStep={setActiveStep} score={score} setScore={setScore} /> : <h1 className="text-2xl mt-10">Aucun quiz ne correspond à la catégorie ou au niveau choisi.</h1>;
             case "Résultats":
                 return <Results />;
         }

@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Question from "@/components/Quiz/Question";
 import CountdownTimer from "@/components/Quiz/Countdown";
 
 interface QuestionsProps {
     nextStep: (step: string) => void;
     questions: Quiz['content'];
+    score: number;
+    setScore: (score: number) => void;
 }
 
-const Questions: React.FC<QuestionsProps> = ({ nextStep, questions }) => {
+const Questions: React.FC<QuestionsProps> = ({ nextStep, questions, score, setScore }) => {
     const [questionIndex, setQuestionIndex] = useState(0);
     const [showAnswer, setShowAnswer] = useState(false);
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -27,7 +29,14 @@ const Questions: React.FC<QuestionsProps> = ({ nextStep, questions }) => {
       }
     }
 
-    const isLastQuestion = questionIndex+1 === questionKeys.length
+    const isLastQuestion = questionIndex + 1 === questionKeys.length;
+
+    useEffect(() => {
+        if (showAnswer && selectedAnswer === questions[questionKeys[questionIndex]].correctAnswer) {
+            setScore(score + questions[questionKeys[questionIndex]].points);
+        }
+    }, [showAnswer, selectedAnswer, questionIndex]);
+
     return (
         <div className="flex flex-col mb-4 mt-[5rem]">
             <div className="flex flex-row justify-between w-[calc(100%-5rem)] items-center ml-5">

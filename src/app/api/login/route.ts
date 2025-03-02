@@ -12,7 +12,7 @@ export async function POST(req: Request) {
         const user = await collection.findOne({ email });
         if (!user) {
             return NextResponse.json(
-                { success: false, error: "Nom d'utilisateur déjà utilisé" },
+                { success: false, error: "L'identifiant ou le mot de passe est incorrect." },
                 { status: 401 }
             );
         }
