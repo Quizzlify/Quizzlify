@@ -10,7 +10,7 @@ interface QuestionProps {
 
 const Question: React.FC<QuestionProps> = ({ answers, correctAnswer, selectedAnswer, showAnswer, onAnswerSelect }) => {
     return (
-        <div className="grid grid-cols-2 grid-rows-2 gap-4 p-4 mt-5">
+        <div className="grid grid-cols-2 grid-rows-2 gap-4 p-4">
             {answers.map((answer, index) => {
                 const isSelected = index === selectedAnswer;
                 const isCorrect = index === correctAnswer;

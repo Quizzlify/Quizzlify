@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import Question from "@/components/Quiz/Question";
 import CountdownTimer from "@/components/Quiz/Countdown";
-import { SiCoronaengine } from "react-icons/si";
 
 interface QuestionsProps {
     nextStep: (step: string) => void;
     questions: Quiz['content'];
     score: number | null;
     setScore: (score: number) => void;
+    selectedAnswers: number[];
+    setSelectedAnswers: (update: (prevSelectedAnswers: number[]) => number[]) => void;
 }
 
-const Questions: React.FC<QuestionsProps> = ({ nextStep, questions, score, setScore }) => {
+const Questions: React.FC<QuestionsProps> = ({ nextStep, questions, score, setScore, selectedAnswers, setSelectedAnswers }) => {
     const [questionIndex, setQuestionIndex] = useState(0);
     const [showAnswer, setShowAnswer] = useState(false);
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -19,6 +20,12 @@ const Questions: React.FC<QuestionsProps> = ({ nextStep, questions, score, setSc
 
     function handleAnswerSelection(answerIndex: number) {
         setSelectedAnswer(answerIndex);
+        if (selectedAnswers.length < questionKeys.length) {
+            const content = (prevSelectedAnswers: number[]) => [...prevSelectedAnswers, answerIndex];
+            setSelectedAnswers(content);
+        } else {
+            setSelectedAnswers(() => [answerIndex]);
+        }
         setShowAnswer(true);
     }
   

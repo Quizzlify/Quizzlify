@@ -16,6 +16,7 @@ export default function Page() {
     const [id, setId] = useState<string>();
     const [score, setScore] = useState<number | null>(null);
     const [quiz, setQuiz] = useState<Quiz | null>(null);
+    const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
 
     async function getQuiz(category: string, level: number) {
         try {
@@ -102,9 +103,9 @@ export default function Page() {
             case "Détails":
                 return <Details nextStep={setActiveStep} />;
             case "Questions":
-                return quiz?.content ? <Questions questions={quiz.content} nextStep={setActiveStep} score={score} setScore={setScore} /> : <h1 className="text-2xl mt-10">Aucun quiz ne correspond à la catégorie ou au niveau choisi.</h1>;
+                return quiz?.content ? <Questions questions={quiz.content} nextStep={setActiveStep} score={score} setScore={setScore} selectedAnswers={selectedAnswers} setSelectedAnswers={setSelectedAnswers} /> : <h1 className="text-2xl mt-10">Aucun quiz ne correspond à la catégorie ou au niveau choisi.</h1>;
             case "Résultats":
-                return <Results />;
+                return quiz?.content ? <Results questions={quiz.content} selectedAnswers={selectedAnswers}  /> : null;
         }
     };
 
