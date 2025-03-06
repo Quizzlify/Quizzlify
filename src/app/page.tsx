@@ -37,9 +37,9 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col justify-center items-center gap-[8rem] pb-8">
-                <HomeCard title={"Jouez à des quiz originaux !"} description={"Générez vos quiz par IA dans tous les domaines possibles."} position='right'/>
-                <HomeCard title={"Créez vos propres quiz !"} description={"En créant gratuitement un compte, générez vos quiz entièrement personnalisés."} position='left'/>
-                <HomeCard title={"Soyez parmi les plus haut classés !"} description={"Grâce au classement, vous pouvez voir (ou faire partie) des meilleurs de nos joueurs."} position='right'/>
+                <HomeCard title={"Jouez à des quiz originaux !"} description={"Générez vos quiz par IA dans tous les domaines possibles."} position='right' image="/home/quiz.png"/>
+                <HomeCard title={"Créez vos propres quiz !"} description={"En créant gratuitement un compte, générez vos quiz entièrement personnalisés."} position='left' image="/home/create-quiz.png"/>
+                <HomeCard title={"Soyez parmi les plus haut classés !"} description={"Grâce au classement, vous pouvez voir (ou faire partie) des meilleurs de nos joueurs."} position='right' image="/home/leaderboard.png"/>
             </div>
 
         </>
