@@ -81,6 +81,12 @@ export default function Page() {
                         />
                     </div>
 
+                    {!/^[^\s@] + @[^\s@] + \.[^\s@] + $/.test(email) && email.length !== 0 ? (
+                        <Alert color="danger" variant="faded" className="mt-2">
+                            Veuillez entrer une adresse e-mail valide
+                        </Alert>
+                    ): null}
+
                     {password.length < 6 && password.length !== 0 ? (
                         <Alert color="danger" variant="faded" className="mt-2">
                             Votre mot de passe doit avoir plus de 6 caractères
