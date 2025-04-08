@@ -19,24 +19,24 @@ export default function Page() {
 
     async function handleSignup() {
         try {
-          const res = await fetch("/api/signup", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, email, password })
-          });
-          const response = await res.json();
-          
-          if (response.success) {
-            console.log("Inscription réussie.");
-            setAlertMessage("Le compte a été créé avec succès.");
-            setShowAlert(true);
-            
-          } else {
-            console.log("Une erreur est survenue: ", response.error);
-            setAlertMessage(`Échec de la connexion: ${response.error}`);
-            setShowAlert(true);
+            const res = await fetch("/api/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, email, password })
+            });
+            const response = await res.json();
 
-          }
+            if (response.success) {
+                console.log("Inscription réussie.");
+                setAlertMessage("Le compte a été créé avec succès.");
+                setShowAlert(true);
+
+            } else {
+                console.log("Une erreur est survenue: ", response.error);
+                setAlertMessage(`Échec de la connexion: ${response.error}`);
+                setShowAlert(true);
+
+            }
         } catch (error) {
             console.log("Une erreur est survenue avec la connexion à la DB: ", error);
             setAlertMessage(`Erreur de connexion au serveur: ${error}`);
@@ -50,7 +50,7 @@ export default function Page() {
 
     return (
         <>
-            <NavBar currentPage="user"/>
+            <NavBar currentPage="user" />
             <div className="flex justify-center items-center h-screen">
                 <div className="flex flex-col w-[574px] h-fit bg-secondary rounded-3xl border border-4 border-accent">
                     <div className="flex flex-row gap-10 justify-center mt-10">
@@ -58,32 +58,55 @@ export default function Page() {
                         <h2 className="text-4xl font-semibold">Créer un compte</h2>
                     </div>
 
-                
+
                     <div className="flex flex-col gap-3 items-center mt-[2rem]">
                         <Input label="Pseudonyme" type="input" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired
-                                value={username} onChange={(e) => setUsername(e.target.value)}/>
+                            value={username} onChange={(e) => setUsername(e.target.value)} />
                         <Input label="Adresse e-mail" type="mail" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired
-                                value={email} onChange={(e) => setEmail(e.target.value)}/>
+                            value={email} onChange={(e) => setEmail(e.target.value)} />
                         <Input label="Mot de passe" type="password" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired
-                                value={password} onChange={(e) => setPassword(e.target.value)}/>
+                            value={password} onChange={(e) => setPassword(e.target.value)} />
                         <Input label="Confirmation du mot de passe" type="password" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired
-                                value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
+                            value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                     </div>
 
                     <div className="mt-5 mb-[2rem] mr-6 self-end">
                         <QButton
-                        className="w-[250px] h-[45px]"
-                        text="Créer un compte"
-                        icon={<i className="fa-solid fa-right-to-bracket"></i>}
-                        disabled={false}
-                        iconPosition="left"
-                        onClick={handleSignup}
+                            className="w-[250px] h-[45px]"
+                            text="Créer un compte"
+                            icon={<i className="fa-solid fa-right-to-bracket"></i>}
+                            disabled={false}
+                            iconPosition="left"
+                            onClick={handleSignup}
                         />
                     </div>
 
+                    {password.length < 6 && password.length !== 0 ? (
+                        <Alert color="danger" variant="faded" className="mt-2">
+                            Votre mot de passe doit avoir plus de 6 caractères
+                        </Alert>
+                    ) : !/\d/.test(password) && password.length !== 0 ?  (
+                        <Alert color="danger" variant="faded" className="mt-2">
+                            Votre mot de passe doit contenir au moins un chiffre
+                        </Alert>
+                    ) : !/[a-z]/.test(password) && password.length !== 0 ?  (
+                        <Alert color="danger" variant="faded" className="mt-2">
+                            Votre mot de passe doit contenir au moins une lettre minuscule
+                        </Alert>
+                    ) : !/[A-Z]/.test(password) && password.length !== 0 ?  (
+                        <Alert color="danger" variant="faded" className="mt-2">
+                            Votre mot de passe doit contenir au moins une lettre majuscule
+                        </Alert>
+                    ) : password !== confirmPassword && password.length !== 0 ?  (
+                        <Alert color="danger" variant="faded" className="mt-2">
+                            Les mots de passe ne correspondent pas
+                        </Alert>
+                    ) : null}
+
+
                     {showAlert && (
                         <Alert color="primary" variant="faded" className="mt-2">
-                        {alertMessage}
+                            {alertMessage}
                         </Alert>
                     )}
 

@@ -1,6 +1,6 @@
 TODO:
 - Add a "Forgot Password" button
-- Add email and password verification
+- Add email verification
 - Hash the password
 - Add cookies for user
 - API with OpenAI to play a quiz
