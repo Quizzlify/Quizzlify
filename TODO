@@ -1,5 +1,4 @@
 TODO:
-- Add a "Forgot Password" button
 - Hash the password
 - Add cookies for user
 - API with OpenAI to play a quiz
