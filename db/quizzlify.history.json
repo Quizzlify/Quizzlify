@@ -1,0 +1,28 @@
+[
+    {
+        "_id": {
+            "$oid": "67b123456d1aeab60ae0402f"
+        },
+        "userId": "681fc358987826fdb0f468ca",
+        "quizId": "67b123456d1aeab60ae0402f",
+        "at": "2024-03-02T23:00:00.000Z",
+        "score": 10,
+        "answers": {
+            "0": {
+                "points": 5,
+                "time": 5,
+                "correct": true
+            },
+            "1": {
+                "points": 3,
+                "time": 3,
+                "correct": true
+            },
+            "2": {
+                "points": 0,
+                "time": 10,
+                "correct": false
+            }
+        }
+    }
+]
