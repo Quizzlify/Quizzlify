@@ -1,39 +1,63 @@
 import React from 'react';
+import clsx from 'clsx';
 
 type ButtonProps = {
   text?: string;
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
-  children?: never;
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
+  type?: 'button' | 'submit' | 'reset';
+  as?: 'button' | 'a';
+  href?: string;
   [key: string]: any;
-}
+};
 
-const QButton: React.FC<ButtonProps> = ({ text, className = '', icon, iconPosition, ...rest }) => {
-  let baseClasses = 'group text-white px-[16px] py-[12px] text-center justify-center bg-accent rounded-[12px] text-[20px] font-semibold transition-all duration-300 cursor-pointer';
+const QButton: React.FC<ButtonProps> = ({
+  text,
+  className = '',
+  onClick,
+  disabled = false,
+  icon,
+  iconPosition = 'left',
+  type = 'button',
+  as = 'button',
+  href,
+  ...rest
+}) => {
+  const Component = as === 'a' ? 'a' : 'button';
 
-  if (rest.disabled) {
-    baseClasses += ' cursor-not-allowed opacity-50';
-  }
-
-  const combinedClasses = `${baseClasses} ${className}`;
+  const classes = clsx(
+    'inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl',
+    'text-white font-semibold text-lg bg-accent',
+    'hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]',
+    'transition-all duration-300 ease-in-out',
+    {
+      'flex-row-reverse': iconPosition === 'right',
+      'opacity-50 cursor-not-allowed': disabled,
+      'cursor-pointer': !disabled,
+    },
+    className
+  );
 
   return (
-    <a className={`${combinedClasses} flex items-center justify-center`} rel="noopener noreferrer" {...rest}>
-      {icon && iconPosition === 'left' && (
-        <span className={`icon-left ${text && 'mr-[9px]'} group-hover:mr-[14px] transition-all duration-300`}>
+    <Component
+      className={classes}
+      onClick={disabled ? undefined : onClick}
+      disabled={as === 'button' ? disabled : undefined}
+      href={as === 'a' ? href : undefined}
+      rel={as === 'a' ? 'noopener noreferrer' : undefined}
+      type={as === 'button' ? type : undefined}
+      {...rest}
+    >
+      {icon && (
+        <span className="transition-transform group-hover:translate-x-[2px] group-hover:scale-105">
           {icon}
         </span>
       )}
       {text}
-      {icon && iconPosition === 'right' && (
-        <span className={`icon-right ${text && 'ml-[9px]'} group-hover:ml-[14px] transition-all duration-300`}>
-          {icon}
-        </span>
-      )}
-    </a>
+    </Component>
   );
 };
 
