@@ -46,15 +46,20 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 body: JSON.stringify({ email, password }),
             });
 
-            if (!response.ok) throw new Error('Login failed');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData?.error || 'Login failed');
+            }
 
             const data = await response.json();
             setUser(data.user);
             setIsAuthenticated(true);
         } catch (error) {
             console.error('Login error:', error);
+            throw error;
         }
     };
+
     const signup = async (username: string, email: string, password: string) => {
         try {
             const response = await fetch('/api/auth/create', {
