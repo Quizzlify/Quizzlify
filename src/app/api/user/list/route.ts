@@ -15,8 +15,13 @@ export async function POST(req: Request) {
                 { status: 401 }
             );
         }
+
+        const userWithoutInfo = users.map((user) => {
+            const { password, updated_at, email, created_at, ...userWithoutInfo } = user;
+            return userWithoutInfo;
+        });
   
-        return NextResponse.json({ success: true, data: users });
+        return NextResponse.json({ success: true, data: userWithoutInfo });
       
     } catch (error) {
         console.error("Erreur lors de la récupération:", error);
