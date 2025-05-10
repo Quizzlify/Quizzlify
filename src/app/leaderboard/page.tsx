@@ -5,43 +5,48 @@ import LeaderBoard from "../../components/Leaderboard/Leaderboard";
 import { useEffect, useState } from "react";
 import { useUser } from "@/provider/UserProvider";
 
-interface UserList extends User {
+interface UserList {
+    _id: string,
+    username: string,
+    rank: number,
+    score: number,
     you: boolean
 };
 
 export default function Page() {
-    const { user } = useUser();
+    const { user, isAuthenticated } = useUser();
     const [userList, setUserList] = useState<UserList[] | null>(null)
 
-    async function getUsers() {
-        try {
-            const res = await fetch("/api/user/list", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({})
-            });
-
-            const response = await res.json();
-            if (response.success) {
-                const formattedUsers = (response.data).map((userList: UserList) => {
-                    return {
-                        username: userList.username,
-                        score: userList.score,
-                        rank: userList.rank,
-                        you: userList._id === user?._id
-                    };
+    useEffect(() => {
+        async function getUsers() {
+            try {
+                const res = await fetch("/api/user/list", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({})
                 });
 
-                setUserList(formattedUsers);
-            } else {
-                console.log("Une erreur est survenue: ", response.error);
-            }
-        } catch (error) {
-            console.log("Une erreur est survenue avec la connexion à la DB: ", error);
-        }
-    }
+                const response = await res.json();
+                if (response.success) {
+                    const formattedUsers = (response.data).map((userList: UserList) => {
+                        return {
+                            _id: userList._id,
+                            username: userList.username,
+                            rank: userList.rank,
+                            score: userList.score,
+                            you: isAuthenticated && user ? user._id === userList._id : false
+                        };
+                    });
 
-    useEffect(() => {
+                    setUserList(formattedUsers);
+                } else {
+                    console.log("Une erreur est survenue: ", response.error);
+                }
+            } catch (error) {
+                console.log("Une erreur est survenue avec la connexion à la DB: ", error);
+            }
+        }
+
         getUsers()
     }, [])
 
