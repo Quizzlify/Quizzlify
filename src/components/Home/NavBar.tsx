@@ -69,7 +69,6 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
         return crypto.subtle.digest('SHA-256', data).then(hashBuffer => {
             const hashArray = Array.from(new Uint8Array(hashBuffer));
             const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            console.log(hashHex);
             
             return `https://www.gravatar.com/avatar/${hashHex}?d=identicon`;
         }).catch(() => {
