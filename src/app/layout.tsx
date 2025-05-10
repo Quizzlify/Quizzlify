@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ToastProvider } from "../provider/ToastProvider";
 import ToastContainer from "../components/Utilities/Toast/ToastContainer";
+import { UserProvider } from "@/provider/UserProvider";
 
 export const metadata: Metadata = {
   title: "Quizzlify"
@@ -17,10 +18,12 @@ export default function RootLayout({
       <body
         className={`m-0`}
       >
-        <ToastProvider>
-          {children}
-          <ToastContainer />
-        </ToastProvider>
+        <UserProvider>
+          <ToastProvider>
+            {children}
+            <ToastContainer />
+          </ToastProvider>
+        </UserProvider>
       </body>
     </html>
   );
