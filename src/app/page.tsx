@@ -2,14 +2,22 @@
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { useRouter } from "next/navigation";
+import { useState } from 'react';
 import HomeCard from '../components/Home/HomeCard';
 import NavBar from "@/components/Home/NavBar";
+import Loading from '@/components/Utilities/Loading'; // Assure-toi du bon chemin
 
 export default function Home() {
     const router = useRouter();
+    const [loading, setLoading] = useState(false);
 
     function goTo(route: string) {
+        setLoading(true);
         router.push(route);
+    }
+
+    if (loading) {
+        return <Loading />;
     }
 
     return (
@@ -41,7 +49,6 @@ export default function Home() {
                 <HomeCard title={"Créez vos propres quiz !"} description={"En créant gratuitement un compte, générez vos quiz entièrement personnalisés."} position='left' image="/home/create-quiz.png"/>
                 <HomeCard title={"Soyez parmi les plus haut classés !"} description={"Grâce au classement, vous pouvez voir (ou faire partie) des meilleurs de nos joueurs."} position='right' image="/home/leaderboard.png"/>
             </div>
-
         </>
     );
 }
