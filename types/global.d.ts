@@ -9,7 +9,7 @@ declare global {
         username: string;
         password: string;
         score: number;
-        rank: number;
+        quizCompleted: number;
         role: string;
         created_at: Date;
         updated_at: Date;

@@ -8,19 +8,20 @@ import Levels from "@/components/Quiz/pages/Levels";
 import Results from "@/components/Quiz/pages/Results";
 import Details from "@/components/Quiz/pages/Details";
 import Questions from "@/components/Quiz/pages/Questions";
+import { useUser } from "@/provider/UserProvider";
 
 export default function Page() {
     const [activeStep, setActiveStep] = useState<string>("Catégorie");
     const [category, setCategory] = useState<string>('');
-    const [level, setLevel] = useState<number>();
-    const [id, setId] = useState<string>();
+    const [level, setLevel] = useState<number | null>(null);
     const [score, setScore] = useState<number | null>(null);
     const [quiz, setQuiz] = useState<Quiz | null>(null);
     const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
+    const { user, isAuthenticated } = useUser();
 
     async function getQuiz(category: string, level: number) {
         try {
-            const res = await fetch("/api/quiz", {
+            const res = await fetch("/api/quiz/getQuiz", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ category, level })
@@ -42,12 +43,13 @@ export default function Page() {
 
     async function getUserScore(id: string) {
         try {
-            const res = await fetch("/api/getUserScore", {
+            const res = await fetch("/api/user/getScore", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id })
             });
             const response = await res.json();
+            
             if (response.success) {
                 setScore(response.score);
             } else {
@@ -60,7 +62,7 @@ export default function Page() {
 
     async function setUserScore(id: string, score: number) {
         try {
-            const res = await fetch("/api/setUserScore", {
+            const res = await fetch("/api/user/setScore", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id, score })
@@ -83,16 +85,10 @@ export default function Page() {
     }, [category, level]);
 
     useEffect(() => {
-        if (score && level === 3) {
-            setUserScore('67aca92669ccf378994c3e7e', score);
+        if (isAuthenticated) {
+            getUserScore(user?._id);
         }
-    }, [score]);
-
-    useEffect(() => {
-        //if (id) {
-            getUserScore('67aca92669ccf378994c3e7e');
-        //}
-    }, []);
+    }, [isAuthenticated, user, score]);
 
     const renderStepContent = () => {
         switch (activeStep) {
@@ -105,7 +101,7 @@ export default function Page() {
             case "Questions":
                 return quiz?.content ? <Questions questions={quiz.content} nextStep={setActiveStep} score={score} setScore={setScore} selectedAnswers={selectedAnswers} setSelectedAnswers={setSelectedAnswers} /> : <h1 className="text-2xl mt-10">Aucun quiz ne correspond à la catégorie ou au niveau choisi.</h1>;
             case "Résultats":
-                return quiz?.content ? <Results questions={quiz.content} selectedAnswers={selectedAnswers}  /> : null;
+                return quiz?.content && score !== null && level !== null ? <Results questions={quiz.content} selectedAnswers={selectedAnswers} setUserScore={setUserScore} score={score} level={level} /> : null;
         }
     };
 

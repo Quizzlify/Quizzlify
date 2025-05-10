@@ -1,9 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Question from "@/components/Quiz/Question";
+import { useUser } from "@/provider/UserProvider";
 
 interface ResultsProps {
     questions: Quiz['content'];
     selectedAnswers: number[];
+    setUserScore: (id: string, score: number) => void;
+    score: number;
+    level: number;
 }
 
 interface UserList {
@@ -13,10 +17,12 @@ interface UserList {
     you: boolean
 };
 
-const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers }) => {
+const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, setUserScore, score, level }) => {
     const questionKeys = Object.keys(questions).map(Number);
     const [earnedPoints, setEarnedPoints] = useState<number>(0);
     const [correctAnswers, setCorrectAnswers] = useState<number>(0);
+    const hasSetQuizCompleted = useRef(false);
+    const { user, isAuthenticated } = useUser();
 
     useEffect(() => {
         let points = 0;
@@ -32,6 +38,36 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers }) => {
             return count + (isCorrectAnswer ? 1 : 0);
         }, 0));
     }, [questions, selectedAnswers]);
+    
+    useEffect(() => {
+        if (user && level === 3) {
+            setUserScore(user._id, score + earnedPoints);
+        }
+    }, [user, level, earnedPoints]);
+
+    useEffect(() => {
+        if (user?._id && !hasSetQuizCompleted.current ) {
+            hasSetQuizCompleted.current = true;
+            setQuizCompleted(user._id);
+        }
+    }, [user]);
+
+    async function setQuizCompleted(id: string) {
+        try {
+            const res = await fetch("/api/user/setQuizCompleted", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id })
+            });
+            const response = await res.json();
+            if (!response.success) {
+                console.log("Une erreur est survenue: ", response.error);
+            }
+
+        } catch (error) {
+            console.log("Une erreur est survenue avec la connexion à la DB: ", error);
+        }
+    }
 
     return (
         <div className="mt-5 flex items-center flex-col gap-10">

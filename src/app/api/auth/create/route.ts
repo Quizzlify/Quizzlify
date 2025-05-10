@@ -28,13 +28,12 @@ export async function POST(req: Request) {
         hash.update(password);
         const hashedPassword = hash.digest("hex");
 
-        const userCount = await collection.countDocuments();
         const result = await collection.insertOne({
             email,
             username,
             password: hashedPassword,
             score: 0,
-            rank: userCount + 1,
+            quizCompleted: 0,
             role: "user",
             created_at,
             updated_at,

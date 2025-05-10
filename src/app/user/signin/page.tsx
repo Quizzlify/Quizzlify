@@ -8,6 +8,7 @@ import { Input } from "@heroui/input";
 import { Alert } from "@heroui/alert";
 import { useToast } from "@/provider/ToastProvider";
 import { useUser } from "@/provider/UserProvider";
+import { LogInIcon } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -33,6 +34,10 @@ export default function LoginPage() {
   async function handleLogin() {
     setIsSubmitting(true);
     try {
+      if (!email || !password) {
+        addToast("Veuillez remplir tous les champs", "error");
+        return;
+      }
       await login(email, password);
       addToast("Connexion réussie !", "success");
       router.push("/");
@@ -48,7 +53,7 @@ export default function LoginPage() {
     <>
       <NavBar currentPage="user" />
       <div className="flex justify-center items-center h-screen">
-        <div className="flex flex-col w-[574px] h-fit bg-secondary rounded-3xl border border-4 border-accent">
+        <div className="flex flex-col w-[574px] h-fit bg-secondary rounded-3xl border-4 border-accent">
           <div className="flex flex-row gap-10 justify-center mt-10">
             <i className="fa-regular fa-user text-6xl text-accent"></i>
             <h2 className="text-4xl font-semibold">Se Connecter</h2>
@@ -64,9 +69,8 @@ export default function LoginPage() {
 
           <div className="mt-5 mr-6 self-end">
             <QButton
-              className="w-[200px] h-[45px]"
               text={isSubmitting ? "Connexion..." : "Se connecter"}
-              icon={<i className="fa-solid fa-right-to-bracket"></i>}
+              icon={<LogInIcon className="w-12" />}
               disabled={false}
               iconPosition="left"
               onClick={handleLogin}

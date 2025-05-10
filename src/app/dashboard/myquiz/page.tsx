@@ -1,12 +1,19 @@
 
 "use client";
 
+import { Sidebar } from "@/components/dashboard/sidebar";
+import { useToast } from "@/provider/ToastProvider";
+import { useUser } from "@/provider/UserProvider";
 import { BarChart, Book, Edit, Home, LogOut, PlusCircle, Search, Settings, Trash2, Users } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export const MesQuizPage = () => {
-    const [users, setUsers] = useState([]);
+    const router = useRouter();
+    const [users, setUsers] = useState<User[]>([]);
+    const { addToast } = useToast();
+    const { user, isAuthenticated, logout } = useUser();
     
     const quizzes = [
         { id: 1, title: 'Histoire de France', questions: 15, completions: 234, avgScore: '78%' },
@@ -14,53 +21,23 @@ export const MesQuizPage = () => {
         { id: 3, title: 'Sciences', questions: 25, completions: 89, avgScore: '75%' }
     ];
 
-    useEffect(() => {
-        const requests = async () => {
-            const response = await fetch("/api/test");
-            const data = await response.json();
-            setUsers(data.users);
-        }
+    if (!isAuthenticated || !user) {
+        router.push("/user/signin");
+    }
 
-        requests();
-    }, []);
+    const handleLogout = async () => {
+        try {
+            await logout();
+            addToast("Déconnexion réussie", "success");
+            router.push("/user/signin");
+        } catch (error) {
+            addToast("Erreur lors de la déconnexion", "error");
+        }
+    };
 
     return (
         <div className="flex h-screen bg-gray-50">
-            <aside className="w-64 bg-white border-r border-gray-200">
-                <div className="h-16 flex items-center justify-center border-b">
-                    <h1 className="text-xl font-bold text-orange-600">Quizzlify</h1>
-                </div>
-
-                <nav className="p-4 space-y-2">
-                    <Link href="#" className="flex items-center space-x-3 p-3 text-gray-600 hover:bg-orange-50 rounded-lg">
-                        <Home size={20} />
-                        <span className="font-medium">Tableau de bord</span>
-                    </Link>
-                    <Link href="#" className="flex items-center space-x-3 p-3 text-orange-600 bg-orange-50 rounded-lg">
-                        <Book size={20} />
-                        <span>Mes Quiz</span>
-                    </Link>
-                    <Link href="#" className="flex items-center space-x-3 p-3 text-gray-600 hover:bg-orange-50 rounded-lg">
-                        <BarChart size={20} />
-                        <span>Statistiques</span>
-                    </Link>
-                    <Link href="#" className="flex items-center space-x-3 p-3 text-gray-600 hover:bg-orange-50 rounded-lg">
-                        <Users size={20} />
-                        <span>Utilisateurs</span>
-                    </Link>
-                    <Link href="#" className="flex items-center space-x-3 p-3 text-gray-600 hover:bg-orange-50 rounded-lg">
-                        <Settings size={20} />
-                        <span>Paramètres</span>
-                    </Link>
-                </nav>
-
-                <div className="absolute bottom-4 w-64 px-4">
-                    <button className="flex items-center space-x-3 p-3 text-gray-600 hover:bg-orange-50 rounded-lg w-full">
-                        <LogOut size={20} />
-                        <span>Déconnexion</span>
-                    </button>
-                </div>
-            </aside>
+            <Sidebar user={user} nav="quiz" handleLogout={handleLogout} />
 
             <main className="flex-1 overflow-auto">
                 <div className="p-8">
@@ -97,13 +74,13 @@ export const MesQuizPage = () => {
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
                                     {users.map((user) => (
-                                        <tr key={user.id}>
+                                        <tr key={user._id}>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="font-medium text-gray-900">{user.title}</div>
+                                                <div className="font-medium text-gray-900">{user.username}</div>
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-gray-500">{user.questions}</td>
+                                            {/* <td className="px-6 py-4 whitespace-nowrap text-gray-500">{user.questions}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-gray-500">{user.completions}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-gray-500">{user.avgScore}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-gray-500">{user.avgScore}</td> */}
                                             <td className="px-6 py-4 whitespace-nowrap text-right">
                                                 <button className="text-blue-600 hover:text-blue-800 mr-3">
                                                     <Edit size={18} />

@@ -76,10 +76,10 @@ const Toast: FC<ToastProps> = ({ toast, onRemove, index }) => {
 
     return (
         <div
-            className={`fixed right-4 max-w-sm w-full transform transition-all duration-300 ease-in-out ${isExiting ? 'translate-x-full opacity-0' : 'translate-x-0'
+            className={`fixed right-2 max-w-sm w-full transform transition-all duration-300 ease-in-out ${isExiting ? 'translate-x-full opacity-0' : 'translate-x-0'
                 }`}
             style={{
-                bottom: `${index * 0.25}rem`,
+                bottom: `${index + 1 * 0.5}rem`,
                 zIndex: isHovered ? 1050 : 1000 + index,
                 transform: `translateY(-${index * 12}px)`,
                 opacity
@@ -111,9 +111,9 @@ const Toast: FC<ToastProps> = ({ toast, onRemove, index }) => {
                     </button>
                 </div>
 
-                <div className="w-full bg-slate-100 h-1 rounded-b-full">
+                <div className="w-full bg-slate-100 h-1">
                     <div
-                        className={`${progressClass} h-full rounded-full`}
+                        className={`${progressClass} h-full rounded-e-full`}
                         style={{
                             width: `${progress}%`,
                             transition: 'width 100ms linear'
