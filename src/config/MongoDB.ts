@@ -1,6 +1,8 @@
 import { MongoClient } from "mongodb";
+require("dotenv").config();
 
-const uri = "mongodb://localhost:27017";
+const uri = process.env.MONGO_URI as string || "mongodb://localhost:27017";
+console.log("MongoDB URI:", uri);
 let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
 
