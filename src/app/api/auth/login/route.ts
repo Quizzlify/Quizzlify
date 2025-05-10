@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/config/MongoDB";
+import SHA3 from "sha3";
+import jwt from "jsonwebtoken";
+import { cookies } from "next/headers";
 
 export async function POST(req: Request) {
     try {
@@ -18,7 +21,11 @@ export async function POST(req: Request) {
             );
         }
 
-        const isPasswordValid = password === user.password
+        const hash = new SHA3(512);
+        hash.update(password);
+        const hashedPassword = hash.digest("hex");
+
+        const isPasswordValid = hashedPassword === user.password
         if (!isPasswordValid) {
             return NextResponse.json(
                 { success: false, error: `Mot de passe incorrect: ${password}` },
@@ -26,8 +33,26 @@ export async function POST(req: Request) {
             );
         }
 
+        const token = jwt.sign(
+            { id: user._id.toString() },
+            process.env.JWT_SECRET ||
+                "b8a21193bafb7ad901775e2b935283fa19e8fe44ba3f995fcecf21701451cd5a015e56b60c610e5dd352a1aaf2c50a614c24932ef62ae1edc00f5bf5acbfc83c",
+            { expiresIn: "7d" }
+        );
+
+        (await cookies()).set({
+            name: "token",
+            value: token,
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            maxAge: 60 * 60 * 24 * 7, // 7 days
+            path: "/"
+        })
+
+        const { password: _, ...userWithoutPassword } = user;
+
         return NextResponse.json(
-            { success: true, message: "Connexion établie." },
+            { success: true, message: "Connexion établie.", user: userWithoutPassword },
             { status: 200 }
         );
 
