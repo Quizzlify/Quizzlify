@@ -83,14 +83,14 @@ export default function Page() {
     }, [category, level]);
 
     useEffect(() => {
-        if (score) {
-            setUserScore('67c49155ef3cfca0c1da10b7', score);
+        if (score && level === 3) {
+            setUserScore('67aca92669ccf378994c3e7e', score);
         }
     }, [score]);
 
     useEffect(() => {
         //if (id) {
-            getUserScore('67c49155ef3cfca0c1da10b7');
+            getUserScore('67aca92669ccf378994c3e7e');
         //}
     }, []);
 

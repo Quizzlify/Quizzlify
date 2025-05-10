@@ -52,6 +52,7 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers }) => {
                     />
                 </div>
             ))}
+
             <h1 className="text-3xl w-[45rem] text-center mb-10">Vous avez gagné <span className="font-semibold">{earnedPoints} points</span> grâce à ce quiz, en répondant correctement à <span className="font-semibold">{(correctAnswers / questionKeys.length) * 100} %</span> des questions.</h1>
         </div>
     );

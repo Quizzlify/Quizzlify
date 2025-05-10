@@ -39,10 +39,6 @@ const QuizList: BreadCrumbInterface[] = [
 
 const CreerQuizList: BreadCrumbInterface[] = [
     {
-        title: "Détails",
-        icon: <i className="fa-solid fa-circle-info fa-xl"></i>
-    },
-    {
         title: "Niveau",
         icon: <i className="fa-solid fa-baby-carriage fa-xl"></i>
     },
@@ -56,7 +52,7 @@ const CreerQuizList: BreadCrumbInterface[] = [
     }
 ];
 
-const Breadcrumb: React.FC<BreadcrumbProps> = ({isCreateQuiz = false, activeStep, onStepChange}) => {
+const Breadcrumb: React.FC<BreadcrumbProps> = ({isCreateQuiz, activeStep, onStepChange}) => {
     const displayedItems = isCreateQuiz ? CreerQuizList : QuizList;
 
     const previousStep = displayedItems.findIndex(

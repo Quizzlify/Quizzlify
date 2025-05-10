@@ -3,20 +3,19 @@
 import NavBar from "@/components/Home/NavBar";
 import LeaderBoard from "../../components/Leaderboard/Leaderboard";
 import { useEffect, useState } from "react";
+import { useUser } from "@/provider/UserProvider";
 
-interface UserList {
-    username: string,
-    score: number,
-    rank: number,
+interface UserList extends User {
     you: boolean
 };
 
 export default function Page() {
+    const { user } = useUser();
     const [userList, setUserList] = useState<UserList[] | null>(null)
 
     async function getUsers() {
         try {
-            const res = await fetch("/api/users", {
+            const res = await fetch("/api/user/list", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({})
@@ -24,12 +23,12 @@ export default function Page() {
 
             const response = await res.json();
             if (response.success) {
-                const formattedUsers = (response.data).map((user: UserList) => {
+                const formattedUsers = (response.data).map((userList: UserList) => {
                     return {
-                        username: user.username,
-                        score: user.score,
-                        rank: user.rank,
-                        you: false
+                        username: userList.username,
+                        score: userList.score,
+                        rank: userList.rank,
+                        you: userList._id === user?._id
                     };
                 });
 
