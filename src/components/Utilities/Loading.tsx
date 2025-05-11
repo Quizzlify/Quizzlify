@@ -1,10 +1,23 @@
-export default function Loading() {
+import React from 'react';
+
+const Loading = () => {
     return (
-        <div className="flex flex-col items-center justify-center w-full h-screen bg-background text-accent gap-4">
-            <div className="relative w-12 h-12">
-                <div className="absolute inset-0 rounded-full border-4 border-t-transparent border-accent animate-spin" />
+        <div className="fixed inset-0 bg-background flex flex-col items-center justify-center z-50">
+            <div className="relative">
+                <div className="absolute inset-0 bg-accent-secondary rounded-full animate-pulse-slow"></div>
+
+                <div className="relative z-10 p-4">
+                    <img src="/logo.png" alt="Logo" className="w-16 h-16" />
+                </div>
             </div>
-            <p className="text-sm font-medium animate-pulse">Chargement...</p>
+
+            <div className="mt-8 relative">
+                <div className="w-12 h-12 rounded-full border-4 border-accent-secondary border-t-accent animate-spin"></div>
+            </div>
+
+            <p className="mt-6 text-foreground-secondary">Chargement en cours...</p>
         </div>
     );
-}
+};
+
+export default Loading;

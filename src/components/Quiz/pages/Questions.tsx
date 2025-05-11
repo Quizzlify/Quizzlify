@@ -14,6 +14,7 @@ const Questions: React.FC<QuestionsProps> = ({ nextStep, questions, selectedAnsw
     const [questionIndex, setQuestionIndex] = useState(0);
     const [showAnswer, setShowAnswer] = useState(false);
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+    const [fadeIn, setFadeIn] = useState(true);
 
     const questionKeys = Object.keys(questions).map(Number);
 
@@ -30,59 +31,62 @@ const Questions: React.FC<QuestionsProps> = ({ nextStep, questions, selectedAnsw
   
     function incrementQuestionIndex(): void {
       if (questionIndex + 1 < questionKeys.length) {
-        setQuestionIndex(questionIndex + 1);
-        setShowAnswer(false);
-        setSelectedAnswer(null);
+        setFadeIn(false);
+        setTimeout(() => {
+          setQuestionIndex(questionIndex + 1);
+          setShowAnswer(false);
+          setSelectedAnswer(null);
+          setFadeIn(true);
+        }, 300);
       }
     }
 
     const isLastQuestion = questionIndex + 1 === questionKeys.length;
 
     return (
-        <div className="flex flex-col mb-4 mt-[5rem]">
-            <div className="flex flex-row justify-between w-[calc(100%-5rem)] items-center ml-5">
-            <h1 className="text-3xl font-bold">{questions[questionKeys[questionIndex]].question}{showAnswer ? " Correction" : ""}</h1>
-            <span className="text-lg text-gray-500">{questionIndex + 1}/{questionKeys.length}</span>
-        </div>
-        {!showAnswer ? (
-            <Question
-                answers={questions[questionKeys[questionIndex]].answers}
-                correctAnswer={questions[questionKeys[questionIndex]].correctAnswer}
-                selectedAnswer={selectedAnswer}
-                showAnswer={showAnswer}
-                onAnswerSelect={handleAnswerSelection}
-            />
-
-        ) : (
-
-        <div className="flex flex-col p-4">
-            <Question
-                answers={questions[questionKeys[questionIndex]].answers}
-                correctAnswer={questions[questionKeys[questionIndex]].correctAnswer}
-                selectedAnswer={selectedAnswer}
-                showAnswer={showAnswer}
-                onAnswerSelect={handleAnswerSelection}
-            />
-
-            <button onClick={isLastQuestion ? () => nextStep('Résultats') : incrementQuestionIndex} className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 hover:bg-blue-600 w-fit">
-                {isLastQuestion ? 'Voir les résultats.': 'Question suivante.'}
-            </button>
-        </div>
-      )}
-
-      {!showAnswer && (
-        <div className="flex items-center justify-center p-6 h-[4rem] bg-white rounded-lg shadow-md">
-            <CountdownTimer onTimeout={incrementQuestionIndex} />
-            { level == 3 ?
-                <div className="ml-auto">
-                    <span className="text-lg font-semibold">Points: {questions[questionKeys[questionIndex]].points}</span>
+        <div className={`w-full max-w-4xl mx-auto ${fadeIn ? 'animate-fade-in' : 'opacity-0'} transition-opacity duration-300`}>
+            <div className="bg-background-tertiary p-6 rounded-2xl border border-border">
+                <div className="flex flex-row justify-between items-center mb-6">
+                    <h1 className="text-2xl font-bold">
+                        <span className="text-gradient">Question</span> {questionIndex + 1}/{questionKeys.length}
+                    </h1>
+                    {!showAnswer && level === 3 && (
+                        <div className="flex items-center">
+                            <span className="text-lg font-semibold text-accent">Points: {questions[questionKeys[questionIndex]].points}</span>
+                        </div>
+                    )}
                 </div>
-                : null
-            }
-        </div>
-      )}
-      </div>
 
+                <div className="bg-background-secondary p-6 rounded-xl mb-6">
+                    <h2 className="text-xl mb-4">{questions[questionKeys[questionIndex]].question}{showAnswer ? " - Correction" : ""}</h2>
+                    
+                    <Question
+                        answers={questions[questionKeys[questionIndex]].answers}
+                        correctAnswer={questions[questionKeys[questionIndex]].correctAnswer}
+                        selectedAnswer={selectedAnswer}
+                        showAnswer={showAnswer}
+                        onAnswerSelect={handleAnswerSelection}
+                    />
+                </div>
+
+                {showAnswer && (
+                    <div className="flex justify-center mt-6">
+                        <button 
+                            onClick={isLastQuestion ? () => nextStep('Résultats') : incrementQuestionIndex} 
+                            className="btn-primary text-lg py-3 px-8 shadow-glow hover:scale-105 transform transition"
+                        >
+                            {isLastQuestion ? 'Voir les résultats' : 'Question suivante'}
+                        </button>
+                    </div>
+                )}
+
+                {!showAnswer && (
+                    <div className="bg-background-secondary p-4 rounded-xl flex items-center justify-center">
+                        <CountdownTimer onTimeout={incrementQuestionIndex} />
+                    </div>
+                )}
+            </div>
+        </div>
     );
 };
 

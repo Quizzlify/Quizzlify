@@ -43,24 +43,23 @@ const CategoriesList: Interface[] = [
 ];
 
 const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep, isCreateQuiz, setCategory, setLevel }) => {
-
     const [isHovering, setIsHovering] = useState(false);
 
     return (
         <div>
             {isNiveau ? (
-                <div className="grid grid-rows-2 grid-cols-3 gap-5 w-[70rem] h-auto">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {[...Array(maxLevel)].map((_, index) => {
                         const level = index + 1;
                         return (
                             <div
-                                className="w-[350px] h-[200px] bg-[#ffffff99] hover:bg-white rounded-2xl flex flex-col justify-center items-center gap-5 text-2xl group hover:text-accent transition relative"
+                                className="bg-background p-6 rounded-xl border border-border hover:border-accent transition-all duration-300 flex flex-col justify-center items-center gap-5 group cursor-pointer hover:shadow-lg"
                                 key={level}
                                 onClick={() => isCreateQuiz ? (nextStep('Catégorie'), setLevel(level)) : (nextStep('Détails'), setLevel(level))}
                             >
                                 {level >= 3 && (
                                     <button
-                                        className="absolute top-3 right-4 text-lg"
+                                        className="absolute top-3 right-4 text-lg text-foreground-secondary hover:text-accent"
                                         onMouseEnter={() => setIsHovering(true)}
                                         onMouseLeave={() => setIsHovering(false)}
                                         aria-label={`Information Niveau ${level}`}
@@ -68,10 +67,10 @@ const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep, isCreateQuiz, setCate
                                         <i className="fa-solid fa-info-circle"></i>
 
                                         {isHovering && (
-                                            <div className="absolute top-1/2 right-[-16.5rem] transform -translate-y-1/2 w-64 p-4 bg-white rounded-lg shadow-lg text-sm text-gray-700 z-50 border border-gray-00">
-                                                <div className="absolute top-1/2 left-[-0.5rem] transform -translate-y-1/2 w-4 h-4 bg-white rotate-[315deg] border-t border-l border-gray-300" />
+                                            <div className="absolute top-1/2 right-[-16.5rem] transform -translate-y-1/2 w-64 p-4 bg-background rounded-lg shadow-lg text-sm text-foreground-secondary z-50 border border-border">
+                                                <div className="absolute top-1/2 left-[-0.5rem] transform -translate-y-1/2 w-4 h-4 bg-background rotate-[315deg] border-t border-l border-border" />
                                                 <div className="relative">
-                                                    <h3 className="font-semibold text-base mb-2">Information Niveau {level}</h3>
+                                                    <h3 className="font-semibold text-base mb-2 text-foreground">Information Niveau {level}</h3>
                                                     <p className="leading-relaxed">
                                                         Ce niveau contient des questions plus complexes et demande une bonne
                                                         maîtrise du sujet.
@@ -83,36 +82,38 @@ const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep, isCreateQuiz, setCate
                                     </button>
                                 )}
 
-                                <div className="flex items-center justify-center"><i className={`fa-solid fa-${level} text-4xl`}></i></div>
+                                <div className="flex items-center justify-center text-accent">
+                                    <i className={`fa-solid fa-${level} text-4xl`}></i>
+                                </div>
 
-                                <div className="flex flex-row relative items-center justify-center w-full">
+                                <div className="flex flex-row relative items-center justify-center w-full text-xl">
                                     <div>Niveau {level}</div>
-                                    <i className="fa-solid fa-arrow-right text-lg absolute right-[3rem] transition-all group-hover:right-[2rem] group-hover:text-accent"></i>
+                                    <i className="fa-solid fa-arrow-right text-lg absolute right-0 opacity-0 group-hover:opacity-100 group-hover:right-[-20px] transition-all duration-300 text-accent"></i>
                                 </div>
                             </div>
                         )
                     })}
                 </div>
-
             ) : (
-
-                <div className="grid grid-rows-2 grid-cols-3 gap-5 w-[70rem] h-auto">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {CategoriesList.map((categorie, index) => (
-                        <button
-                            className="w-[350px] h-[200px] bg-white rounded-2xl flex flex-col justify-center items-center gap-5 text-2xl group hover:text-accent transition"
+                        <div
+                            className="bg-background p-6 rounded-xl border border-border hover:border-accent transition-all duration-300 flex flex-col justify-center items-center gap-5 group cursor-pointer hover:shadow-lg"
                             key={index}
                             onClick={() => {
                                 isCreateQuiz ? nextStep('Questions') : nextStep('Niveau')
                                 setCategory(categorie.title)
                             }}
                         >
-                            <div className="flex items-center justify-center">{categorie.icon}</div>
-
-                            <div className="flex flex-row relative items-center justify-center w-full">
-                                <div>{categorie.title}</div>
-                                <i className="fa-solid fa-arrow-right text-lg absolute right-[3rem] transition-all group-hover:right-[2rem]"></i>
+                            <div className="flex items-center justify-center text-accent">
+                                {categorie.icon}
                             </div>
-                        </button>
+
+                            <div className="flex flex-row relative items-center justify-center w-full text-xl">
+                                <div>{categorie.title}</div>
+                                <i className="fa-solid fa-arrow-right text-lg absolute right-0 opacity-0 group-hover:opacity-100 group-hover:right-[-20px] transition-all duration-300 text-accent"></i>
+                            </div>
+                        </div>
                     ))}
                 </div>
             )}

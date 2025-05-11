@@ -12,18 +12,36 @@ export default {
     extend: {
       colors: {
         background: "var(--background)",
+        "background-secondary": "var(--background-secondary)",
+        "background-tertiary": "var(--background-tertiary)",
         foreground: "var(--foreground)",
+        "foreground-secondary": "var(--foreground-secondary)",
         accent: "var(--accent)",
-        secondary: "var(--secondary)"
+        "accent-hover": "var(--accent-hover)",
+        "accent-secondary": "var(--accent-secondary)",
+        success: "var(--success)",
+        danger: "var(--danger)",
+        warning: "var(--warning)",
+        "card-bg": "var(--card-bg)",
+        "nav-bg": "var(--nav-bg)",
+        border: "var(--border)"
       },
       boxShadow: {
-        default: '0 8px 1px rgba(253, 144, 97, 0.4)',
-        hover: '0 8px 1px rgba(206, 107, 64, 0.45)',
-        'navbar': '0px 12px 10.2px 4px rgba(0, 0, 0, 0.25)',
+        default: '0 8px 20px rgba(0, 0, 0, 0.5)',
+        'glow': '0 0 15px rgba(15, 16, 18, 0.8)',
+        'navbar': '0 10px 15px rgba(0, 0, 0, 0.2)',
       },
       dropShadow: {
-        'leaderboard': '0px 8px 8px rgba(0, 0, 0, 0.25)',
-      }
+        'leaderboard': '0 8px 8px rgba(0, 0, 0, 0.3)',
+        'text': '0 2px 4px rgba(0, 0, 0, 0.5)',
+      },
+      animation: {
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-accent': 'linear-gradient(to right, var(--accent), var(--accent-hover))',
+      },
     },
   },
   plugins: [heroui()],
