@@ -16,7 +16,7 @@ const DashboardPage = () => {
     const [quizCompleted, setQuizCompleted] = useState<number>(0);
     const [quizCreated, setQuizCreated] = useState<number>(0);
     const [score, setScore] = useState<number>(0);
-    const [isLoading, setIsLoading] = useState<boolean>(true); // <- ajout ici
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         if (!isAuthenticated) {
@@ -53,7 +53,7 @@ const DashboardPage = () => {
                 }
 
                 if (quizData.success) {
-                    setQuizCreated(quizData.quiz);
+                    setQuizCreated(quizData.data.length);
                 } else {
                     console.log("Erreur quiz: ", quizData.error);
                 }

@@ -7,12 +7,14 @@ import Levels from "@/components/CreateQuiz/pages/Levels";
 import Categories from "@/components/CreateQuiz/pages/Categories";
 import Questions from "@/components/CreateQuiz/pages/Questions";
 import { useToast } from "@/provider/ToastProvider";
+import { useUser } from "@/provider/UserProvider";
 
 
 export default function Page() {
     const { addToast } = useToast();
     const [activeStep, setActiveStep] = useState<string>("Niveau");
     const [questionIndices, setQuestionIndices] = useState<number[]>([1]);
+    const { user } = useUser();
 
     // Quiz details
     const [category, setCategory] = useState<string>("");
@@ -27,7 +29,7 @@ export default function Page() {
             const res = await fetch("/api/create-quiz", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ category, level, content })
+                body: JSON.stringify({ category, level, content, author: user?._id })
             });
 
             const response = await res.json();

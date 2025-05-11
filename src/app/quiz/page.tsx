@@ -41,54 +41,12 @@ export default function Page() {
         }
     }
 
-    async function getUserScore(id: string) {
-        try {
-            const res = await fetch("/api/user/getScore", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id })
-            });
-            const response = await res.json();
-            
-            if (response.success) {
-                setScore(response.score);
-            } else {
-                console.log("Une erreur est survenue: ", response.error);
-            }
-        } catch (error) {
-            console.log("Une erreur est survenue avec la connexion à la DB: ", error);
-        }
-    }
-
-    async function setUserScore(id: string, score: number) {
-        try {
-            const res = await fetch("/api/user/setScore", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id, score })
-            });
-            const response = await res.json();
-            if (!response.success) {
-                console.log("Une erreur est survenue: ", response.error);
-            }
-
-        } catch (error) {
-            console.log("Une erreur est survenue avec la connexion à la DB: ", error);
-        }
-    }
-
     useEffect(() => {
         if (category && level) {
             setQuiz(null);
             getQuiz(category, level);
         }
     }, [category, level]);
-
-    useEffect(() => {
-        if (isAuthenticated) {
-            getUserScore(user?._id);
-        }
-    }, [isAuthenticated, user, score]);
 
     const renderStepContent = () => {
         switch (activeStep) {
@@ -101,7 +59,7 @@ export default function Page() {
             case "Questions":
                 return quiz?.content ? <Questions questions={quiz.content} nextStep={setActiveStep} score={score} setScore={setScore} selectedAnswers={selectedAnswers} setSelectedAnswers={setSelectedAnswers} /> : <h1 className="text-2xl mt-10">Aucun quiz ne correspond à la catégorie ou au niveau choisi.</h1>;
             case "Résultats":
-                return quiz?.content && score !== null && level !== null ? <Results questions={quiz.content} selectedAnswers={selectedAnswers} setUserScore={setUserScore} score={score} level={level} /> : null;
+                return quiz?.content && score !== null && level !== null ? <Results questions={quiz.content} selectedAnswers={selectedAnswers} level={level} /> : null;
         }
     };
 

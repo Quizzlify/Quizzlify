@@ -10,7 +10,6 @@ export async function POST(req: Request) {
         const collection = db.collection("users");
 
         const user = await collection.findOne({ _id: new ObjectId(id) });
-
         if (!user) {
             return NextResponse.json(
                 { success: false, error: "Aucun utilisateur trouvé." },
