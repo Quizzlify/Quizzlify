@@ -1,6 +1,6 @@
 "use client"
 
-import NavBar from "@/components/Home/NavBar";
+import NavBar from "@/components/Utilities/NavBar";
 import QButton from "@/components/Utilities/QButton";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

@@ -4,7 +4,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import { useRouter } from "next/navigation";
 import { useState } from 'react';
 import HomeCard from '../components/Home/HomeCard';
-import NavBar from "@/components/Home/NavBar";
+import NavBar from "@/components/Utilities/NavBar";
 import Loading from '@/components/Utilities/Loading'; // Assure-toi du bon chemin
 
 export default function Home() {

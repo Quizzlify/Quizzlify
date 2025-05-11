@@ -1,6 +1,6 @@
 'use client'
 
-import NavBar from "@/components/Home/NavBar";
+import NavBar from "@/components/Utilities/NavBar";
 import { useRouter } from "next/navigation";
 
 

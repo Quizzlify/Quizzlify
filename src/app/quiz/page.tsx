@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import NavBar from "@/components/Home/NavBar";
+import NavBar from "@/components/Utilities/NavBar";
 import Breadcrumb from "@/components/Quiz/Breadcrumb";
 import Categories from "@/components/Quiz/pages/Categories";
 import Levels from "@/components/Quiz/pages/Levels";

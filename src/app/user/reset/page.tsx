@@ -1,6 +1,6 @@
 "use client"
 
-import NavBar from "@/components/Home/NavBar";
+import NavBar from "@/components/Utilities/NavBar";
 
 export default function LoginPage() {
   return (

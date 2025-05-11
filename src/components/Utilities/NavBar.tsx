@@ -93,7 +93,7 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
                 <li className="hover:text-accent transition"><a href="/"><img src={'/logo.png'} className="w-10" alt="Logo" /></a></li>
 
                 <li className="hover:text-accent transition">
-                    <button className={`flex items-center gap-2.5 ${currentPage == "create-quiz" ? "text-accent" : ""}`} onClick={() => goTo('/create-quiz/default')}> {/* TODO: faudra check si l'user est connecté ou non*/}
+                    <button className={`flex items-center gap-2.5 ${currentPage == "create-quiz" ? "text-accent" : ""}`} onClick={() => isAuthenticated ? goTo('/createQuiz/default') : goTo('/createQuiz/noAccount')}>
                         <i className="fa-solid fa-square-plus"></i><a>Créer votre quiz</a>
                     </button>
                 </li>
