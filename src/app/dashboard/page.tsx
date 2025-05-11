@@ -1,6 +1,6 @@
 "use client";
 
-import { Sidebar } from '@/components/dashboard/sidebar';
+import { Sidebar } from '@/components/Dashboard/Sidebar';
 import Loading from '@/components/Utilities/Loading';
 import { useToast } from '@/provider/ToastProvider';
 import { useUser } from '@/provider/UserProvider';

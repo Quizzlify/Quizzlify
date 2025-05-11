@@ -1,7 +1,7 @@
 
 "use client";
 
-import { Sidebar } from "@/components/dashboard/sidebar";
+import { Sidebar } from "@/components/Dashboard/Sidebar";
 import { useToast } from "@/provider/ToastProvider";
 import { useUser } from "@/provider/UserProvider";
 import { BarChart, Book, Edit, Home, LogOut, PlusCircle, Search, Settings, Trash2, Users } from "lucide-react";

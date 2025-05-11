@@ -95,7 +95,7 @@ export default function Page() {
 
                     <div className="mt-5 mb-[2rem] mr-6 self-end">
                         <QButton
-                            className="w-[250px] h-[45px]"
+                            className="w-[270px] h-[45px]"
                             text={isSubmitting ? "Création du compte..." : "Créer un compte"}
                             icon={<i className="fa-solid fa-right-to-bracket"></i>}
                             disabled={
