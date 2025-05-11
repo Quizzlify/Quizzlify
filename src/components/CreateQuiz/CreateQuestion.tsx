@@ -1,14 +1,16 @@
 import { Input } from "@heroui/input";
 import { Switch } from "@heroui/switch";
+import { useEffect } from "react";
 
 interface CreateQuestionProps {
     questionNum: number;
     removeQuestion: (num: number) => void;
     content: Quiz['content'];
     setContent: (content: Quiz['content']) => void;
+    level: number;
 }
 
-const CreateQuestion: React.FC<CreateQuestionProps> = ({ questionNum, removeQuestion, content, setContent }) => {
+const CreateQuestion: React.FC<CreateQuestionProps> = ({ questionNum, removeQuestion, content, setContent, level }) => {
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement>, field: string) {
       if (field === 'points') {
           // Convert points to number
@@ -56,12 +58,26 @@ const CreateQuestion: React.FC<CreateQuestionProps> = ({ questionNum, removeQues
         }
     }
 
+    useEffect(() => {
+      if (level !== 3) {
+        setContent({
+          ...content,
+          [questionNum]: {
+            points: null
+          }
+        })
+      }
+    }, [])
+
+
     return (
         <div className="bg-secondary w-[1400px] pb-3 rounded-xl border-2 border-orange-600 relative">
             <div className="flex flex-row items-center ml-5 mt-5 gap-3">
                 <h2 className="text-2xl">Question {questionNum}</h2>
                 <Input label="Question" onChange={(e) => handleInputChange(e, 'question')} type="input" variant="bordered" size={"sm"} className="max-w-[480px] [&>div]:!border-neutral-500" isRequired />
-                <Input label="Nombre de points" onChange={(e) => handleInputChange(e, 'points')} type="input" variant="bordered" size={"sm"} className="max-w-[10rem] [&>div]:!border-neutral-500 absolute right-5" isRequired />
+                {level === 3 && (
+                  <Input label="Nombre de points" onChange={(e) => handleInputChange(e, 'points')} type="input" variant="bordered" size={"sm"} className="max-w-[10rem] [&>div]:!border-neutral-500 absolute right-5" isRequired />
+                )}
             </div>
 
             <div className="flex flex-col gap-3 ml-20 mt-5">

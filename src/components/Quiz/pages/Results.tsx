@@ -44,7 +44,9 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) 
                 console.log("Une erreur est survenue avec la connexion à la DB: ", error);
             }
         }
-        getUserScore(user?._id);
+        if (level === 3) {
+            getUserScore(user?._id);
+        }
     }, [user]);
 
     async function setUserScore(id: string, score: number) {
@@ -65,16 +67,18 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) 
     }
 
     useEffect(() => {
-        let points = 0;
-        questionKeys.forEach((key, index) => {
-            if (questions[key].correctAnswer === selectedAnswers[index]) {
-                points += questions[key].points;
+        if (level === 3) {
+            let points = 0;
+            questionKeys.forEach((key, index) => {
+                if (questions[key].correctAnswer === selectedAnswers[index]) {
+                    points += questions[key]?.points || 0;
+                }
+            });
+            setEarnedPoints(points);
+            if (user && currentScore !== null && earnedPoints !== null) {
+                setUserScore(user._id, currentScore + earnedPoints);
+                addToast(earnedPoints + " points ont été ajouté !", "success");
             }
-        });
-        setEarnedPoints(points);
-        if (user && level === 3 && currentScore !== null && earnedPoints !== null) {
-            setUserScore(user._id, currentScore + earnedPoints);
-            addToast(earnedPoints + " points ont été ajouté !", "success");
         }
     }, [currentScore, earnedPoints]);
 
@@ -115,7 +119,9 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) 
                 <div key={questionKeys[index]} className="flex flex-col">
                     <div className="flex flex-row gap-5 items-center w-full">
                         <h1 className="text-3xl">Question {index + 1}</h1>
-                        <span className="text-lg ml-auto mr-5">Points: {questions[questionKeys[index]].points}</span>
+                        { level == 3 ?
+                            <span className="text-lg ml-auto mr-5">Points: {questions[questionKeys[index]].points}</span> : null
+                        }
                     </div>
 
                     <Question
@@ -129,7 +135,14 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) 
                 </div>
             ))}
 
-            <h1 className="text-3xl w-[45rem] text-center mb-10">Vous avez gagné <span className="font-semibold">{earnedPoints} points</span> grâce à ce quiz, en répondant correctement à <span className="font-semibold">{(correctAnswers / questionKeys.length) * 100} %</span> des questions.</h1>
+            { level === 3 ? (
+                <h1 className="text-3xl w-[45rem] text-center mb-10">Vous avez gagné <span className="font-semibold">{earnedPoints} points</span> grâce à ce quiz, en répondant correctement à <span className="font-semibold">{(correctAnswers / questionKeys.length) * 100} %</span> des questions.</h1>
+            ) : (
+                <>
+                    <h1 className="text-3xl w-[45rem] text-center">Vous avez répondu correctement à <span className="font-semibold">{(correctAnswers / questionKeys.length) * 100} %</span> des questions.</h1>
+                    <h3 className="text-xl w-[45rem] text-center mb-10">Vous n'avez pas gagné de points car ce n'était pas un quiz niveau 3.</h3>
+                </>
+            )}
         </div>
     );
 }

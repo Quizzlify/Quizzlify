@@ -5,13 +5,12 @@ import CountdownTimer from "@/components/Quiz/Countdown";
 interface QuestionsProps {
     nextStep: (step: string) => void;
     questions: Quiz['content'];
-    score: number | null;
-    setScore: (score: number) => void;
     selectedAnswers: number[];
     setSelectedAnswers: (update: (prevSelectedAnswers: number[]) => number[]) => void;
+    level: number | null;
 }
 
-const Questions: React.FC<QuestionsProps> = ({ nextStep, questions, score, setScore, selectedAnswers, setSelectedAnswers }) => {
+const Questions: React.FC<QuestionsProps> = ({ nextStep, questions, selectedAnswers, setSelectedAnswers, level }) => {
     const [questionIndex, setQuestionIndex] = useState(0);
     const [showAnswer, setShowAnswer] = useState(false);
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -38,12 +37,6 @@ const Questions: React.FC<QuestionsProps> = ({ nextStep, questions, score, setSc
     }
 
     const isLastQuestion = questionIndex + 1 === questionKeys.length;
-
-    useEffect(() => {
-        if (showAnswer && selectedAnswer === questions[questionKeys[questionIndex]].correctAnswer) {
-            setScore(score? + questions[questionKeys[questionIndex]].points : 0);
-        }
-    }, [showAnswer, selectedAnswer, questionIndex]);
 
     return (
         <div className="flex flex-col mb-4 mt-[5rem]">
@@ -78,11 +71,14 @@ const Questions: React.FC<QuestionsProps> = ({ nextStep, questions, score, setSc
       )}
 
       {!showAnswer && (
-        <div className="flex items-center justify-center p-6 bg-white rounded-lg shadow-md">
+        <div className="flex items-center justify-center p-6 h-[4rem] bg-white rounded-lg shadow-md">
             <CountdownTimer onTimeout={incrementQuestionIndex} />
-            <div className="ml-auto">
-                <span className="text-lg font-semibold">Points: {questions[questionKeys[questionIndex]].points}</span>
-            </div>
+            { level == 3 ?
+                <div className="ml-auto">
+                    <span className="text-lg font-semibold">Points: {questions[questionKeys[questionIndex]].points}</span>
+                </div>
+                : null
+            }
         </div>
       )}
       </div>

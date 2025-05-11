@@ -7,9 +7,10 @@ interface QuestionsProps {
     content: Quiz['content'];
     setContent: (content: Quiz['content']) => void;
     setCreerQuiz: (creerQuiz: boolean) => void;
+    level: number;
 }
 
-const Questions: React.FC<QuestionsProps> = ({ questionIndices, setQuestionIndices, content, setContent, setCreerQuiz }) => {
+const Questions: React.FC<QuestionsProps> = ({ questionIndices, setQuestionIndices, content, setContent, setCreerQuiz, level }) => {
     const addQuestions = () => {
         const newId = Date.now();
         setQuestionIndices([...questionIndices, newId]);
@@ -25,7 +26,7 @@ const Questions: React.FC<QuestionsProps> = ({ questionIndices, setQuestionIndic
             
             {questionIndices.map((id, index) => (
                 <div className="p-2" key={`q-${id}`}>
-                    <CreateQuestion questionNum={index + 1} removeQuestion={() => removeQuestion(id)} content={content} setContent={setContent} />
+                    <CreateQuestion questionNum={index + 1} removeQuestion={() => removeQuestion(id)} content={content} setContent={setContent} level={level} />
                 </div>
             ))}
 

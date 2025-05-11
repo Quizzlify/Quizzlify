@@ -8,16 +8,13 @@ import Levels from "@/components/Quiz/pages/Levels";
 import Results from "@/components/Quiz/pages/Results";
 import Details from "@/components/Quiz/pages/Details";
 import Questions from "@/components/Quiz/pages/Questions";
-import { useUser } from "@/provider/UserProvider";
 
 export default function Page() {
     const [activeStep, setActiveStep] = useState<string>("Catégorie");
     const [category, setCategory] = useState<string>('');
     const [level, setLevel] = useState<number | null>(null);
-    const [score, setScore] = useState<number | null>(null);
     const [quiz, setQuiz] = useState<Quiz | null>(null);
     const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
-    const { user, isAuthenticated } = useUser();
 
     async function getQuiz(category: string, level: number) {
         try {
@@ -57,9 +54,9 @@ export default function Page() {
             case "Détails":
                 return <Details nextStep={setActiveStep} />;
             case "Questions":
-                return quiz?.content ? <Questions questions={quiz.content} nextStep={setActiveStep} score={score} setScore={setScore} selectedAnswers={selectedAnswers} setSelectedAnswers={setSelectedAnswers} /> : <h1 className="text-2xl mt-10">Aucun quiz ne correspond à la catégorie ou au niveau choisi.</h1>;
+                return quiz?.content ? <Questions questions={quiz.content} nextStep={setActiveStep} selectedAnswers={selectedAnswers} setSelectedAnswers={setSelectedAnswers} level={level} /> : <h1 className="text-2xl mt-10">Aucun quiz ne correspond à la catégorie ou au niveau choisi.</h1>;
             case "Résultats":
-                return quiz?.content && score !== null && level !== null ? <Results questions={quiz.content} selectedAnswers={selectedAnswers} level={level} /> : null;
+                return quiz?.content && level !== null ? <Results questions={quiz.content} selectedAnswers={selectedAnswers} level={level} /> : null;
         }
     };
 

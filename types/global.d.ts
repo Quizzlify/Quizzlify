@@ -24,7 +24,7 @@ declare global {
       content: {
         [key: string]: {
           question: string;
-          points: number;
+          points: number | null;
           correctAnswer: number;
           answers: string[];
         };

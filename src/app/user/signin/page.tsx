@@ -62,7 +62,7 @@ export default function LoginPage() {
           <div className="flex flex-col gap-3 items-center mt-[4rem]">
             <Input label="Adresse e-mail" type="input" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired
               value={email} onChange={(e) => setEmail(e.target.value)} />
-            <Input label="Mot de passe" type="input" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired
+            <Input label="Mot de passe" type="password" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired
               value={password} onChange={(e) => setPassword(e.target.value)} />
             <p className="hover:text-[var(--accent)] transition-all cursor-pointer" onClick={() => goTo('./reset')}>J'ai oublié mon mot de passe.</p>
           </div>

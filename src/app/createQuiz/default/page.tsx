@@ -18,7 +18,7 @@ export default function Page() {
 
     // Quiz details
     const [category, setCategory] = useState<string>("");
-    const [level, setLevel] = useState<number>();
+    const [level, setLevel] = useState<number>(1);
 
     // Quiz content
     const [create, setCreate] = useState<boolean>(false); // indicateur si l'utilisateur a cliqué sur le bouton "Créer le quiz"
@@ -60,7 +60,7 @@ export default function Page() {
             case "Catégorie":
                 return <Categories nextStep={setActiveStep} setCategory={setCategory} />;
             case "Questions":
-                return <Questions questionIndices={questionIndices} setQuestionIndices={setQuestionIndices} content={content} setContent={setContent} setCreerQuiz={setCreate}/>;
+                return <Questions questionIndices={questionIndices} setQuestionIndices={setQuestionIndices} content={content} setContent={setContent} setCreerQuiz={setCreate} level={level}/>;
         }
     };
 
