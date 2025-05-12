@@ -1,3 +1,4 @@
+import { ArrowRight, Dice1, Dice2, Dice3, Dice5, FlaskConical, Gamepad, Info, Landmark, MedalIcon, Music } from "lucide-react";
 import { ReactElement, useState } from "react";
 
 interface CardsProps {
@@ -18,27 +19,27 @@ const maxLevel = 3;
 const CategoriesList: Interface[] = [
     {
         title: "Sports",
-        icon: <i className="fa-solid fa-medal text-4xl"></i>
+        icon: <MedalIcon className="text-4xl" />
     },
     {
         title: "Histoire",
-        icon: <i className="fa-solid fa-landmark text-4xl"></i>
+        icon: <Landmark className="text-4xl" />
     },
     {
         title: "Musique",
-        icon: <i className="fa-solid fa-music text-4xl"></i>
+        icon: <Music className="text-4xl" />
     },
     {
         title: "Jeux vidéo",
-        icon: <i className="fa-solid fa-gamepad text-4xl"></i>
+        icon: <Gamepad className="text-4xl" />
     },
     {
         title: "Science",
-        icon: <i className="fa-solid fa-flask-vial text-4xl"></i>
+        icon: <FlaskConical className="text-4xl" />
     },
     {
         title: "Autre",
-        icon: <i className="fa-solid fa-dice-five text-4xl"></i>
+        icon: <Dice5 className="text-4xl" />
     }
 ];
 
@@ -55,7 +56,7 @@ const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep, isCreateQuiz, setCate
                             <div
                                 className="bg-background p-6 rounded-xl border border-border hover:border-accent transition-all duration-300 flex flex-col justify-center items-center gap-5 group cursor-pointer hover:shadow-lg"
                                 key={level}
-                                onClick={() => isCreateQuiz ? (nextStep('Catégorie'), setLevel(level)) : (nextStep('Détails'), setLevel(level))}
+                                onClick={() => isCreateQuiz ? (nextStep('Questions'), setLevel(level)) : (nextStep('Détails'), setLevel(level))}
                             >
                                 {level >= 3 && (
                                     <button
@@ -64,7 +65,7 @@ const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep, isCreateQuiz, setCate
                                         onMouseLeave={() => setIsHovering(false)}
                                         aria-label={`Information Niveau ${level}`}
                                     >
-                                        <i className="fa-solid fa-info-circle"></i>
+                                        <Info className="text-2xl" />
 
                                         {isHovering && (
                                             <div className="absolute top-1/2 right-[-16.5rem] transform -translate-y-1/2 w-64 p-4 bg-background rounded-lg shadow-lg text-sm text-foreground-secondary z-50 border border-border">
@@ -83,12 +84,14 @@ const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep, isCreateQuiz, setCate
                                 )}
 
                                 <div className="flex items-center justify-center text-accent">
-                                    <i className={`fa-solid fa-${level} text-4xl`}></i>
+                                    {level === 1 && <Dice1 className="text-4xl" />}
+                                    {level === 2 && <Dice2 className="text-4xl" />}
+                                    {level === 3 && <Dice3 className="text-4xl" />}
                                 </div>
 
                                 <div className="flex flex-row relative items-center justify-center w-full text-xl">
                                     <div>Niveau {level}</div>
-                                    <i className="fa-solid fa-arrow-right text-lg absolute right-10 opacity-0 group-hover:opacity-100 group-hover:right-[-5px] transition-all duration-300 text-accent"></i>
+                                    <ArrowRight size={16} className="absolute right-10 opacity-0 group-hover:opacity-100 group-hover:right-[-5px] transition-all duration-300 text-accent" />
                                 </div>
                             </div>
                         )
@@ -101,7 +104,7 @@ const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep, isCreateQuiz, setCate
                             className="bg-background p-6 rounded-xl border border-border hover:border-accent transition-all duration-300 flex flex-col justify-center items-center gap-5 group cursor-pointer hover:shadow-lg"
                             key={index}
                             onClick={() => {
-                                isCreateQuiz ? nextStep('Questions') : nextStep('Niveau')
+                                nextStep('Niveau')
                                 setCategory(categorie.title)
                             }}
                         >
@@ -111,7 +114,7 @@ const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep, isCreateQuiz, setCate
 
                             <div className="flex flex-row relative items-center justify-center w-full text-xl">
                                 <div>{categorie.title}</div>
-                                <i className="fa-solid fa-arrow-right text-lg absolute right-10 opacity-0 group-hover:opacity-100 group-hover:right-[-5px] transition-all duration-300 text-accent"></i>
+                                <ArrowRight size={16} className="absolute right-10 opacity-0 group-hover:opacity-100 group-hover:right-[-5px] transition-all duration-300 text-accent" />
                             </div>
                         </div>
                     ))}
