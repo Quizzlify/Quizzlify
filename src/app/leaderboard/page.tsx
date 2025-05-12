@@ -19,6 +19,7 @@ export default function Page() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        if (!user) return;
         async function getUsers() {
             try {
                 setIsLoading(true);
@@ -35,7 +36,7 @@ export default function Page() {
                             _id: userList._id,
                             username: userList.username,
                             score: userList.score,
-                            you: user?._id === userList._id
+                            you: user && user._id === userList._id ? true : false
                         };
                     });
 
@@ -55,7 +56,7 @@ export default function Page() {
 
     function getUserRank() {
         if (userList !== null && user) {
-            const sortedList = userList.sort((a, b) => b.score - a.score);
+            const sortedList = [...userList].sort((a, b) => b.score - a.score);
             const userRank = sortedList.findIndex((userList) => userList._id === user._id);
             if (userRank === -1) return 0;
 
