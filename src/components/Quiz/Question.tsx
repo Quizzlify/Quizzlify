@@ -8,27 +8,50 @@ interface QuestionProps {
     onAnswerSelect: (answerIndex: number) => void;
 }
 
-const Question: React.FC<QuestionProps> = ({ answers, correctAnswer, selectedAnswer, showAnswer, onAnswerSelect }) => {
+const Question: React.FC<QuestionProps> = ({
+    answers,
+    correctAnswer,
+    selectedAnswer,
+    showAnswer,
+    onAnswerSelect
+}) => {
     return (
-        <div className="grid grid-cols-2 grid-rows-2 gap-4 p-4">
+        <div className="grid grid-cols-2 gap-4">
             {answers.map((answer, index) => {
                 const isSelected = index === selectedAnswer;
                 const isCorrect = index === correctAnswer;
-                const baseClass = index === 0 ? 'bg-[#FD6161]' : index === 1 ? 'bg-accent' : index === 2 ? 'bg-[#AD61FD]' : index === 3 ? 'bg-[#6169FD]' : '';
-                const opacityClass = showAnswer && !isSelected && !isCorrect ? 'opacity-70' : 'opacity-100';
+
+                const stateClasses = showAnswer
+                    ? (isCorrect
+                        ? "bg-green-500/20 border-green-500 text-green-500"
+                        : (isSelected
+                            ? "bg-red-500/20 border-red-500 text-red-500 opacity-80"
+                            : "opacity-50 border-border"))
+                    : (isSelected
+                        ? "bg-accent/20 border-accent"
+                        : "bg-background-secondary border-border hover:border-accent cursor-pointer");
 
                 return (
                     <div
                         key={index}
                         onClick={() => !showAnswer && onAnswerSelect(index)}
-                        className={`
-                            ${baseClass}
-                            ${opacityClass}
-                            w-[380px] h-[79px] text-white p-6 flex items-center justify-center rounded-lg shadow-md transition-all
-                        `}
+                        className={`relative w-full p-4 rounded-xl border-2 transition-all duration-300 flex items-center space-x-4 text-foreground ${stateClasses}`}
                     >
-                        {isCorrect && showAnswer ? <Check color="green" /> : isSelected ? <X color="red" /> : null}
-                        <strong>{index === 0 ? 'A' : index === 1 ? 'B' : index === 2 ? 'C' : index === 3 ? 'D' : ''}. </strong>{answer}
+                        <div className="w-10 h-10 flex items-center justify-center rounded-full bg-background-tertiary text-foreground-secondary font-bold">
+                            {String.fromCharCode(65 + index)}
+                        </div>
+
+                        <span className="flex-grow text-left">{answer}</span>
+
+                        {showAnswer && (
+                            <div className="absolute right-4">
+                                {isCorrect ? (
+                                    <Check className="text-green-500" size={24} />
+                                ) : (isSelected && !isCorrect) ? (
+                                    <X className="text-red-500" size={24} />
+                                ) : null}
+                            </div>
+                        )}
                     </div>
                 );
             })}
