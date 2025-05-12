@@ -2,7 +2,7 @@
 
 import { useToast } from "@/provider/ToastProvider";
 import { useUser } from "@/provider/UserProvider";
-import { BarChart3, BookOpen, LogOut, Settings, UserIcon, Menu, X } from "lucide-react";
+import { BarChart3, BookOpen, LogOut, Settings, UserIcon, Menu, X, PlusCircle, Lightbulb, TrophyIcon, ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -124,7 +124,7 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
                                 onClick={() => isAuthenticated ? goTo('/createQuiz/default') : goTo('/createQuiz/noAccount')}
                             >
                                 <div className="flex items-center space-x-2">
-                                    <i className="fa-solid fa-square-plus"></i>
+                                    <PlusCircle size={18} className="text-accent" />
                                     <span>Créer votre quiz</span>
                                 </div>
                                 <ActiveIndicator isActive={currentPage === "create-quiz"} />
@@ -135,7 +135,7 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
                                 onClick={() => goTo('/quiz')}
                             >
                                 <div className="flex items-center space-x-2">
-                                    <i className="fa-solid fa-lightbulb"></i>
+                                    <Lightbulb size={18} className="text-accent" />
                                     <span>Quiz</span>
                                 </div>
                                 <ActiveIndicator isActive={currentPage === "quiz"} />
@@ -146,7 +146,7 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
                                 onClick={() => goTo('/leaderboard')}
                             >
                                 <div className="flex items-center space-x-2">
-                                    <i className="fa-solid fa-ranking-star"></i>
+                                    <TrophyIcon size={18} className="text-accent" />
                                     <span>Classement</span>
                                 </div>
                                 <ActiveIndicator isActive={currentPage === "leaderboard"} />
@@ -164,7 +164,7 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
                                             className="w-8 h-8 rounded-full border border-border"
                                         />
                                         <span className="max-w-[120px] truncate hidden sm:block">{user?.username}</span>
-                                        <i className={`fa-solid fa-chevron-down text-sm transition-transform ${dropdownOpen ? 'rotate-180' : ''}`}></i>
+                                        <ChevronDown size={18} className={`text-accent transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
                                     </button>
 
                                     {dropdownOpen && (
