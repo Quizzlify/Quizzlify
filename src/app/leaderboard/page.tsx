@@ -14,12 +14,12 @@ interface UserList {
 };
 
 export default function Page() {
-    const { user } = useUser();
+    const { user, isLoadingUser } = useUser();
     const [userList, setUserList] = useState<UserList[] | null>(null)
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        if (!user) return;
+        if (isLoadingUser) return;
         async function getUsers() {
             try {
                 setIsLoading(true);
@@ -36,7 +36,7 @@ export default function Page() {
                             _id: userList._id,
                             username: userList.username,
                             score: userList.score,
-                            you: user && user._id === userList._id ? true : false
+                            you: user ? userList._id == user._id : false
                         };
                     });
 
