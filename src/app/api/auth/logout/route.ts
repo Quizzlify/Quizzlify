@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     } catch (error) {
         console.error("Error during logout:", error);
         return NextResponse.json(
-            JSON.stringify({ success: false, message: `Error during logout: ${error}` }),
+            JSON.stringify({ success: false, message: error }),
             { status: 500 }
         );
     }

@@ -24,11 +24,11 @@ export async function POST(req: Request) {
         const hash = new SHA3(512);
         hash.update(password);
         const hashedPassword = hash.digest("hex");
-
         const isPasswordValid = hashedPassword === user.password
+
         if (!isPasswordValid) {
             return NextResponse.json(
-                { success: false, error: `Mot de passe incorrect: ${password}` },
+                { success: false, error: "L'identifiant ou le mot de passe est incorrect." },
                 { status: 401 }
             );
         }
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
     } catch (error) {
         console.error("Erreur lors de la connexion:", error);
         return NextResponse.json(
-            { success: false, error: `Erreur lors de la connexion: ${error}` },
+            { success: false, error: error },
             { status: 401 }
         );
     }

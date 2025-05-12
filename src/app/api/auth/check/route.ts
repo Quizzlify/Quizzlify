@@ -50,7 +50,7 @@ export async function GET(req: Request) {
     } catch (error) {
         console.error("Error checking authentication:", error);
         return new Response(
-            JSON.stringify({ success: false, message: `Error checking authentication: ${error}` }),
+            JSON.stringify({ success: false, message: error }),
             { status: 500 }
         );
     }
