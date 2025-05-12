@@ -8,51 +8,60 @@ interface BreadcrumbProps {
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({ isCreateQuiz, activeStep, onStepChange }) => {
     const steps = ["Catégorie", "Niveau", "Détails", "Questions", "Résultats"];
-    
-    const isClickable = (step: string) => {
-        const stepIndex = steps.indexOf(step);
-        const activeIndex = steps.indexOf(activeStep);
-        return stepIndex < activeIndex;
-    };
+
+    const getStepStatus = (step: string) => {
+        const current = steps.indexOf(activeStep);
+        const active = steps.indexOf(step);
+        return {
+            isActive: active === current,
+            isCompleted: active < current,
+            isUpcoming: active > current,
+        }
+    }
 
     return (
-        <div className="w-full max-w-4xl mx-auto mb-6">
-            <div className="flex flex-wrap justify-center items-center">
+        <div className="w-full max-w-5xl mx-auto mb-6 px-4">
+            <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-3">
                 {steps.map((step, index) => {
-                    const isActive = step === activeStep;
-                    const isPreviousActive = isClickable(step);
-                    
+                    const { isActive, isCompleted } = getStepStatus(step);
+
                     return (
-                        <div key={step}>
-                            <div 
-                                className={`flex items-center ${isPreviousActive ? 'cursor-pointer' : 'cursor-default'}`}
-                                onClick={() => isPreviousActive ? onStepChange(step) : null}
+                        <React.Fragment key={step}>
+                            <div
+                                className={`flex items-center gap-2 transition-all duration-200 ${isCompleted ? "cursor-pointer group" : "cursor-default"
+                                    }`}
+                                onClick={() => isCompleted && onStepChange(step)}
                             >
-                                <div 
-                                    className={`flex items-center justify-center w-10 h-10 rounded-full font-medium text-sm
-                                    ${isActive ? 'bg-accent text-white' : 
-                                      isPreviousActive ? 'bg-accent-secondary text-accent border border-accent' : 
-                                      'bg-background text-foreground-secondary border border-border'}`}
+                                <div
+                                    className={`w-9 h-9 flex items-center justify-center rounded-full text-sm font-medium transition-all duration-200
+                                    ${isActive
+                                            ? "bg-accent text-white"
+                                            : isCompleted
+                                                ? "bg-accent-secondary text-accent border border-accent group-hover:brightness-110"
+                                                : "bg-background text-foreground-secondary border border-border"
+                                        }`}
                                 >
                                     {index + 1}
                                 </div>
-                                <span 
-                                    className={`mx-2 hidden md:block 
-                                    ${isActive ? 'text-accent font-medium' : 
-                                      isPreviousActive ? 'text-accent' : 
-                                      'text-foreground-secondary'}`}
+                                <span
+                                    className={`hidden md:block text-sm transition-colors duration-200 ${isActive
+                                            ? "text-accent font-semibold"
+                                            : isCompleted
+                                                ? "text-accent"
+                                                : "text-foreground-secondary"
+                                        }`}
                                 >
                                     {step}
                                 </span>
                             </div>
-                            
+
                             {index < steps.length - 1 && (
-                                <div 
-                                    className={`w-8 h-[2px] mx-1 hidden md:block
-                                    ${index < steps.indexOf(activeStep) ? 'bg-accent' : 'bg-border'}`}
-                                ></div>
+                                <div
+                                    className={`hidden md:block h-[2px] w-8 transition-colors duration-200 ${index < steps.indexOf(activeStep) ? "bg-accent" : "bg-border"
+                                        }`}
+                                />
                             )}
-                        </div>
+                        </React.Fragment>
                     );
                 })}
             </div>
