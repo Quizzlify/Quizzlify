@@ -22,7 +22,7 @@ const LeaderBoard: React.FC<CardsProps> = ({ list }) => {
             <div
                 key={index}
                 className={`card w-[calc(100%-8rem)] flex justify-between items-center h-[80px] transition-all duration-300
-                        ${item.you ? 'bg-accent-secondary border-accent backdrop-blur-2xl sticky bottom-4 z-40' : 'z-1 glass-effect bg-card-bg border-border'}`}
+                        ${item.you ? 'bg-accent-secondary border-accent backdrop-blur-2xl sticky bottom-4 z-40' : 'z-1 glass-effect bg-background-secondary border-border'}`}
             >
                 <div className="flex items-center gap-4">
                     <div className={`w-[60px] h-[60px] rounded-2xl flex items-center justify-center text-white font-bold text-xl ${getRankColor(index)}`}>
