@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
+import { Trophy, Star, XCircle, Check, X } from "lucide-react";
 import Question from "@/components/Quiz/Question";
 import { useUser } from "@/provider/UserProvider";
 import { useToast } from "@/provider/ToastProvider";
@@ -9,24 +10,44 @@ interface ResultsProps {
     level: number;
 }
 
-interface UserList {
-    username: string,
-    score: number,
-    rank: number,
-    you: boolean
-};
-
 const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) => {
     const questionKeys = Object.keys(questions).map(Number);
-    const [earnedPoints, setEarnedPoints] = useState<number | null>(null);
+    const [earnedPoints, setEarnedPoints] = useState<number>(0);
     const [currentScore, setCurrentScore] = useState<number | null>(null);
-    const [correctAnswers, setCorrectAnswers] = useState<number>(0);
     const hasSetQuizCompleted = useRef(false);
-    const { user, isAuthenticated } = useUser();
+    const { user } = useUser();
     const { addToast } = useToast();
 
+    // Calculate correct answers and score
+    const { correctAnswers, score, totalPossibleScore } = useMemo(() => {
+        const correctAnswersCount = questionKeys.reduce((count, key, index) => {
+            return questions[key].correctAnswer === selectedAnswers[index] ? count + 1 : count;
+        }, 0);
+
+        const calculatedScore = level === 3
+            ? questionKeys.reduce((total, key, index) => {
+                return questions[key].correctAnswer === selectedAnswers[index] 
+                    ? total + (questions[key]?.points || 0) 
+                    : total;
+            }, 0)
+            : correctAnswersCount;
+
+        const totalScore = level === 3
+            ? questionKeys.reduce((total, key) => total + (questions[key]?.points || 0), 0)
+            : questionKeys.length;
+
+        return {
+            correctAnswers: correctAnswersCount,
+            score: calculatedScore,
+            totalPossibleScore: totalScore
+        };
+    }, [questions, selectedAnswers, level]);
+
+    // Fetch user score
     useEffect(() => {
         async function getUserScore(id: string) {
+            if (level !== 3) return;
+            
             try {
                 const res = await fetch("/api/user/getScore", {
                     method: "POST",
@@ -38,111 +59,177 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) 
                 if (response.success) {
                     setCurrentScore(response.score);
                 } else {
-                    console.log("Une erreur est survenue: ", response.error);
+                    console.error("Erreur lors de la récupération du score: ", response.error);
                 }
             } catch (error) {
-                console.log("Une erreur est survenue avec la connexion à la DB: ", error);
+                console.error("Erreur de connexion à la DB: ", error);
             }
         }
-        if (level === 3) {
-            getUserScore(user?._id);
+
+        if (user?._id) {
+            getUserScore(user._id);
         }
-    }, [user]);
+    }, [user, level]);
 
-    async function setUserScore(id: string, score: number) {
-        try {
-            const res = await fetch("/api/user/setScore", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id, score })
-            });
-            const response = await res.json();
-            if (!response.success) {
-                console.log("Une erreur est survenue: ", response.error);
-            }
-
-        } catch (error) {
-            console.log("Une erreur est survenue avec la connexion à la DB: ", error);
-        }
-    }
-
+    // Update user score and add points
     useEffect(() => {
-        if (level === 3) {
-            let points = 0;
-            questionKeys.forEach((key, index) => {
-                if (questions[key].correctAnswer === selectedAnswers[index]) {
-                    points += questions[key]?.points || 0;
+        if (level !== 3 || !user?._id) return;
+
+        async function updateUserScore() {
+            const points = questionKeys.reduce((total, key, index) => {
+                return questions[key].correctAnswer === selectedAnswers[index] 
+                    ? total + (questions[key]?.points || 0) 
+                    : total;
+            }, 0);
+
+            if (points === 0 || currentScore === null) return;
+
+            try {
+                const res = await fetch("/api/user/setScore", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ 
+                        id: user?._id, 
+                        score: currentScore + points 
+                    })
+                });
+                const response = await res.json();
+
+                if (response.success) {
+                    setEarnedPoints(points);
+                    addToast(`${points} points ont été ajoutés !`, "success");
+                } else {
+                    console.error("Erreur lors de la mise à jour du score: ", response.error);
                 }
-            });
-            setEarnedPoints(points);
-            if (user && currentScore !== null && earnedPoints !== null) {
-                setUserScore(user._id, currentScore + earnedPoints);
-                addToast(earnedPoints + " points ont été ajouté !", "success");
+            } catch (error) {
+                console.error("Erreur de connexion à la DB: ", error);
             }
         }
-    }, [currentScore, earnedPoints]);
 
-    useEffect(() => {
-        setCorrectAnswers(questionKeys.reduce((count, key, index) => {
-            const isCorrectAnswer = (questions[key].correctAnswer === selectedAnswers[index])
-            return count + (isCorrectAnswer ? 1 : 0);
-        }, 0));
-    }, [questions, selectedAnswers]);
+        updateUserScore();
+    }, [currentScore, user, level]);
 
+    // Mark quiz as completed
     useEffect(() => {
-        if (user?._id && !hasSetQuizCompleted.current ) {
+        async function setQuizCompleted(id: string) {
+            try {
+                const res = await fetch("/api/user/setQuizCompleted", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ id })
+                });
+                const response = await res.json();
+                if (!response.success) {
+                    console.error("Erreur lors de la complétion du quiz: ", response.error);
+                }
+            } catch (error) {
+                console.error("Erreur de connexion à la DB: ", error);
+            }
+        }
+
+        if (user?._id && !hasSetQuizCompleted.current) {
             hasSetQuizCompleted.current = true;
             setQuizCompleted(user._id);
         }
     }, [user]);
 
-    async function setQuizCompleted(id: string) {
-        try {
-            const res = await fetch("/api/user/setQuizCompleted", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id })
-            });
-            const response = await res.json();
-            if (!response.success) {
-                console.log("Une erreur est survenue: ", response.error);
-            }
-
-        } catch (error) {
-            console.log("Une erreur est survenue avec la connexion à la DB: ", error);
+    const scorePercentage = (score / totalPossibleScore) * 100;
+    const resultTier = useMemo(() => {
+        if (scorePercentage >= 90) {
+            return {
+                title: "Excellent !",
+                description: "Bravo, vous avez une connaissance exceptionnelle !",
+                icon: <Trophy className="text-yellow-500" size={48} />,
+                colorClass: "bg-yellow-500/20 border-yellow-500",
+                titleColor: "text-yellow-500"
+            };
+        } else if (scorePercentage >= 70) {
+            return {
+                title: "Très bien !",
+                description: "Vous avez très bien performé !",
+                icon: <Star className="text-accent" size={48} />,
+                colorClass: "bg-accent/20 border-accent",
+                titleColor: "text-accent"
+            };
+        } else if (scorePercentage >= 50) {
+            return {
+                title: "Pas mal !",
+                description: "Continuez à vous améliorer !",
+                icon: <Star className="text-blue-500" size={48} />,
+                colorClass: "bg-blue-500/20 border-blue-500",
+                titleColor: "text-blue-500"
+            };
+        } else {
+            return {
+                title: "Réessayez !",
+                description: "Ne vous découragez pas, chaque quiz est une occasion d'apprendre.",
+                icon: <XCircle className="text-red-500" size={48} />,
+                colorClass: "bg-red-500/20 border-red-500",
+                titleColor: "text-red-500"
+            };
         }
-    }
+    }, [scorePercentage]);
 
     return (
-        <div className="mt-5 flex items-center flex-col gap-10">
-            {Object.values(questions).map((question, index) => (
-                <div key={questionKeys[index]} className="flex flex-col">
-                    <div className="flex flex-row gap-5 items-center w-full">
-                        <h1 className="text-3xl">Question {index + 1}</h1>
-                        { level == 3 ?
-                            <span className="text-lg ml-auto mr-5">Points: {questions[questionKeys[index]].points}</span> : null
-                        }
+        <div className="w-full max-w-4xl mx-auto animate-slide-up">
+            <div className={`
+                ${resultTier.colorClass} 
+                border-2 rounded-2xl p-8 text-center 
+                flex flex-col items-center justify-center 
+                bg-background-tertiary shadow-lg
+            `}>
+                <div className="mb-6 animate-bounce">
+                    {resultTier.icon}
+                </div>
+
+                <h1 className={`
+                    text-4xl font-bold mb-4 
+                    ${resultTier.titleColor}
+                `}>
+                    {resultTier.title}
+                </h1>
+
+                <p className="text-foreground-secondary mb-6 max-w-xl text-lg">
+                    {resultTier.description}
+                </p>
+
+                <div className="bg-background-secondary rounded-xl p-6 w-full max-w-md shadow-md">
+                    <div className="flex justify-between items-center mb-4">
+                        <span className="text-foreground-secondary text-lg">Score Total</span>
+                        <span className="font-bold text-2xl">
+                            {score} / {totalPossibleScore}
+                        </span>
                     </div>
 
-                    <Question
-                        key={questionKeys[index]}
-                        answers={question.answers}
-                        correctAnswer={question.correctAnswer}
-                        selectedAnswer={selectedAnswers[index]}
-                        showAnswer={true}
-                        onAnswerSelect={() => {}}
-                    />
-                </div>
-            ))}
+                    <div className="grid grid-cols-2 gap-2">
+                        {questionKeys.map((key, index) => {
+                            const isCorrect = selectedAnswers[key - 1] === questions[key].correctAnswer;
+                            return (
+                                <div
+                                    key={key}
+                                    className={`
+                                        p-3 rounded-lg flex items-center justify-between
+                                        transition-all duration-300 ease-in-out
+                                        ${isCorrect ? 'bg-green-500/20 text-green-500 hover:bg-green-500/30' : 'bg-red-500/20 text-red-500 hover:bg-red-500/30'}
+                                        hover:scale-105 cursor-default
+                                    `}
+                                >
+                                    <span className="font-medium">Question {index + 1} : {String.fromCharCode(65 + questions[key].correctAnswer)}</span>
+                                    {isCorrect ? <Check size={24} /> : <X size={24} />}
+                                </div>
+                            );
+                        })}
+                    </div>
 
-            { level === 3 ? (
-                <h1 className="text-3xl w-[45rem] text-center mb-10">Vous avez gagné <span className="font-semibold">{earnedPoints} points</span> grâce à ce quiz, en répondant correctement à <span className="font-semibold">{(correctAnswers / questionKeys.length) * 100} %</span> des questions.</h1>
-            ) : (
-                <>
-                    <h1 className="text-3xl w-[45rem] text-center">Vous avez répondu correctement à <span className="font-semibold">{(correctAnswers / questionKeys.length) * 100} %</span> des questions.</h1>
-                    <h3 className="text-xl w-[45rem] text-center mb-10">Vous n'avez pas gagné de points car ce n'était pas un quiz niveau 3.</h3>
-                </>
-            )}
+                    {level === 3 && earnedPoints > 0 && (
+                        <div className="mt-4 text-center text-foreground-secondary">
+                            <p className="text-sm">
+                                Vous avez gagné <span className="font-bold text-accent">{earnedPoints} points</span> supplémentaires !
+                            </p>
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
     );
 }
