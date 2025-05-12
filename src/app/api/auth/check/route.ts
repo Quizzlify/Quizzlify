@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { verify } from "jsonwebtoken";
 import clientPromise from "@/config/MongoDB";
 import { ObjectId } from "mongodb";
+import { NextResponse } from "next/server";
 
 export async function GET() {
     try {
@@ -12,7 +13,7 @@ export async function GET() {
         if (!JWT_SECRET) throw new Error("JWT_SECRET is not defined in environment variables");
 
         if (!token) {
-            return new Response(
+            return new NextResponse(
                 JSON.stringify({ success: false, message: "Token not found" }),
                 { status: 401 }
             );
@@ -22,7 +23,7 @@ export async function GET() {
         const userId = typeof decoded === 'object' ? decoded.id : null;
 
         if (!userId) {
-            return new Response(
+            return new NextResponse(
                 JSON.stringify({ success: false, message: "Invalid token" }),
                 { status: 401 }
             );
@@ -35,7 +36,7 @@ export async function GET() {
         const user = await collection.findOne({ _id: new ObjectId(userId) });
 
         if (!user) {
-            return new Response(
+            return new NextResponse(
                 JSON.stringify({ success: false, message: "User not found" }),
                 { status: 404 }
             );
@@ -47,13 +48,13 @@ export async function GET() {
         console.log("User found:", userWithoutPassword);
         
         
-        return new Response(
+        return new NextResponse(
             JSON.stringify({ success: true, user: userWithoutPassword }),
             { status: 200 }
         );
     } catch (error) {
         console.error("Error checking authentication:", error);
-        return new Response(
+        return new NextResponse(
             JSON.stringify({ success: false, message: error }),
             { status: 500 }
         );
