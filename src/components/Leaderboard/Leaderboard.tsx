@@ -4,37 +4,37 @@ interface CardsProps {
 }
 
 const LeaderBoard: React.FC<CardsProps> = ({ list }) => {
-
     const sortedList = [...list].sort((a, b) => b.score - a.score);
 
+    const getRankColor = (index: number) => {
+        switch (index) {
+            case 0: return 'bg-amber-500';
+            case 1: return 'bg-gray-400';
+            case 2: return 'bg-orange-600';
+            default: return 'bg-[#2a2a2a]';
+        }
+    };
+
     return (
-        <div className="w-full flex flex-col items-center">
+        <div className="w-full flex flex-col items-center gap-4">
             {sortedList.map((item: { username: string; score: number; you?: boolean; }, index: number) => {
                 return (
                     <div
-                        className={`w-[calc(100%-16rem)]
-                                    flex
-                                    my-2
-                                    h-[80px]
-                                    rounded-2xl
-                                    justify-between
-                                    text-2xl
-                                    group
-                                    transition
-                                    drop-shadow-leaderboard
-                                    items-center
-                                    p-4
-                                    ${item.you ? 'bg-accent-secondary' : 'bg-background-tertiary'}
-                                `}
                         key={index}
+                        className={`card w-[calc(100%-8rem)] flex justify-between items-center h-[80px] transition-all duration-300
+                                ${item.you ? 'bg-accent-secondary border-accent' : 'glass-effect bg-card-bg border-border'}`}
                     >
-                        <span className="flex justify-start items-center gap-4 font-bold">
-                            <div className="w-[60px] h-[60px] rounded-2xl bg-[#404040] flex  text-center text-white items-center justify-center">
+                        <div className="flex items-center gap-4">
+                            <div className={`w-[60px] h-[60px] rounded-2xl flex items-center justify-center text-white font-bold text-xl ${getRankColor(index)}`}>
                                 #{index + 1}
                             </div>
-                            {item?.you ? <span className="text-accent font-bold">Toi</span> : <span>{item.username}</span>}
-                        </span>
-                        <span className="flex justify-end text-accent font-medium italic">{item.score}</span>
+                            <div className={`text-lg ${item.you ? 'text-accent font-bold' : 'text-foreground'}`}>
+                                {item.you ? 'Toi' : item.username}
+                            </div>
+                        </div>
+                        <div className="text-gradient font-semibold italic text-xl">
+                            {item.score}
+                        </div>
                     </div>
                 );
             })}

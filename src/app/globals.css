@@ -76,7 +76,7 @@
 }
 
 .card {
-    @apply bg-card-bg rounded-2xl shadow-lg border border-border p-6;
+    @apply rounded-2xl shadow-lg border border-border p-6;
 }
 
 .btn-primary {
