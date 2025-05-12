@@ -1,12 +1,11 @@
 'use client'
 
-import '@fortawesome/fontawesome-free/css/all.min.css';
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from 'react';
 import HomeCard from '../components/Home/HomeCard';
 import NavBar from "@/components/Utilities/NavBar";
 import Loading from '@/components/Utilities/Loading';
-import { Play, Plus, PlusCircle, PlusSquare, Trophy } from 'lucide-react';
+import { Play, Plus, Trophy } from 'lucide-react';
 
 export default function Home() {
     const router = useRouter();
