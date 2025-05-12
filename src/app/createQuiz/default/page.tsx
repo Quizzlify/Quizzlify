@@ -58,7 +58,7 @@ export default function Page() {
         } else if (!category && create || !level && create  || !title && create) {
             addToast("Veuillez remplir tous les champs avant de créer le quiz.", "error");
         }
-    }, [category, level, title, content, create]);
+    }, [category, level, title, content, create, addToast, createQuiz]);
 
     const renderStepContent = () => {
         switch (activeStep) {

@@ -3,7 +3,7 @@ import { verify } from "jsonwebtoken";
 import clientPromise from "@/config/MongoDB";
 import { ObjectId } from "mongodb";
 
-export async function GET(req: Request) {
+export async function GET() {
     try {
         const cookieStore = cookies();
         const token = (await cookieStore).get("token")?.value;
@@ -41,8 +41,12 @@ export async function GET(req: Request) {
             );
         }
 
-        const { password, ...userWithoutPassword } = user;
+        const userWithoutPassword = { ...user };
+        delete userWithoutPassword.password;
 
+        console.log("User found:", userWithoutPassword);
+        
+        
         return new Response(
             JSON.stringify({ success: true, user: userWithoutPassword }),
             { status: 200 }

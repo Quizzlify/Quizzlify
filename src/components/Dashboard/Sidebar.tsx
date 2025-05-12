@@ -1,4 +1,4 @@
-import { BarChart, Book, Home, LogOut, Settings, Users } from "lucide-react";
+import { BarChart, Book, Home, LogOut, Settings } from "lucide-react";
 import { FC } from "react";
 import Link from 'next/link';
 

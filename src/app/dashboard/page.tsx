@@ -4,7 +4,7 @@ import { Sidebar } from '@/components/Dashboard/Sidebar';
 import Loading from '@/components/Utilities/Loading';
 import { useToast } from '@/provider/ToastProvider';
 import { useUser } from '@/provider/UserProvider';
-import { BarChart, Book, Home, LogOut, Settings, Users } from 'lucide-react';
+import { Book } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -81,6 +81,7 @@ const DashboardPage = () => {
             addToast('Déconnexion réussie !', 'success');
             router.push('/user/signin');
         } catch (error) {
+            console.error('Erreur lors de la déconnexion:', error);
             addToast('Erreur lors de la déconnexion', 'error');
         }
     };

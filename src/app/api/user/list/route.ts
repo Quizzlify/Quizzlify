@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/config/MongoDB";
 
-export async function POST(req: Request) {
+export async function POST() {
     try {
         const client = await clientPromise;
         const db = client.db("quizzlify");
@@ -17,8 +17,8 @@ export async function POST(req: Request) {
         }
 
         const userWithoutInfo = users.map((user) => {
-            const { password, updated_at, email, created_at, ...userWithoutInfo } = user;
-            return userWithoutInfo;
+            const { _id, username, role, score, quizCompleted } = user;
+            return { _id, username, role, score, quizCompleted };
         });
   
         return NextResponse.json({ success: true, data: userWithoutInfo });

@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { Trophy, Star, XCircle, Check, X } from "lucide-react";
-import Question from "@/components/Quiz/Question";
 import { useUser } from "@/provider/UserProvider";
 import { useToast } from "@/provider/ToastProvider";
 
@@ -19,7 +18,7 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) 
     const { addToast } = useToast();
 
     // Calculate correct answers and score
-    const { correctAnswers, score, totalPossibleScore } = useMemo(() => {
+    const { score, totalPossibleScore } = useMemo(() => {
         const correctAnswersCount = questionKeys.reduce((count, key, index) => {
             return questions[key].correctAnswer === selectedAnswers[index] ? count + 1 : count;
         }, 0);
@@ -41,7 +40,7 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) 
             score: calculatedScore,
             totalPossibleScore: totalScore
         };
-    }, [questions, selectedAnswers, level]);
+    }, [questions, selectedAnswers, level, questionKeys]);
 
     // Fetch user score
     useEffect(() => {
@@ -107,7 +106,7 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) 
         }
 
         updateUserScore();
-    }, [currentScore, user, level]);
+    }, [currentScore, user, level, questionKeys, questions, selectedAnswers, addToast]);
 
     // Mark quiz as completed
     useEffect(() => {

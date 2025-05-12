@@ -1,6 +1,5 @@
 import CreateQuestion from "@/components/CreateQuiz/CreateQuestion";
 import QButton from "@/components/Utilities/QButton";
-import { useState } from "react";
 
 interface QuestionsProps {
     questionIndices: number[];
@@ -12,8 +11,6 @@ interface QuestionsProps {
 }
 
 const Questions: React.FC<QuestionsProps> = ({ questionIndices, setQuestionIndices, content, setContent, setCreerQuiz, level }) => {
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    
     const addQuestions = () => {
         const newId = Date.now();
         setQuestionIndices([...questionIndices, newId]);

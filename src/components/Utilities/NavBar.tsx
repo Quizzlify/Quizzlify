@@ -3,6 +3,8 @@
 import { useToast } from "@/provider/ToastProvider";
 import { useUser } from "@/provider/UserProvider";
 import { BarChart3, BookOpen, LogOut, Settings, UserIcon, Menu, X, PlusCircle, Lightbulb, TrophyIcon, ChevronDown } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -49,6 +51,7 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
             addToast("Déconnexion réussie", "success");
             router.push("/");
         } catch (error) {
+            console.error("Erreur lors de la déconnexion:", error);
             addToast("Erreur lors de la déconnexion", "error");
         }
     }
@@ -103,10 +106,10 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
                     }`}>
                     <div className="flex items-center justify-between">
                         <div className="flex items-center">
-                            <a href="/" className="flex items-center">
-                                <img src='/logo.png' className="w-10 h-10 mr-3" alt="Logo" />
+                            <Link href="/" className="flex items-center">
+                                <Image src='/logo.png' width={40} height={40} className="mr-3" alt="Logo" />
                                 <span className="text-xl font-semibold hidden sm:block">Quizzlify</span>
-                            </a>
+                            </Link>
                         </div>
 
                         <div className="md:hidden">
@@ -158,9 +161,10 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
                                         className={`flex items-center space-x-2 px-3 py-2 rounded-lg ${currentPage === "user" ? "text-accent" : ""} hover:bg-background-tertiary`}
                                         onClick={() => setDropdownOpen(!dropdownOpen)}
                                     >
-                                        <img
+                                        <Image
                                             src={gravatar || "https://www.gravatar.com/avatar/0?d=identicon"}
                                             alt="User Avatar"
+                                            width={32}
                                             className="w-8 h-8 rounded-full border border-border"
                                         />
                                         <span className="max-w-[120px] truncate hidden sm:block">{user?.username}</span>
@@ -252,10 +256,11 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
                             {isAuthenticated && user ? (
                                 <div>
                                     <div className="flex items-center p-4 border-b border-border">
-                                        <img
+                                        <Image
+                                            width={40}
                                             src={gravatar || "https://www.gravatar.com/avatar/0?d=identicon"}
                                             alt="User Avatar"
-                                            className="w-10 h-10 rounded-full border border-border mr-3"
+                                            className="rounded-full border border-border mr-3"
                                         />
                                         <div>
                                             <p className="font-medium">{user?.username}</p>

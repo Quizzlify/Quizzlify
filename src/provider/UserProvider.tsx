@@ -1,7 +1,6 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { ObjectId } from 'mongodb';
 import Loading from '@/components/Utilities/Loading';
 
 type UserContextType = {

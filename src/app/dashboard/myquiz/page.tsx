@@ -4,22 +4,21 @@
 import { Sidebar } from "@/components/Dashboard/Sidebar";
 import { useToast } from "@/provider/ToastProvider";
 import { useUser } from "@/provider/UserProvider";
-import { BarChart, Book, Edit, Home, LogOut, PlusCircle, Search, Settings, Trash2, Users } from "lucide-react";
-import Link from "next/link";
+import { Edit, PlusCircle, Search, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { FC, useState } from "react";
 
-export const MesQuizPage = () => {
+const MyQuiz: FC = () => {
     const router = useRouter();
-    const [users, setUsers] = useState<User[]>([]);
+    const [users] = useState<User[]>([]);
     const { addToast } = useToast();
     const { user, isAuthenticated, logout } = useUser();
     
-    const quizzes = [
-        { id: 1, title: 'Histoire de France', questions: 15, completions: 234, avgScore: '78%' },
-        { id: 2, title: 'Géographie Mondiale', questions: 20, completions: 156, avgScore: '82%' },
-        { id: 3, title: 'Sciences', questions: 25, completions: 89, avgScore: '75%' }
-    ];
+    // const quizzes = [
+    //     { id: 1, title: 'Histoire de France', questions: 15, completions: 234, avgScore: '78%' },
+    //     { id: 2, title: 'Géographie Mondiale', questions: 20, completions: 156, avgScore: '82%' },
+    //     { id: 3, title: 'Sciences', questions: 25, completions: 89, avgScore: '75%' }
+    // ];
 
     if (!isAuthenticated || !user) {
         router.push("/user/signin");
@@ -31,6 +30,7 @@ export const MesQuizPage = () => {
             addToast("Déconnexion réussie", "success");
             router.push("/user/signin");
         } catch (error) {
+            console.error("Erreur lors de la déconnexion:", error);
             addToast("Erreur lors de la déconnexion", "error");
         }
     };
@@ -101,4 +101,4 @@ export const MesQuizPage = () => {
     );
 };
 
-export default MesQuizPage;
+export default MyQuiz;

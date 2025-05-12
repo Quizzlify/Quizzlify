@@ -52,7 +52,7 @@ export default function Page() {
         }
 
         getUsers()
-    }, [])
+    }, [isLoadingUser, user]);
 
     function getUserRank() {
         if (userList !== null && user) {
@@ -80,7 +80,7 @@ export default function Page() {
                     <h1 className="flex text-center text-2xl font-semibold justify-end">Votre place: {getUserRank()}</h1>
                 </div>
                 <div className="flex-1 w-full h-full justify-center">
-                    {userList !== null ? <LeaderBoard list={userList} /> : <h1 className="text-2xl absolute ml-[15rem]">Il n'y a aucun utilisateurs.</h1>}
+                    {userList !== null ? <LeaderBoard list={userList} /> : <h1 className="text-2xl absolute ml-[15rem]">Il n&apos;y a aucun utilisateurs.</h1>}
                 </div>
             </div>
         </div>

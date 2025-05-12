@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 
 const Loading = () => {
@@ -7,7 +8,7 @@ const Loading = () => {
                 <div className="absolute inset-0 bg-accent-secondary rounded-full animate-pulse-slow"></div>
 
                 <div className="relative z-10 p-4">
-                    <img src="/logo.png" alt="Logo" className="w-16 h-16" />
+                    <Image src="/logo.png" alt="Logo" width={64} />
                 </div>
             </div>
 

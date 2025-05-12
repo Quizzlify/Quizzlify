@@ -1,18 +1,28 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import clsx from 'clsx';
 
-type ButtonProps = {
+interface BaseButtonProps {
   text?: string;
   className?: string;
-  onClick?: () => void;
   disabled?: boolean;
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
+}
+
+interface ButtonElementProps extends BaseButtonProps, React.ButtonHTMLAttributes<HTMLButtonElement> {
+  as?: 'button';
   type?: 'button' | 'submit' | 'reset';
-  as?: 'button' | 'a';
-  href?: string;
-  [key: string]: any;
-};
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  href?: never;
+}
+
+interface AnchorElementProps extends BaseButtonProps, React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  as: 'a';
+  href: string;
+  type?: never;
+}
+
+type ButtonProps = ButtonElementProps | AnchorElementProps;
 
 const QButton: React.FC<ButtonProps> = ({
   text,
@@ -26,8 +36,6 @@ const QButton: React.FC<ButtonProps> = ({
   href,
   ...rest
 }) => {
-  const Component = as === 'a' ? 'a' : 'button';
-
   const classes = clsx(
     'inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl',
     'text-white font-semibold text-lg bg-accent',
@@ -41,15 +49,31 @@ const QButton: React.FC<ButtonProps> = ({
     className
   );
 
+  if (as === 'a') {
+    return (
+      <a
+        className={classes}
+        href={href}
+        rel="noopener noreferrer"
+        {...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+      >
+        {icon && (
+          <span className="transition-transform group-hover:translate-x-[2px] group-hover:scale-105">
+            {icon}
+          </span>
+        )}
+        {text}
+      </a>
+    );
+  }
+
   return (
-    <Component
+    <button
       className={classes}
-      onClick={disabled ? undefined : onClick}
-      disabled={as === 'button' ? disabled : undefined}
-      href={as === 'a' ? href : undefined}
-      rel={as === 'a' ? 'noopener noreferrer' : undefined}
-      type={as === 'button' ? type : undefined}
-      {...rest}
+      onClick={disabled ? undefined : (as === 'button' ? (onClick as MouseEventHandler<HTMLButtonElement>) : undefined)}
+      disabled={disabled}
+      type={type}
+      {...(rest as React.ButtonHTMLAttributes<HTMLButtonElement>)}
     >
       {icon && (
         <span className="transition-transform group-hover:translate-x-[2px] group-hover:scale-105">
@@ -57,7 +81,7 @@ const QButton: React.FC<ButtonProps> = ({
         </span>
       )}
       {text}
-    </Component>
+    </button>
   );
 };
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Question from "@/components/Quiz/Question";
 import CountdownTimer from "@/components/Quiz/Countdown";
 

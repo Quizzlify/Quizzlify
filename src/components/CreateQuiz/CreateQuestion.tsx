@@ -1,4 +1,3 @@
-import { Input } from "@heroui/input";
 import { Switch } from "@heroui/switch";
 import { useEffect } from "react";
 import QInput from "../Utilities/QInput";
@@ -58,7 +57,7 @@ const CreateQuestion: React.FC<CreateQuestionProps> = ({ questionNum, removeQues
         }
       });
     }
-  }, []);
+  }, [content, level, questionNum, setContent]);
 
   return (
     <div className="card glass-effect w-full px-6 py-6 my-6 relative animate-slide-up bg-background-tertiary rounded-2xl shadow-lg border border-border">

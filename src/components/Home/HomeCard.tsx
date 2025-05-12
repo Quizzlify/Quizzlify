@@ -1,5 +1,6 @@
 import { PlusIcon } from "lucide-react";
-import React, { ReactElement, ReactNode } from "react";
+import Image from "next/image";
+import React, { ReactElement } from "react";
 
 type CardProps = {
     title: string,
@@ -29,7 +30,7 @@ const HomeCard: React.FC<CardProps> = ({ title, description, position, image, ic
 
             <div className="flex-1 relative group">
                 <div className="absolute inset-0 bg-gradient-to-r from-accent to-accent-hover opacity-0 group-hover:opacity-30 rounded-2xl transition-opacity duration-300"></div>
-                <img
+                <Image
                     src={image}
                     alt={title}
                     className="w-full h-auto rounded-2xl shadow-glow transition-transform duration-500 group-hover:scale-[1.02] object-cover border border-border"

@@ -4,7 +4,6 @@ import NavBar from "@/components/Utilities/NavBar";
 import QButton from "@/components/Utilities/QButton";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Alert } from "@heroui/alert";
 import { useToast } from "@/provider/ToastProvider";
 import { useUser } from "@/provider/UserProvider";
 import { LogInIcon } from "lucide-react";
@@ -18,10 +17,6 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { addToast } = useToast();
-
-  function goTo(route: string) {
-    router.push(route);
-  }
 
   useEffect(() => {
     if (isAuthenticated) {
