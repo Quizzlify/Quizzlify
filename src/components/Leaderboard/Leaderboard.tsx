@@ -24,7 +24,7 @@ const LeaderBoard: React.FC<CardsProps> = ({ list }) => {
                                     drop-shadow-leaderboard
                                     items-center
                                     p-4
-                                    ${item.you ? 'bg-[#FDD18D]' : 'bg-[#ffffff]'}
+                                    ${item.you ? 'bg-accent-secondary' : 'bg-background-tertiary'}
                                 `}
                         key={index}
                     >
@@ -32,9 +32,9 @@ const LeaderBoard: React.FC<CardsProps> = ({ list }) => {
                             <div className="w-[60px] h-[60px] rounded-2xl bg-[#404040] flex  text-center text-white items-center justify-center">
                                 #{index + 1}
                             </div>
-                            {item?.you ? <span className="text-[#7B61FF] font-bold">Toi</span> : <span>{item.username}</span>}
+                            {item?.you ? <span className="text-accent font-bold">Toi</span> : <span>{item.username}</span>}
                         </span>
-                        <span className="flex justify-end text-[#7B61FF] font-medium italic">{item.score}</span>
+                        <span className="flex justify-end text-accent font-medium italic">{item.score}</span>
                     </div>
                 );
             })}

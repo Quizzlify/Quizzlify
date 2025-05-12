@@ -88,7 +88,7 @@ const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep, isCreateQuiz, setCate
 
                                 <div className="flex flex-row relative items-center justify-center w-full text-xl">
                                     <div>Niveau {level}</div>
-                                    <i className="fa-solid fa-arrow-right text-lg absolute right-0 opacity-0 group-hover:opacity-100 group-hover:right-[-20px] transition-all duration-300 text-accent"></i>
+                                    <i className="fa-solid fa-arrow-right text-lg absolute right-10 opacity-0 group-hover:opacity-100 group-hover:right-[-5px] transition-all duration-300 text-accent"></i>
                                 </div>
                             </div>
                         )
@@ -111,7 +111,7 @@ const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep, isCreateQuiz, setCate
 
                             <div className="flex flex-row relative items-center justify-center w-full text-xl">
                                 <div>{categorie.title}</div>
-                                <i className="fa-solid fa-arrow-right text-lg absolute right-0 opacity-0 group-hover:opacity-100 group-hover:right-[-20px] transition-all duration-300 text-accent"></i>
+                                <i className="fa-solid fa-arrow-right text-lg absolute right-10 opacity-0 group-hover:opacity-100 group-hover:right-[-5px] transition-all duration-300 text-accent"></i>
                             </div>
                         </div>
                     ))}

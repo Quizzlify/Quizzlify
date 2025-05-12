@@ -32,7 +32,7 @@ export default function Home() {
 
             <div className={`flex flex-col items-center justify-center min-h-screen px-4 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
                 <div className="relative z-10 text-center max-w-4xl animate-slide-up">
-                    <h1 className="text-5xl md:text-6xl font-bold mb-4">
+                    <h1 className="text-5xl md:text-5xl font-bold mb-4">
                         <span className="text-gradient">Améliorez</span> vos connaissances,
                         <br />tout en vous <span className="text-gradient">amusant</span>.
                     </h1>

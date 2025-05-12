@@ -24,7 +24,7 @@ const Question: React.FC<QuestionProps> = ({ answers, correctAnswer, selectedAns
                         className={`
                             ${baseClass}
                             ${opacityClass}
-                            w-[423px] h-[79px] text-white p-6 flex items-center justify-center rounded-lg shadow-md transition-all
+                            w-[380px] h-[79px] text-white p-6 flex items-center justify-center rounded-lg shadow-md transition-all
                         `}
                     >
                         {isCorrect && showAnswer ? <Check color="green" /> : isSelected ? <X color="red" /> : null}

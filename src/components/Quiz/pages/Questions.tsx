@@ -81,7 +81,7 @@ const Questions: React.FC<QuestionsProps> = ({ nextStep, questions, selectedAnsw
                 )}
 
                 {!showAnswer && (
-                    <div className="bg-background-secondary p-4 rounded-xl flex items-center justify-center">
+                    <div className="bg-background-secondary h-[5rem] p-4 rounded-xl flex items-center justify-center">
                         <CountdownTimer onTimeout={incrementQuestionIndex} />
                     </div>
                 )}
