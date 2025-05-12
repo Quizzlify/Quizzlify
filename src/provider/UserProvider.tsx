@@ -2,10 +2,11 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { ObjectId } from 'mongodb';
+import Loading from '@/components/Utilities/Loading';
 
 type UserContextType = {
     user: User | null;
-    isLoading: boolean;
+    isLoadingUser: boolean;
     isAuthenticated: boolean;
     login: (email: string, password: string) => Promise<void>;
     signup: (username: string, email: string, password: string) => Promise<void>;
@@ -16,7 +17,7 @@ const userContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoadingUser, setIsLoadingUser] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
@@ -31,7 +32,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             } catch (error) {
                 console.error('Error checking authentication:', error);
             } finally {
-                setIsLoading(false);
+                setIsLoadingUser(false);
             }
         };
 
@@ -90,9 +91,11 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
     };
 
+    if (isLoadingUser) return <Loading />;
+
     return (
         <userContext.Provider
-            value={{ user, isLoading, isAuthenticated, login, signup, logout }}
+            value={{ user, isLoadingUser, isAuthenticated, login, signup, logout }}
         >
             {children}
         </userContext.Provider>
