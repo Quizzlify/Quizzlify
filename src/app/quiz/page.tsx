@@ -69,7 +69,7 @@ export default function Page() {
     };
 
     return (
-        <div className="bg-background min-h-screen text-foreground">
+        <div className="min-h-screen">
             <NavBar currentPage="quiz" />
             <div className={`py-20 px-6 md:px-10 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
                 <div className="max-w-7xl mx-auto">

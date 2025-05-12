@@ -16,8 +16,6 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [alertMessage, setAlertMessage] = useState("");
-  const [showAlert, setShowAlert] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { addToast } = useToast();
 
@@ -68,14 +66,14 @@ export default function LoginPage() {
           </div>
 
           <div className="flex justify-end">
-            <button
+            <QButton
               className="btn-primary flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
               disabled={!email || !password || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || password.length < 6 || isSubmitting}
               onClick={handleLogin}
+              text={isSubmitting ? "Connexion..." : "Se connecter"}
+              icon={<LogInIcon size={18} />}
             >
-              <LogInIcon size={18} />
-              {isSubmitting ? "Connexion..." : "Se connecter"}
-            </button>
+            </QButton>
           </div>
 
           <div className="text-center text-sm text-foreground-secondary">

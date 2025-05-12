@@ -6,9 +6,18 @@ interface CategoryProps {
 }
 
 const Categories: React.FC<CategoryProps> = ({ nextStep, setCategory }) => (
-    <div className="mt-5 w-full max-w-2xl flex items-center flex-col">
-        <h2 className="text-xl mb-4">Choisissez la catégorie dans laquelle vous voulez créer le quiz.</h2>
-        <Cards isNiveau={false} nextStep={nextStep} isCreateQuiz={true} setCategory={setCategory} setLevel={() => {}} />
+    <div className="w-full max-w-4xl mx-auto animate-slide-up">
+        <h2 className="text-2xl font-bold mb-8 text-center">
+            <span className="text-gradient">Choisissez</span> une catégorie pour votre quiz
+        </h2>
+        <div className="bg-background-tertiary p-6 rounded-2xl border border-border">
+            <Cards isNiveau={false}
+                    nextStep={nextStep}
+                    isCreateQuiz={true}
+                    setCategory={setCategory}
+                    setLevel={() => {}}
+            />
+        </div>
     </div>
 );
 

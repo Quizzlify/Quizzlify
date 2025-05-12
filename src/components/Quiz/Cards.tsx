@@ -1,4 +1,4 @@
-import { ArrowRight, Dice1, Dice2, Dice3, Dice5, FlaskConical, Gamepad, Info, Landmark, MedalIcon, Music } from "lucide-react";
+import { ArrowRight, Dice1, Dice2, Dice3, Dice5, FlaskConical, Gamepad, InfoIcon, Landmark, MedalIcon, Music } from "lucide-react";
 import { ReactElement, useState } from "react";
 
 interface CardsProps {
@@ -45,7 +45,6 @@ const CategoriesList: Interface[] = [
 
 const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep, isCreateQuiz, setCategory, setLevel }) => {
     const [isHovering, setIsHovering] = useState(false);
-
     return (
         <div>
             {isNiveau ? (
@@ -56,32 +55,33 @@ const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep, isCreateQuiz, setCate
                             <div
                                 className="bg-background p-6 rounded-xl border border-border hover:border-accent transition-all duration-300 flex flex-col justify-center items-center gap-5 group cursor-pointer hover:shadow-lg"
                                 key={level}
-                                onClick={() => isCreateQuiz ? (nextStep('Questions'), setLevel(level)) : (nextStep('Détails'), setLevel(level))}
+                                onClick={() => { nextStep('Détails'), setLevel(level) }}
                             >
-                                {level >= 3 && (
-                                    <button
-                                        className="absolute top-3 right-4 text-lg text-foreground-secondary hover:text-accent"
-                                        onMouseEnter={() => setIsHovering(true)}
-                                        onMouseLeave={() => setIsHovering(false)}
-                                        aria-label={`Information Niveau ${level}`}
-                                    >
-                                        <Info className="text-2xl" />
-
-                                        {isHovering && (
-                                            <div className="absolute top-1/2 right-[-16.5rem] transform -translate-y-1/2 w-64 p-4 bg-background rounded-lg shadow-lg text-sm text-foreground-secondary z-50 border border-border">
-                                                <div className="absolute top-1/2 left-[-0.5rem] transform -translate-y-1/2 w-4 h-4 bg-background rotate-[315deg] border-t border-l border-border" />
-                                                <div className="relative">
-                                                    <h3 className="font-semibold text-base mb-2 text-foreground">Information Niveau {level}</h3>
-                                                    <p className="leading-relaxed">
-                                                        Ce niveau contient des questions plus complexes et demande une bonne
-                                                        maîtrise du sujet.
-                                                        Il permet de rentrer dans le classement général du site.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </button>
-                                )}
+                                <div className="flex w-full h-full relative">
+                                    {level >= 3 && (
+                                        <div className="absolute -top-2 -right-2">
+                                            <button
+                                                className="text-lg text-[#424149] hover:text-accent transition-color duration-100"
+                                                onMouseEnter={() => setIsHovering(true)}
+                                                onMouseLeave={() => setIsHovering(false)}
+                                                aria-label="Information Niveau 3"
+                                            >
+                                                <InfoIcon className="text-2xl" />
+                                                {isHovering && (
+                                                    <div className="absolute -top-3/4 left-8 mt-2 p-4 w-64 bg-background border-border border-1 rounded shadow-lg z-10">
+                                                        <div className="relative">
+                                                            <h3 className="font-semibold text-foreground mb-2">Information Niveau 3</h3>
+                                                            <p className="text-sm leading-relaxed text-white">
+                                                                Ce niveau contient des questions plus complexes.
+                                                                Il permet de rentrer dans le classement général du site.
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
 
                                 <div className="flex items-center justify-center text-accent">
                                     {level === 1 && <Dice1 className="text-4xl" />}

@@ -8,6 +8,7 @@ import { useToast } from "@/provider/ToastProvider";
 import { useUser } from "@/provider/UserProvider";
 import { CircleAlert, UserPlus2, UserPlus } from "lucide-react";
 import QInput from "@/components/Utilities/QInput";
+import QButton from "@/components/Utilities/QButton";
 
 export default function Page() {
     const router = useRouter();
@@ -94,8 +95,8 @@ export default function Page() {
                     )}
 
                     <div className="flex justify-end">
-                        <button
-                            className="btn-primary flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+                        <QButton
+                            className="btn-primary flex items-center gap-2 flex-row-reverse disabled:opacity-40 disabled:cursor-not-allowed"
                             disabled={
                                 !username || !email || !password || !confirmPassword ||
                                 password !== confirmPassword ||
@@ -106,10 +107,10 @@ export default function Page() {
                                 !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
                             }
                             onClick={handleSignup}
+                            text={isSubmitting ? "Création du compte..." : "Créer un compte"}
+                            icon={<UserPlus size={18} />}
                         >
-                            <UserPlus size={18} />
-                            {isSubmitting ? "Création du compte..." : "Créer un compte"}
-                        </button>
+                        </QButton>
                     </div>
 
                     <div className="text-center text-sm text-foreground-secondary">

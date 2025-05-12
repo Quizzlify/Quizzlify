@@ -1,115 +1,132 @@
 import { Input } from "@heroui/input";
 import { Switch } from "@heroui/switch";
 import { useEffect } from "react";
+import QInput from "../Utilities/QInput";
 
 interface CreateQuestionProps {
-    questionNum: number;
-    removeQuestion: (num: number) => void;
-    content: Quiz['content'];
-    setContent: (content: Quiz['content']) => void;
-    level: number;
+  questionNum: number;
+  removeQuestion: (num: number) => void;
+  content: Quiz['content'];
+  setContent: (content: Quiz['content']) => void;
+  level: number;
 }
 
 const CreateQuestion: React.FC<CreateQuestionProps> = ({ questionNum, removeQuestion, content, setContent, level }) => {
-    function handleInputChange(e: React.ChangeEvent<HTMLInputElement>, field: string) {
-      if (field === 'points') {
-          // Convert points to number
-          setContent({
-            ...content,
-            [questionNum]: {
-              ...content[questionNum],
-              [field]: Number(e.target.value)
-            }
-          });
-        } else if (field !== 'answers') {
-          // Handle regular fields
-          setContent({
-            ...content,
-            [questionNum]: {
-              ...content[questionNum],
-              [field]: e.target.value
-            }
-          });
-        }
-    }
-
-    function handleAnswerChange(e: React.ChangeEvent<HTMLInputElement>, answerIndex: number) {
-        const newAnswers = [...(content[questionNum]?.answers || [])];
-        newAnswers[answerIndex] = e.target.value;
-        
-        setContent({
-          ...content,
-          [questionNum]: {
-            ...content[questionNum],
-            answers: newAnswers
-          }
-        });
-    }
-
-    function handleCorrectAnswerChange(answerIndex: number, isSelected: boolean) {
-        if (isSelected) {
-          setContent({
-            ...content,
-            [questionNum]: {
-              ...content[questionNum],
-              correctAnswer: answerIndex
-            }
-          });
-        }
-    }
-
-    useEffect(() => {
-      if (level !== 3) {
-        setContent({
-          ...content,
-          [questionNum]: {
-            points: null
-          }
-        })
+  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>, field: string) {
+    const value = field === 'points' ? Number(e.target.value) : e.target.value;
+    setContent({
+      ...content,
+      [questionNum]: {
+        ...content[questionNum],
+        [field]: value
       }
-    }, [])
+    });
+  }
 
+  function handleAnswerChange(e: React.ChangeEvent<HTMLInputElement>, answerIndex: number) {
+    const newAnswers = [...(content[questionNum]?.answers || [])];
+    newAnswers[answerIndex] = e.target.value;
 
-    return (
-        <div className="bg-secondary w-[1400px] pb-3 rounded-xl border-2 border-orange-600 relative">
-            <div className="flex flex-row items-center ml-5 mt-5 gap-3">
-                <h2 className="text-2xl">Question {questionNum}</h2>
-                <Input label="Question" onChange={(e) => handleInputChange(e, 'question')} type="input" variant="bordered" size={"sm"} className="max-w-[480px] [&>div]:!border-neutral-500" isRequired />
-                {level === 3 && (
-                  <Input label="Nombre de points" onChange={(e) => handleInputChange(e, 'points')} type="input" variant="bordered" size={"sm"} className="max-w-[10rem] [&>div]:!border-neutral-500 absolute right-5" isRequired />
-                )}
+    setContent({
+      ...content,
+      [questionNum]: {
+        ...content[questionNum],
+        answers: newAnswers
+      }
+    });
+  }
+
+  function handleCorrectAnswerChange(answerIndex: number, isSelected: boolean) {
+    if (isSelected) {
+      setContent({
+        ...content,
+        [questionNum]: {
+          ...content[questionNum],
+          correctAnswer: answerIndex
+        }
+      });
+    }
+  }
+
+  useEffect(() => {
+    if (level !== 3) {
+      setContent({
+        ...content,
+        [questionNum]: {
+          ...content[questionNum],
+          points: null
+        }
+      });
+    }
+  }, []);
+
+  return (
+    <div className="card glass-effect w-full px-6 py-6 my-6 relative animate-slide-up bg-background-tertiary rounded-2xl shadow-lg border border-border">
+      <div className="flex flex-col">
+        <div className="flex items-center gap-4">
+          <h2 className="text-2xl font-bold text-gradient flex items-center">
+            Question {questionNum}
+          </h2>
+
+          <div className="flex-grow">
+            <QInput
+              label="Intitulé de la question"
+              placeholder="Entrez la question ici"
+              onChange={(e) => handleInputChange(e, "question")}
+              type="input"
+              className="w-full [&>div]:!border-border text-xl"
+              required
+            />
+          </div>
+
+          {level === 3 && (
+            <div className="flex items-center">
+              <QInput
+                label="Points"
+                placeholder="Entrez le nombre de points"
+                onChange={(e) => handleInputChange(e, "points")}
+                type="input"
+                className="w-24 [&>div]:!border-border text-xl"
+                required
+              />
             </div>
-
-            <div className="flex flex-col gap-3 ml-20 mt-5">
-                <div className="flex flex-row gap-5">
-                    <Input label="Réponse A" onChange={(e) => handleAnswerChange(e, 0)} type="input" variant="bordered" size={"sm"} className="max-w-[480px] [&>div]:!border-neutral-500" isRequired />
-                    <Switch color={'warning'} onValueChange={(isSelected) => handleCorrectAnswerChange(0, isSelected)} >Réponse vraie</Switch>
-                </div>
-
-                <div className="flex flex-row gap-5">
-                    <Input label="Réponse B" onChange={(e) => handleAnswerChange(e, 1)} type="input" variant="bordered" size={"sm"} className="max-w-[480px] [&>div]:!border-neutral-500" isRequired />
-                    <Switch color={'warning'} onValueChange={(isSelected) => handleCorrectAnswerChange(1, isSelected)}>Réponse vraie</Switch>
-                </div>
-
-                <div className="flex flex-row gap-5">
-                    <Input label="Réponse C" onChange={(e) => handleAnswerChange(e, 2)} type="input" variant="bordered" size={"sm"} className="max-w-[480px] [&>div]:!border-neutral-500" isRequired/>
-                    <Switch color={'warning'} onValueChange={(isSelected) => handleCorrectAnswerChange(2, isSelected)}>Réponse vraie</Switch>
-                </div>
-
-                <div className="flex flex-row gap-5">
-                    <Input label="Réponse D" onChange={(e) => handleAnswerChange(e, 3)} type="input" variant="bordered" size={"sm"} className="max-w-[480px] [&>div]:!border-neutral-500" isRequired/>
-                    <Switch color={'warning'} onValueChange={(isSelected) => handleCorrectAnswerChange(3, isSelected)}>Réponse vraie</Switch>
-                </div>
-            </div>
-
-            {questionNum > 1 && (
-                <button onClick={() => removeQuestion(questionNum)}
-                    className="absolute bottom-3 right-5 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
-                    Supprimer la question
-                </button>
-            )}
+          )}
         </div>
-    )
-}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-muted p-4 rounded-xl">
+          {["A", "B", "C", "D"].map((label, i) => (
+            <div key={i} className="flex flex-col gap-2">
+              <QInput
+                label={`Réponse ${label}`}
+                placeholder={`Entrez la réponse ${label} ici`}
+                onChange={(e) => handleAnswerChange(e, i)}
+                type="input"
+                className="[&>div]:!border-border"
+                required
+              />
+              <Switch
+                color="warning"
+                onValueChange={(isSelected) => handleCorrectAnswerChange(i, isSelected)}
+              >
+                Marquer comme correcte
+              </Switch>
+            </div>
+          ))}
+        </div>
+
+        {questionNum > 1 && (
+          <div className="mt-8">
+            <button
+              onClick={() => removeQuestion(questionNum)}
+              className="w-full btn-primary text-sm bg-danger hover:bg-red-600 py-2 rounded-lg transition-all"
+            >
+              Supprimer la question
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 export default CreateQuestion;

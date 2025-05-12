@@ -1,5 +1,6 @@
 import CreateQuestion from "@/components/CreateQuiz/CreateQuestion";
 import QButton from "@/components/Utilities/QButton";
+import { useState } from "react";
 
 interface QuestionsProps {
     questionIndices: number[];
@@ -11,6 +12,8 @@ interface QuestionsProps {
 }
 
 const Questions: React.FC<QuestionsProps> = ({ questionIndices, setQuestionIndices, content, setContent, setCreerQuiz, level }) => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    
     const addQuestions = () => {
         const newId = Date.now();
         setQuestionIndices([...questionIndices, newId]);
@@ -21,11 +24,11 @@ const Questions: React.FC<QuestionsProps> = ({ questionIndices, setQuestionIndic
     };
 
     return (
-        <div className="mt-5 flex items-center w-screen flex-col">
+        <div className="mt-5 flex items-center w-full flex-col">
             <h2 className="text-xl mb-4">Créez votre quiz.</h2>
             
             {questionIndices.map((id, index) => (
-                <div className="p-2" key={`q-${id}`}>
+                <div className="p-2 w-full" key={`q-${id}`}>
                     <CreateQuestion questionNum={index + 1} removeQuestion={() => removeQuestion(id)} content={content} setContent={setContent} level={level} />
                 </div>
             ))}

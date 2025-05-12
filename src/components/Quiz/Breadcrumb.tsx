@@ -7,7 +7,7 @@ interface BreadcrumbProps {
 }
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({ isCreateQuiz, activeStep, onStepChange }) => {
-    const steps = ["Catégorie", "Niveau", "Détails", "Questions", "Résultats"];
+    const steps = isCreateQuiz ? ["Catégorie", "Niveau", "Détails", "Questions"] : ["Catégorie", "Niveau", "Détails", "Questions", "Résultats"];
 
     const getStepStatus = (step: string) => {
         const current = steps.indexOf(activeStep);
@@ -30,7 +30,10 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ isCreateQuiz, activeStep, onSte
                             <div
                                 className={`flex items-center gap-2 transition-all duration-200 ${isCompleted ? "cursor-pointer group" : "cursor-default"
                                     }`}
-                                onClick={() => isCompleted && onStepChange(step)}
+                                onClick={() => {
+                                    if (isCompleted && !(activeStep === "Résultats"))
+                                        onStepChange(step);
+                                }}
                             >
                                 <div
                                     className={`w-9 h-9 flex items-center justify-center rounded-full text-sm font-medium transition-all duration-200
