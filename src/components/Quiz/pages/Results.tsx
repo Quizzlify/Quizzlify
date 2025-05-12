@@ -138,7 +138,7 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) 
         if (scorePercentage >= 90) {
             return {
                 title: "Excellent !",
-                description: "Bravo, vous avez une connaissance exceptionnelle !",
+                description: "Bravo.",
                 icon: <Trophy className="text-yellow-500" size={48} />,
                 colorClass: "bg-yellow-500/20 border-yellow-500",
                 titleColor: "text-yellow-500"
@@ -146,7 +146,7 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) 
         } else if (scorePercentage >= 70) {
             return {
                 title: "Très bien !",
-                description: "Vous avez très bien performé !",
+                description: "Vous êtes très forts.",
                 icon: <Star className="text-accent" size={48} />,
                 colorClass: "bg-accent/20 border-accent",
                 titleColor: "text-accent"
@@ -154,15 +154,15 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) 
         } else if (scorePercentage >= 50) {
             return {
                 title: "Pas mal !",
-                description: "Continuez à vous améliorer !",
+                description: "Continuez à vous améliorer.",
                 icon: <Star className="text-blue-500" size={48} />,
                 colorClass: "bg-blue-500/20 border-blue-500",
                 titleColor: "text-blue-500"
             };
         } else {
             return {
-                title: "Réessayez !",
-                description: "Ne vous découragez pas, chaque quiz est une occasion d'apprendre.",
+                title: "Retentez !",
+                description: "Vous pouvez le faire.",
                 icon: <XCircle className="text-red-500" size={48} />,
                 colorClass: "bg-red-500/20 border-red-500",
                 titleColor: "text-red-500"
