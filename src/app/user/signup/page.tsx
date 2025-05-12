@@ -1,51 +1,32 @@
-"use client"
+"use client";
 
 import NavBar from "@/components/Utilities/NavBar";
 import { Input } from "@heroui/input";
-import QButton from "@/components/Utilities/QButton";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Alert } from "@heroui/alert";
+import { useState, useEffect } from "react";
 import { useToast } from "@/provider/ToastProvider";
-import { useEffect } from "react";
 import { useUser } from "@/provider/UserProvider";
+import { CircleAlert, UserPlus2, UserPlus } from "lucide-react";
+import QInput from "@/components/Utilities/QInput";
 
 export default function Page() {
     const router = useRouter();
     const { signup, isAuthenticated } = useUser();
+    const { addToast } = useToast();
 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [alertMessage, setAlertMessage] = useState("");
-    const [showAlert, setShowAlert] = useState<boolean>(false);
+    const [showAlert, setShowAlert] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const { addToast } = useToast();
 
     useEffect(() => {
         if (isAuthenticated) {
             router.push("/");
         }
     }, [isAuthenticated, router]);
-
-    async function handleSignup() {
-        setIsSubmitting(true);
-        try {
-            await signup(username, email, password);
-            addToast("Inscription réussie !", "success");
-            router.push("/user/signin");
-        } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : "Une erreur est survenue.";
-            addToast("Echec de l'inscription: " + errorMessage, "error");
-        } finally {
-            setIsSubmitting(false);
-        }
-    }
-
-    function goTo(route: string) {
-        router.push(route);
-    }
 
     useEffect(() => {
         if (password.length < 6 && password.length !== 0) {
@@ -71,38 +52,52 @@ export default function Page() {
         }
     }, [password, confirmPassword, email]);
 
+    async function handleSignup() {
+        setIsSubmitting(true);
+        try {
+            await signup(username, email, password);
+            addToast("Inscription réussie !", "success");
+            router.push("/user/signin");
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : "Une erreur est survenue.";
+            addToast("Échec de l'inscription : " + errorMessage, "error");
+        } finally {
+            setIsSubmitting(false);
+        }
+    }
+
     return (
         <>
             <NavBar currentPage="user" />
-            <div className="flex justify-center items-center h-screen">
-                <div className="flex flex-col w-[574px] h-fit bg-accent-secondary rounded-3xl border border-4 border-accent">
-                    <div className="flex flex-row gap-10 justify-center mt-10">
-                        <i className="fa-regular fa-user text-6xl text-accent"></i>
-                        <h2 className="text-4xl font-semibold">Créer un compte</h2>
+            <main className="flex justify-center items-center min-h-screen px-4 animate-fade-in">
+                <section className="card bg-background-tertiary glass-effect max-w-xl w-full space-y-6">
+                    <div className="text-center animate-slide-up">
+                        <div className="flex justify-center items-center gap-2 mb-2">
+                            <UserPlus2 size={30} className="text-accent" />
+                            <h1 className="text-3xl font-bold">Créer un compte</h1>
+                        </div>
+                        <p className="text-foreground-secondary text-sm">Remplissez les champs ci-dessous pour vous inscrire.</p>
                     </div>
 
-
-                    <div className="flex flex-col gap-3 items-center mt-[2rem]">
-                        <Input label="Pseudonyme" type="input" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired
-                            value={username} onChange={(e) => setUsername(e.target.value)} />
-                        <Input label="Adresse e-mail" type="mail" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired
-                            value={email} onChange={(e) => setEmail(e.target.value)} />
-                        <Input label="Mot de passe" type="password" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired
-                            value={password} onChange={(e) => setPassword(e.target.value)} />
-                        <Input label="Confirmation du mot de passe" type="password" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired
-                            value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                    <div className="space-y-4">
+                        <QInput label="Pseudonyme" className="w-full" value={username} onChange={(e) => setUsername(e.target.value)} />
+                        <QInput label="Adresse e-mail" className="w-full" value={email} onChange={(e) => setEmail(e.target.value)} />
+                        <QInput label="Mot de passe" type="password" className="w-full" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <QInput label="Confirmation du mot de passe" type="password" className="w-full" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                     </div>
 
-                    <div className="mt-5 mb-[2rem] mr-6 self-end">
-                        <QButton
-                            className="w-[270px] h-[45px]"
-                            text={isSubmitting ? "Création du compte..." : "Créer un compte"}
-                            icon={<i className="fa-solid fa-right-to-bracket"></i>}
+                    {showAlert && (
+                        <div className="flex items-start gap-2 bg-red-500/10 backdrop-blur-lg border border-danger text-danger rounded-lg px-4 py-2 animate-slide-up">
+                            <CircleAlert size={18} />
+                            <span className="text-sm">{alertMessage}</span>
+                        </div>
+                    )}
+
+                    <div className="flex justify-end">
+                        <button
+                            className="btn-primary flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
                             disabled={
-                                username.length === 0 ||
-                                email.length === 0 ||
-                                password.length === 0 ||
-                                confirmPassword.length === 0 ||
+                                !username || !email || !password || !confirmPassword ||
                                 password !== confirmPassword ||
                                 password.length < 6 ||
                                 !/\d/.test(password) ||
@@ -110,21 +105,24 @@ export default function Page() {
                                 !/[A-Z]/.test(password) ||
                                 !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
                             }
-                            iconPosition="left"
                             onClick={handleSignup}
-                        />
+                        >
+                            <UserPlus size={18} />
+                            {isSubmitting ? "Création du compte..." : "Créer un compte"}
+                        </button>
                     </div>
 
-                    {showAlert && (
-                        <Alert color="danger" variant="faded" className="mt-2">
-                            {alertMessage}
-                        </Alert>
-                    )}
-
-                    <p className="mt-5 ml-auto mr-auto mb-3">Vous avez déjà un compte? <a className="text-accent font-bold cursor-pointer" onClick={() => goTo('/user/signin')}>Connectez-vous</a>.</p>
-
-                </div>
-            </div>
+                    <div className="text-center text-sm text-foreground-secondary">
+                        Vous avez déjà un compte ?{" "}
+                        <span
+                            className="text-accent hover:underline cursor-pointer"
+                            onClick={() => router.push("/user/signin")}
+                        >
+                            Connectez-vous
+                        </span>.
+                    </div>
+                </section>
+            </main>
         </>
     );
 }

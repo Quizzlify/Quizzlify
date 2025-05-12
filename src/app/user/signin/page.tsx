@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
 import NavBar from "@/components/Utilities/NavBar";
 import QButton from "@/components/Utilities/QButton";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Input } from "@heroui/input";
 import { Alert } from "@heroui/alert";
 import { useToast } from "@/provider/ToastProvider";
 import { useUser } from "@/provider/UserProvider";
 import { LogInIcon } from "lucide-react";
+import QInput from "@/components/Utilities/QInput";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -52,49 +52,43 @@ export default function LoginPage() {
   return (
     <>
       <NavBar currentPage="user" />
-      <div className="flex justify-center items-center h-screen">
-        <div className="flex flex-col w-[574px] h-fit bg-accent-secondary rounded-3xl border-4 border-accent">
-          <div className="flex flex-row gap-10 justify-center mt-10">
-            <i className="fa-regular fa-user text-6xl text-accent"></i>
-            <h2 className="text-4xl font-semibold">Se Connecter</h2>
+      <main className="flex justify-center items-center min-h-screen px-4 animate-fade-in">
+        <section className="card bg-background-tertiary glass-effect max-w-xl w-full space-y-6">
+          <div className="text-center animate-slide-up">
+            <div className="flex justify-center items-center gap-2 mb-2">
+              <LogInIcon size={30} className="text-accent" />
+              <h1 className="text-3xl font-bold">Se connecter</h1>
+            </div>
+            <p className="text-foreground-secondary text-sm">Entrez vos identifiants pour vous connecter.</p>
           </div>
 
-          <div className="flex flex-col gap-3 items-center mt-[4rem]">
-            <Input label="Adresse e-mail" type="input" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired
-              value={email} onChange={(e) => setEmail(e.target.value)} />
-            <Input label="Mot de passe" type="password" variant="bordered" size={"sm"} className="max-w-[20rem] [&>div]:!border-neutral-500" isRequired
-              value={password} onChange={(e) => setPassword(e.target.value)} />
-            <p className="hover:text-[var(--accent)] transition-all cursor-pointer" onClick={() => goTo('./reset')}>J'ai oublié mon mot de passe.</p>
+          <div className="space-y-4">
+            <QInput label="Adresse e-mail" className="w-full" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <QInput label="Mot de passe" type="password" className="w-full" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
 
-          <div className="mt-5 mr-6 self-end">
-            <QButton
-              text={isSubmitting ? "Connexion..." : "Se connecter"}
-              icon={<LogInIcon className="w-12" />}
-              disabled={false}
-              iconPosition="left"
+          <div className="flex justify-end">
+            <button
+              className="btn-primary flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+              disabled={!email || !password || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || password.length < 6 || isSubmitting}
               onClick={handleLogin}
-            />
+            >
+              <LogInIcon size={18} />
+              {isSubmitting ? "Connexion..." : "Se connecter"}
+            </button>
           </div>
 
-          {showAlert && (
-            <Alert color="primary" variant="faded" className="mt-2">
-              {alertMessage}
-            </Alert>
-          )}
-
-          <p className="mt-5 ml-auto mr-auto mb-3">
-            Vous n'avez pas encore de compte?{" "}
-            <a
-              className="text-accent font-bold cursor-pointer"
-              onClick={() => goTo('/user/signup')}
+          <div className="text-center text-sm text-foreground-secondary">
+            Pas encore de compte ?{" "}
+            <span
+              className="text-accent hover:underline cursor-pointer"
+              onClick={() => router.push("/user/signup")}
             >
-              Créez-en un gratuitement
-            </a>
-            .
-          </p>
-        </div>
-      </div>
+              Inscrivez-vous
+            </span>
+          </div>
+        </section>
+      </main>
     </>
   );
 }
