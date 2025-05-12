@@ -20,6 +20,7 @@ declare global {
       index: number;
       author: string;
       level: number;
+      title: string;
       created_at: string;
       content: {
         [key: string]: {
