@@ -3,7 +3,7 @@ import clientPromise from "@/config/MongoDB";
 
 export async function POST(req: Request) {
     try {
-        const { author, content, category, level } = await req.json();
+        const { author, content, category, level, title } = await req.json();
         const created_at = new Date();
 
         const client = await clientPromise;
@@ -11,7 +11,7 @@ export async function POST(req: Request) {
         const collection = db.collection("quiz");
 
         const quizCount = await collection.countDocuments();
-        await collection.insertOne({ index: quizCount === 0 ? 0 : quizCount+1, author, created_at, content, category, level});
+        await collection.insertOne({ index: quizCount === 0 ? 0 : quizCount+1, author, title, created_at, content, category, level});
 
         return NextResponse.json(
             { success: true, message: "Quiz ajouté." },

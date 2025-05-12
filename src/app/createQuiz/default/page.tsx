@@ -6,30 +6,33 @@ import { useEffect, useState } from "react";
 import Levels from "@/components/CreateQuiz/pages/Levels";
 import Categories from "@/components/CreateQuiz/pages/Categories";
 import Questions from "@/components/CreateQuiz/pages/Questions";
+import Details from "@/components/CreateQuiz/pages/Details";
 import { useToast } from "@/provider/ToastProvider";
 import { useUser } from "@/provider/UserProvider";
 
 
 export default function Page() {
     const { addToast } = useToast();
-    const [activeStep, setActiveStep] = useState<string>("Niveau");
+    const [activeStep, setActiveStep] = useState<string>("Catégorie");
     const [questionIndices, setQuestionIndices] = useState<number[]>([1]);
     const { user } = useUser();
+    const [isVisible, setIsVisible] = useState(false);
 
-    // Quiz details
+    // Quiz information
     const [category, setCategory] = useState<string>("");
     const [level, setLevel] = useState<number>(1);
+    const [title, setTitle] = useState<string>("");
 
     // Quiz content
     const [create, setCreate] = useState<boolean>(false); // indicateur si l'utilisateur a cliqué sur le bouton "Créer le quiz"
     const [content, setContent] = useState<Quiz['content']>({});
 
-    async function createQuiz(category: string, level: number) {
+    async function createQuiz(category: string, level: number, title: string) {
         try {
             const res = await fetch("/api/create-quiz", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ category, level, content, author: user?._id })
+                body: JSON.stringify({ category, level, title, content, author: user?._id })
             });
 
             const response = await res.json();
@@ -46,29 +49,46 @@ export default function Page() {
     };
 
     useEffect(() => {
-        if (category && level && content && create) {
-            createQuiz(category, level);
-        } else if (!category && create || !level && create) {
+        setIsVisible(true);
+    }, []);
+
+    useEffect(() => {
+        if (category && level && title && content && create) {
+            createQuiz(category, level, title);
+        } else if (!category && create || !level && create  || !title && create) {
             addToast("Veuillez remplir tous les champs avant de créer le quiz.", "error");
         }
-    }, [category, level, content, create]);
+    }, [category, level, title, content, create]);
 
     const renderStepContent = () => {
         switch (activeStep) {
-            case "Niveau":
-                return <Levels nextStep={setActiveStep} setLevel={setLevel}/>;
             case "Catégorie":
                 return <Categories nextStep={setActiveStep} setCategory={setCategory} />;
+            case "Niveau":
+                return <Levels nextStep={setActiveStep} setLevel={setLevel}/>;
+            case "Détails":
+                return <Details nextStep={setActiveStep} setTitle={setTitle}/>
             case "Questions":
                 return <Questions questionIndices={questionIndices} setQuestionIndices={setQuestionIndices} content={content} setContent={setContent} setCreerQuiz={setCreate} level={level}/>;
         }
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen">
+        <div className="min-h-screen">
             <NavBar currentPage="create-quiz"/>
-            <div className="absolute top-40 w-full">
-                <div className="flex flex-col items-center">
+            <div className={`py-20 px-6 md:px-10 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-10 animate-slide-up">
+                        <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                            <span className="text-gradient">Créez votre quiz</span>
+                        </h1>
+                        <h2 className="text-xl text-foreground-secondary">
+                            Créez un quiz personnalisé et partagez-le avec vos amis !
+                        </h2>
+                    </div>
+                </div>
+
+                <div className="bg-background-secondary rounded-2xl p-8 shadow-lg border border-border">
                     <Breadcrumb
                         isCreateQuiz={true}
                         activeStep={activeStep}
