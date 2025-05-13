@@ -8,7 +8,7 @@ const Loading = () => {
                 <div className="absolute inset-0 bg-accent-secondary rounded-full animate-pulse-slow"></div>
 
                 <div className="relative z-10 p-4">
-                    <Image src="/logo.png" alt="Logo" width={64} />
+                    <Image src="/logo.png" alt="Logo" width={64} height={64} />
                 </div>
             </div>
 

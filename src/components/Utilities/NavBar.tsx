@@ -165,6 +165,7 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
                                             src={gravatar || "https://www.gravatar.com/avatar/0?d=identicon"}
                                             alt="User Avatar"
                                             width={32}
+                                            height={32}
                                             className="w-8 h-8 rounded-full border border-border"
                                         />
                                         <span className="max-w-[120px] truncate hidden sm:block">{user?.username}</span>

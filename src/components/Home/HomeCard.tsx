@@ -33,6 +33,8 @@ const HomeCard: React.FC<CardProps> = ({ title, description, position, image, ic
                 <Image
                     src={image}
                     alt={title}
+                    width={500}
+                    height={500}
                     className="w-full h-auto rounded-2xl shadow-glow transition-transform duration-500 group-hover:scale-[1.02] object-cover border border-border"
                 />
                 <div className="absolute -bottom-4 -right-4 text-accent bg-background-secondary rounded-full p-4 transition-transform duration-500 group-hover:scale-110">
