@@ -77,6 +77,8 @@ jobs:
         run: |
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
           echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
+      - name: Test
+        run: cat .env
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
       - name: Upload artifact
