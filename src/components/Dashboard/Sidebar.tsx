@@ -28,8 +28,17 @@ export const Sidebar: FC<SidebarProps> = ({ user, nav, handleLogout }) => {
 
     return (
         <aside className="w-64 bg-background-tertiary border-r border-background-secondary">
-            <div className="h-16 flex items-center justify-center border-b border-accent-secondary">
-                <h1 className="text-xl font-bold text-accent">Quizzlify</h1>
+            <div className="h-16 flex items-center justify-center border-b border-white/10">
+                <Link href="/" className="flex items-center">
+                    <Image
+                        src="/logo.png"
+                        alt="Logo"
+                        width={40}
+                        height={40}
+                        className="h-10"
+                    />
+                    <h1 className="text-xl font-bold ml-2 text-accent">Quizzlify</h1>
+                </Link>
             </div>
 
             <nav className="p-4 space-y-2">
@@ -37,7 +46,7 @@ export const Sidebar: FC<SidebarProps> = ({ user, nav, handleLogout }) => {
                     <Link
                         key={item.name}
                         href={item.path}
-                        className={`flex items-center space-x-3 p-3 ${nav === item.nav ? 'bg-background text-accent border border-accent-secondary' : 'text-foreground-secondary hover:bg-background'} rounded-lg`}
+                        className={`flex items-center space-x-3 p-3 ${nav === item.nav ? 'bg-background text-accent border border-white/10' : 'text-foreground-secondary hover:bg-background'} transition-all rounded-lg`}
                     >
                         {item.icon}
                         <span className="font-medium">{item.name}</span>
