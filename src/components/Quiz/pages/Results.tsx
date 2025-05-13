@@ -106,7 +106,7 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) 
         }
 
         updateUserScore();
-    }, [currentScore, user, level, questionKeys, questions, selectedAnswers, addToast]);
+    }, [currentScore, user]);
 
     // Mark quiz as completed
     useEffect(() => {
