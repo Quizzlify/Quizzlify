@@ -1,4 +1,4 @@
-export function getGravatarUserIcon(email: string, size: number = 80): Promise<string> {
+export function getGravatarUserIcon(email: string): Promise<string> {
     const normalizedEmail = email.trim().toLowerCase();
     const encoder = new TextEncoder();
     const data = encoder.encode(normalizedEmail);
