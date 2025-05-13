@@ -24,11 +24,12 @@ export default function Page() {
     const [title, setTitle] = useState<string>("");
 
     // Quiz content
-    const [create, setCreate] = useState<boolean>(false); // indicateur si l'utilisateur a cliqué sur le bouton "Créer le quiz"
+    const [creerQuiz, setCreerQuiz] = useState<boolean>(false); // indicateur si l'utilisateur a cliqué sur le bouton "Créer le quiz"
     const [content, setContent] = useState<Quiz['content']>({});
 
-    async function createQuiz(category: string, level: number, title: string) {
+    async function createQuiz(category: string, level: number, title: string, content: Quiz['content']) {
         try {
+            console.log(content)
             const res = await fetch("/api/create-quiz", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -41,8 +42,6 @@ export default function Page() {
             } else {
                 addToast(`Une erreur est survenue: ${response.error}`, "error");
             }
-
-            setCreate(false);
         } catch (error) {
             addToast(`Une erreur est survenue avec la connexion à la DB: ${error}`, "error");
         }
@@ -53,12 +52,13 @@ export default function Page() {
     }, []);
 
     useEffect(() => {
-        if (category && level && title && content && create) {
-            createQuiz(category, level, title);
-        } else if (!category && create || !level && create  || !title && create) {
+        if (category && level && title && content && creerQuiz) {
+            createQuiz(category, level, title, content);
+            setCreerQuiz(false);
+        } else if (!category && creerQuiz || !level && creerQuiz  || !title && creerQuiz) {
             addToast("Veuillez remplir tous les champs avant de créer le quiz.", "error");
         }
-    }, [category, level, title, content, create, addToast, createQuiz]);
+    }, [category, level, title, content, creerQuiz]);
 
     const renderStepContent = () => {
         switch (activeStep) {
@@ -69,7 +69,7 @@ export default function Page() {
             case "Détails":
                 return <Details nextStep={setActiveStep} setTitle={setTitle}/>
             case "Questions":
-                return <Questions questionIndices={questionIndices} setQuestionIndices={setQuestionIndices} content={content} setContent={setContent} setCreerQuiz={setCreate} level={level}/>;
+                return <Questions questionIndices={questionIndices} setQuestionIndices={setQuestionIndices} content={content} setContent={setContent} setCreerQuiz={setCreerQuiz} level={level}/>;
         }
     };
 
