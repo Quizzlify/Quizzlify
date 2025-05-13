@@ -1,28 +1,50 @@
-
 "use client";
 
 import { Sidebar } from "@/components/Dashboard/Sidebar";
+import QButton from "@/components/Utilities/QButton";
+import QInput from "@/components/Utilities/QInput";
 import { useToast } from "@/provider/ToastProvider";
 import { useUser } from "@/provider/UserProvider";
 import { Edit, PlusCircle, Search, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 const MyQuiz: FC = () => {
     const router = useRouter();
-    const [users] = useState<User[]>([]);
     const { addToast } = useToast();
-    const { user, isAuthenticated, logout } = useUser();
-    
-    // const quizzes = [
-    //     { id: 1, title: 'Histoire de France', questions: 15, completions: 234, avgScore: '78%' },
-    //     { id: 2, title: 'Géographie Mondiale', questions: 20, completions: 156, avgScore: '82%' },
-    //     { id: 3, title: 'Sciences', questions: 25, completions: 89, avgScore: '75%' }
-    // ];
+    const { user, isAuthenticated, logout, isLoadingUser } = useUser();
+    const [quiz, setQuiz] = useState<Quiz[]>([]);
+    const [search, setSearch] = useState("");
 
     if (!isAuthenticated || !user) {
         router.push("/user/signin");
     }
+
+    useEffect(() => {
+        if (isLoadingUser) return;
+
+        async function fetchData() {
+            try {
+                const response = await fetch("/api/user/getQuiz", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ userId: user?._id.toString() }),
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    setQuiz(data.quiz);
+                } else {
+                    console.error("Erreur lors de la récupération des quiz:", data.error);
+                }
+            } catch (error) {
+                console.error("Erreur lors de la récupération des quiz:", error);
+            }
+        }
+
+        fetchData();
+    }, [user]);
 
     const handleLogout = async () => {
         try {
@@ -35,65 +57,75 @@ const MyQuiz: FC = () => {
         }
     };
 
+    const filteredQuiz = quiz.filter(q =>
+        q.title.toLowerCase().includes(search.toLowerCase())
+    );
+
+    const formatDate = (dateString: string) => {
+        const options: Intl.DateTimeFormatOptions = {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            weekday: "long"
+        };
+        const date = new Date(dateString);
+        return date.toLocaleDateString("fr-FR", options);
+    };
+
     return (
-        <div className="flex h-screen bg-gray-50">
+        <div className="flex h-screen bg-background">
             <Sidebar user={user} nav="quiz" handleLogout={handleLogout} />
 
             <main className="flex-1 overflow-auto">
                 <div className="p-8">
                     <div className="flex justify-between items-center mb-8">
-                        <h2 className="text-2xl font-bold text-gray-800">Mes Quiz</h2>
-                        <button className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors">
+                        <h2 className="text-2xl font-bold">Mes Quiz</h2>
+                        {/* <button className="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-hover transition-colors">
                             <PlusCircle className="inline-block mr-2" size={20} />
                             Créer un Quiz
-                        </button>
+                        </button> */}
+                        <QButton
+                            icon={<PlusCircle size={20} />}
+                            text="Créer un Quiz"
+                            onClick={() => router.push("/createQuiz/default")}
+                        />
                     </div>
 
-                    <div className="bg-white rounded-lg shadow-sm mb-6">
-                        <div className="p-4 border-b">
-                            <div className="relative">
-                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-                                <input
-                                    type="text"
-                                    placeholder="Rechercher un quiz..."
-                                    className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                                />
-                            </div>
-                        </div>
+                    <div className="relative mb-6">
+                        <QInput
+                            icon={<Search className="absolute left-3 top-1/2 transform -translate-y-1/2" size={20} />}
+                            type="text"
+                            placeholder="Rechercher un quiz..."
+                            className="w-full"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                    </div>
 
-                        <div className="overflow-x-auto">
-                            <table className="w-full">
-                                <thead className="bg-gray-50">
-                                    <tr>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Titre</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Questions</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Complétions</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Score Moyen</th>
-                                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="bg-white divide-y divide-gray-200">
-                                    {users.map((user) => (
-                                        <tr key={user._id}>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="font-medium text-gray-900">{user.username}</div>
-                                            </td>
-                                            {/* <td className="px-6 py-4 whitespace-nowrap text-gray-500">{user.questions}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-gray-500">{user.completions}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-gray-500">{user.avgScore}</td> */}
-                                            <td className="px-6 py-4 whitespace-nowrap text-right">
-                                                <button className="text-blue-600 hover:text-blue-800 mr-3">
-                                                    <Edit size={18} />
-                                                </button>
-                                                <button className="text-red-600 hover:text-red-800">
-                                                    <Trash2 size={18} />
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {filteredQuiz.map((q) => (
+                            <div
+                                key={q._id}
+                                className="bg-background-tertiary border-2 border-accent rounded-xl shadow-md p-5 hover:shadow-lg transition-shadow"
+                            >
+                                <div className="flex justify-between items-start mb-4">
+                                    <h3 className="text-lg font-semibold text-accent">{q.title}</h3>
+                                    <div className="flex space-x-2">
+                                        <button className="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-background-secondary transition-all">
+                                            <Edit size={18} />
+                                        </button>
+                                        <button className="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-background-secondary transition-all">
+                                            <Trash2 size={18} />
+                                        </button>
+                                    </div>
+                                </div>
+                                <p className="text-sm text-gray-200 mb-1">Catégorie : <span className="font-medium">{q.category}</span></p>
+                                <p className="text-sm text-gray-200 mb-1">Niveau : <span className="font-medium">{q.level}</span></p>
+                                <p className="text-sm text-gray-200">Créé le : <span className="font-medium">{formatDate(q.created_at)}</span></p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </main>
