@@ -43,10 +43,7 @@ export async function GET() {
         }
 
         const userWithoutPassword = { ...user };
-        delete userWithoutPassword.password;
-
-        console.log("User found:", userWithoutPassword);
-        
+        delete userWithoutPassword.password;        
         
         return NextResponse.json(
             { success: true, user: userWithoutPassword },
