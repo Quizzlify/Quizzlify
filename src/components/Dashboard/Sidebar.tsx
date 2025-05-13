@@ -17,19 +17,19 @@ const sidebarItems = [
 
 export const Sidebar: FC<SidebarProps> = ({ user, nav, handleLogout }) => {
     return (
-        <aside className="w-64 bg-white border-r border-gray-200">
-            <div className="h-16 flex items-center justify-center border-b">
-                <h1 className="text-xl font-bold text-orange-600">Quizzlify</h1>
+        <aside className="w-64 bg-background-tertiary border-r border-background-secondary">
+            <div className="h-16 flex items-center justify-center border-b border-accent-secondary">
+                <h1 className="text-xl font-bold text-accent">Quizzlify</h1>
             </div>
 
-            <div className="p-4 border-b">
+            <div className="p-4 border-b border-accent-secondary">
                 <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
-                        <span className="font-semibold text-orange-600">{user?.username.charAt(0).toUpperCase()}</span>
+                    <div className="w-10 h-10 rounded-full bg-accent-secondary flex items-center justify-center">
+                        <span className="font-semibold text-accent">{user?.username.charAt(0).toUpperCase()}</span>
                     </div>
                     <div>
                         <p className="font-medium">{user?.username}</p>
-                        <p className="text-xs text-gray-500">{user?.email}</p>
+                        <p className="text-xs text-foreground-secondary">{user?.email}</p>
                     </div>
                 </div>
             </div>
@@ -39,7 +39,7 @@ export const Sidebar: FC<SidebarProps> = ({ user, nav, handleLogout }) => {
                     <Link
                         key={item.name}
                         href={item.path}
-                        className={`flex items-center space-x-3 p-3 ${nav === item.nav ? 'bg-orange-50 text-orange-600' : 'text-gray-600 hover:bg-orange-50'} rounded-lg`}
+                        className={`flex items-center space-x-3 p-3 ${nav === item.nav ? 'bg-background text-accent border border-accent-secondary' : 'text-foreground-secondary hover:bg-background'} rounded-lg`}
                     >
                         {item.icon}
                         <span className="font-medium">{item.name}</span>
@@ -48,7 +48,7 @@ export const Sidebar: FC<SidebarProps> = ({ user, nav, handleLogout }) => {
             </nav>
 
             <div className="absolute bottom-4 w-64 px-4">
-                <button onClick={handleLogout} className="flex items-center space-x-3 p-3 text-gray-600 hover:bg-orange-50 rounded-lg w-full">
+                <button onClick={handleLogout} className="flex items-center space-x-3 p-3 text-foreground-secondary hover:bg-background rounded-lg w-full">
                     <LogOut size={20} />
                     <span>Déconnexion</span>
                 </button>

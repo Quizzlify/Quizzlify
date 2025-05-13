@@ -89,37 +89,37 @@ const DashboardPage = () => {
     if (isLoading) return <Loading />;
 
     return (
-        <div className="flex h-screen bg-gray-50">
+        <div className="flex h-screen">
             <Sidebar user={user} nav='dashboard' handleLogout={handleLogout} />
-            <main className="flex-1 overflow-auto">
+            <div className="flex-1 overflow-auto">
                 <div className="p-8">
                     <div className="flex justify-between items-center mb-8">
-                        <h2 className="text-2xl font-bold text-gray-800">Tableau de bord</h2>
+                        <h2 className="text-2xl font-bold text-foreground">Tableau de bord</h2>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                         {stats.map((stat) => (
-                            <div key={stat.title} className="bg-white p-6 rounded-lg shadow-sm">
+                            <div key={stat.title} className="bg-background-tertiary p-6 rounded-lg shadow-sm">
                                 <div className="flex justify-between items-center mb-2">
-                                    <p className="text-sm font-medium text-gray-600">{stat.title}</p>
+                                    <p className="text-sm font-medium text-foreground-secondary">{stat.title}</p>
                                 </div>
-                                <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+                                <p className="text-2xl font-bold text-accent">{stat.value}</p>
                             </div>
                         ))}
                     </div>
 
-                    <div className="bg-white rounded-lg shadow-sm p-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Activité Récente</h3>
+                    <div className="bg-background-tertiary rounded-lg shadow-sm p-6">
+                        <h3 className="text-lg font-semibold text-foreground mb-4">Activité Récente</h3>
                         <div className="space-y-4">
                             {[1, 2, 3].map((i) => (
-                                <div key={i} className="flex items-center justify-between py-3 border-b last:border-b-0">
+                                <div key={i} className="flex items-center justify-between py-3 border-b border-accent-secondary last:border-b-0">
                                     <div className="flex items-center space-x-4">
-                                        <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
+                                        <div className="w-10 h-10 rounded-full bg-accent-secondary flex items-center justify-center">
                                             <Book size={20} className="text-orange-600" />
                                         </div>
                                         <div>
-                                            <p className="font-medium text-gray-900">Quiz Histoire Complété</p>
-                                            <p className="text-sm text-gray-500">Il y a {i * 2} heures</p>
+                                            <p className="font-medium text-foreground-secondary">Quiz Histoire Complété</p>
+                                            <p className="text-sm text-foreground-secondary">Il y a {i * 2} heures</p>
                                         </div>
                                     </div>
                                     <span className="text-gray-600">85% de réussite</span>
@@ -128,7 +128,7 @@ const DashboardPage = () => {
                         </div>
                     </div>
                 </div>
-            </main>
+            </div>
         </div>
     );
 };
