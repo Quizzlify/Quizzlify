@@ -23,8 +23,8 @@ export async function GET() {
         const userId = typeof decoded === 'object' ? decoded.id : null;
 
         if (!userId) {
-            return new NextResponse(
-                JSON.stringify({ success: false, message: "Invalid token" }),
+            return NextResponse.json(
+                { success: false, message: "Invalid token" },
                 { status: 401 }
             );
         }
@@ -36,8 +36,8 @@ export async function GET() {
         const user = await collection.findOne({ _id: new ObjectId(userId) });
 
         if (!user) {
-            return new NextResponse(
-                JSON.stringify({ success: false, message: "User not found" }),
+            return NextResponse.json(
+                { success: false, message: "User not found" },
                 { status: 404 }
             );
         }
@@ -48,14 +48,14 @@ export async function GET() {
         console.log("User found:", userWithoutPassword);
         
         
-        return new NextResponse(
-            JSON.stringify({ success: true, user: userWithoutPassword }),
+        return NextResponse.json(
+            { success: true, user: userWithoutPassword },
             { status: 200 }
         );
     } catch (error) {
         console.error("Error checking authentication:", error);
-        return new NextResponse(
-            JSON.stringify({ success: false, message: error }),
+        return NextResponse.json(
+            { success: false, message: error },
             { status: 500 }
         );
     }
