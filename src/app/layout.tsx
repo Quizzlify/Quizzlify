@@ -3,6 +3,7 @@ import "./globals.css";
 import { ToastProvider } from "../provider/ToastProvider";
 import ToastContainer from "../components/Utilities/Toast/ToastContainer";
 import { UserProvider } from "@/provider/UserProvider";
+import Footer from "@/components/Utilities/Footer";
 
 export const metadata: Metadata = {
   title: "Quizzlify"
@@ -20,7 +21,10 @@ export default function RootLayout({
       >
         <UserProvider>
           <ToastProvider>
-            {children}
+            <main className="flex-grow min-h-screen">
+              {children}
+            </main>
+            <Footer />
             <ToastContainer />
           </ToastProvider>
         </UserProvider>
