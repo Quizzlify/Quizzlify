@@ -99,7 +99,7 @@ const DashboardPage = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                         {stats.map((stat) => (
-                            <div key={stat.title} className="bg-background-tertiary p-6 rounded-lg shadow-sm">
+                            <div key={stat.title} className="bg-background-tertiary p-6 rounded-lg shadow-sm border border-white/10">
                                 <div className="flex justify-between items-center mb-2">
                                     <p className="text-sm font-medium text-foreground-secondary">{stat.title}</p>
                                 </div>
