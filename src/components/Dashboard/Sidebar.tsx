@@ -22,18 +22,6 @@ export const Sidebar: FC<SidebarProps> = ({ user, nav, handleLogout }) => {
                 <h1 className="text-xl font-bold text-accent">Quizzlify</h1>
             </div>
 
-            <div className="p-4 border-b border-accent-secondary">
-                <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 rounded-full bg-accent-secondary flex items-center justify-center">
-                        <span className="font-semibold text-accent">{user?.username.charAt(0).toUpperCase()}</span>
-                    </div>
-                    <div>
-                        <p className="font-medium">{user?.username}</p>
-                        <p className="text-xs text-foreground-secondary">{user?.email}</p>
-                    </div>
-                </div>
-            </div>
-
             <nav className="p-4 space-y-2">
                 {sidebarItems.map((item) => (
                     <Link
@@ -47,11 +35,23 @@ export const Sidebar: FC<SidebarProps> = ({ user, nav, handleLogout }) => {
                 ))}
             </nav>
 
-            <div className="absolute bottom-4 w-64 px-4">
-                <button onClick={handleLogout} className="flex items-center space-x-3 p-3 text-foreground-secondary hover:bg-background rounded-lg w-full">
+            <div className="flex flex-row justify-between absolute bottom-4 w-64 px-4 absolute inset-x-0">
+                <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 rounded-full bg-accent-secondary flex items-center justify-center">
+                        <span className="font-semibold text-accent">{user?.username.charAt(0).toUpperCase()}</span>
+                    </div>
+                    <div>
+                        <p className="font-medium">{user?.username}</p>
+                        <p className="text-xs text-foreground-secondary">{user?.email}</p>
+                    </div>
+                </div>
+                <button onClick={handleLogout} className="p-3 text-foreground-secondary hover:bg-background rounded-lg w-fit">
                     <LogOut size={20} />
-                    <span>Déconnexion</span>
                 </button>
+            </div>
+
+            <div className="p-4 ">
+
             </div>
         </aside>
     );
