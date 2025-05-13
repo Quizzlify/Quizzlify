@@ -1,6 +1,8 @@
 import { BarChart, Book, Home, LogOut, Settings } from "lucide-react";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import Link from 'next/link';
+import { getGravatarUserIcon } from "../Utilities/Utils";
+import Image from "next/image";
 
 interface SidebarProps {
     user: User | null;
@@ -16,6 +18,14 @@ const sidebarItems = [
 ]
 
 export const Sidebar: FC<SidebarProps> = ({ user, nav, handleLogout }) => {
+    const [gravatar, setGravatar] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (user && user.email) {
+            getGravatarUserIcon(user.email).then(setGravatar);
+        }
+    }, [user]);
+
     return (
         <aside className="w-64 bg-background-tertiary border-r border-background-secondary">
             <div className="h-16 flex items-center justify-center border-b border-accent-secondary">
@@ -35,17 +45,23 @@ export const Sidebar: FC<SidebarProps> = ({ user, nav, handleLogout }) => {
                 ))}
             </nav>
 
-            <div className="flex flex-row justify-between absolute bottom-4 w-64 px-4 absolute inset-x-0">
+            <div className="flex flex-row justify-between absolute bottom-4 w-64 px-4 inset-x-0">
                 <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 rounded-full bg-accent-secondary flex items-center justify-center">
-                        <span className="font-semibold text-accent">{user?.username.charAt(0).toUpperCase()}</span>
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center">
+                        <Image
+                            src={gravatar || 'https://www.gravatar.com/avatar/0?d=identicon'}
+                            alt="User Avatar"
+                            width={40}
+                            height={40}
+                            className="rounded-full"
+                        />
                     </div>
                     <div>
                         <p className="font-medium">{user?.username}</p>
                         <p className="text-xs text-foreground-secondary">{user?.email}</p>
                     </div>
                 </div>
-                <button onClick={handleLogout} className="p-3 text-foreground-secondary hover:bg-background rounded-lg w-fit">
+                <button onClick={handleLogout} className="p-3 text-foreground-secondary hover:bg-background rounded-lg w-fit hover:text-danger transition-colors">
                     <LogOut size={20} />
                 </button>
             </div>
