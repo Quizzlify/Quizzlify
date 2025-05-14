@@ -60,7 +60,7 @@ const DashboardPage = () => {
         }
 
         if (user?._id) fetchData();
-    }, [user]);
+    }, [user, addToast]);
 
     const stats = [
         { title: 'Quiz Créés', value: quizCreated, icon: <Book className="text-accent w-5 h-5" /> },

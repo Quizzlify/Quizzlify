@@ -27,38 +27,38 @@ export default function Page() {
     const [creerQuiz, setCreerQuiz] = useState<boolean>(false); // indicateur si l'utilisateur a cliqué sur le bouton "Créer le quiz"
     const [content, setContent] = useState<Quiz['content']>({});
 
-    async function createQuiz(category: string, level: number, title: string, content: Quiz['content']) {
-        try {
-            console.log(content)
-            const res = await fetch("/api/create-quiz", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ category, level, title, content, author: user?._id })
-            });
-
-            const response = await res.json();
-            if (response.success) {
-                addToast("Le quiz a été crée avec succès.", "success");
-            } else {
-                addToast(`Une erreur est survenue: ${response.error}`, "error");
-            }
-        } catch (error) {
-            addToast(`Une erreur est survenue avec la connexion à la DB: ${error}`, "error");
-        }
-    };
-
     useEffect(() => {
         setIsVisible(true);
     }, []);
 
     useEffect(() => {
+        async function createQuiz(category: string, level: number, title: string, content: Quiz['content']) {
+            try {
+                console.log(content)
+                const res = await fetch("/api/create-quiz", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ category, level, title, content, author: user?._id })
+                });
+    
+                const response = await res.json();
+                if (response.success) {
+                    addToast("Le quiz a été crée avec succès.", "success");
+                } else {
+                    addToast(`Une erreur est survenue: ${response.error}`, "error");
+                }
+            } catch (error) {
+                addToast(`Une erreur est survenue avec la connexion à la DB: ${error}`, "error");
+            }
+        };
+
         if (category && level && title && content && creerQuiz) {
             createQuiz(category, level, title, content);
             setCreerQuiz(false);
         } else if (!category && creerQuiz || !level && creerQuiz  || !title && creerQuiz) {
             addToast("Veuillez remplir tous les champs avant de créer le quiz.", "error");
         }
-    }, [category, level, title, content, creerQuiz]);
+    }, [category, level, title, content, creerQuiz, addToast, user?._id]);
 
     const renderStepContent = () => {
         switch (activeStep) {

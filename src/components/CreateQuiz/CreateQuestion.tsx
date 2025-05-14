@@ -1,5 +1,4 @@
 import { Switch } from "@heroui/switch";
-import { useEffect } from "react";
 import QInput from "../Utilities/QInput";
 
 interface CreateQuestionProps {
@@ -37,28 +36,21 @@ const CreateQuestion: React.FC<CreateQuestionProps> = ({ questionNum, removeQues
 
   function handleCorrectAnswerChange(answerIndex: number, isSelected: boolean) {
     if (isSelected) {
+      const updatedQuestion = {
+        ...content[questionNum],
+        correctAnswer: answerIndex,
+      };
+
+      if (level !== 3) {
+        updatedQuestion.points = null;
+      }
+
       setContent({
         ...content,
-        [questionNum]: {
-          ...content[questionNum],
-          correctAnswer: answerIndex
-        }
+        [questionNum]: updatedQuestion,
       });
     }
-  }
-
-
-  useEffect(() => {
-    if (level !== 3) {
-      setContent({
-        ...content,
-        [questionNum]: {
-          ...content[questionNum],
-          points: null
-        }
-      });
-    }
-  }, [level, questionNum, setContent]);
+ }
 
   return (
     <div className="card glass-effect w-full px-6 py-6 my-6 relative animate-slide-up bg-background-tertiary rounded-2xl shadow-lg border border-border">
