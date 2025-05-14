@@ -8,7 +8,8 @@ export async function POST(req: Request) {
         const client = await clientPromise;
         const db = client.db("quizzlify");
         const collection = db.collection("quiz");
-        await collection.deleteOne({ _id: quizId });
+
+        await collection.deleteOne({ _id: new ObjectId(quizId) });
   
         return NextResponse.json({ success: true });
       

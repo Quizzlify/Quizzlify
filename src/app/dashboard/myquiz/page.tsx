@@ -44,7 +44,7 @@ const MyQuiz: FC = () => {
         }
 
         fetchData();
-    }, [user]);
+    }, [user, deleteQuiz]);
 
     const handleLogout = async () => {
         try {
@@ -79,7 +79,7 @@ const MyQuiz: FC = () => {
 
     async function deleteQuiz(quizId: string) {
         try {
-            const response = await fetch("/api/user/deleteQuiz", {
+            const response = await fetch("/api/quiz/deleteQuiz", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ quizId }),
