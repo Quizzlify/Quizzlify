@@ -6,7 +6,7 @@ import QButton from "@/components/Utilities/QButton";
 import QInput from "@/components/Utilities/QInput";
 import { useToast } from "@/provider/ToastProvider";
 import { useUser } from "@/provider/UserProvider";
-import { Edit, InspectionPanelIcon, PlusCircle, Search, Trash2 } from "lucide-react";
+import { Edit, PlusCircle, Search, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 
@@ -20,10 +20,10 @@ const MyQuiz: FC = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     // Edit Quiz
-    const [category, setCategory] = useState<string>("");
-    const [level, setLevel] = useState<number>(1);
-    const [title, setTitle] = useState<string>("");
-    const [content, setContent] = useState<Quiz['content']>({});
+    // const [category, setCategory] = useState<string>("");
+    // const [level, setLevel] = useState<number>(1);
+    // const [title, setTitle] = useState<string>("");
+    // const [content, setContent] = useState<Quiz['content']>({});
 
     if (!isAuthenticated || !user) {
         router.push("/user/signin");
@@ -58,7 +58,7 @@ const MyQuiz: FC = () => {
         }
 
         fetchData();
-    }, [user, deleteQuizBtn]);
+    }, [user, deleteQuizBtn, isLoadingUser]);
 
     const handleLogout = async () => {
         try {
@@ -107,10 +107,6 @@ const MyQuiz: FC = () => {
         const date = new Date(dateString);
         return date.toLocaleDateString("fr-FR", options);
     };
-
-    function goTo(route: string) {
-        router.push(route);
-    }
 
     return (
         <div className="flex h-screen bg-background">

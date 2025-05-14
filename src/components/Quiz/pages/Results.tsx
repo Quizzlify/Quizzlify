@@ -15,6 +15,7 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) 
     const [currentScore, setCurrentScore] = useState<number | null>(null);
     const hasSetQuizCompleted = useRef(false);
     const { user } = useUser();
+    const [didAddPoints, setDidAddPoints] = useState<boolean>(false);
     const { addToast } = useToast();
 
     // Calculate correct answers and score
@@ -65,15 +66,6 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) 
             }
         }
 
-        if (user?._id) {
-            getUserScore(user._id);
-        }
-    }, [user, level]);
-
-    // Update user score and add points
-    useEffect(() => {
-        if (level !== 3 || !user?._id) return;
-
         async function updateUserScore() {
             const points = questionKeys.reduce((total, key, index) => {
                 return questions[key].correctAnswer === selectedAnswers[index] 
@@ -96,7 +88,7 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) 
 
                 if (response.success) {
                     setEarnedPoints(points);
-                    addToast(`${points} points ont été ajoutés !`, "success");
+                    addToast(`Vous avez gagné ${points} points !`, "success");
                 } else {
                     console.error("Erreur lors de la mise à jour du score: ", response.error);
                 }
@@ -105,8 +97,14 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) 
             }
         }
 
-        updateUserScore();
-    }, [currentScore, user]);
+        if (user?._id) {
+            getUserScore(user._id);
+        }
+        if (didAddPoints == false && currentScore !== null) {
+            updateUserScore();
+            setDidAddPoints(true);
+        }
+    }, [user, currentScore, questions, selectedAnswers, level, questionKeys, addToast, didAddPoints, setDidAddPoints]);
 
     // Mark quiz as completed
     useEffect(() => {

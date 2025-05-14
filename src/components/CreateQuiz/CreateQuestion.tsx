@@ -47,6 +47,7 @@ const CreateQuestion: React.FC<CreateQuestionProps> = ({ questionNum, removeQues
     }
   }
 
+
   useEffect(() => {
     if (level !== 3) {
       setContent({
