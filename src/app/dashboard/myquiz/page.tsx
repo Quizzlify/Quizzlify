@@ -1,11 +1,12 @@
 "use client";
 
+import Modal from "@/components/Dashboard/Modal";
 import { Sidebar } from "@/components/Dashboard/Sidebar";
 import QButton from "@/components/Utilities/QButton";
 import QInput from "@/components/Utilities/QInput";
 import { useToast } from "@/provider/ToastProvider";
 import { useUser } from "@/provider/UserProvider";
-import { Edit, PlusCircle, Search, Trash2 } from "lucide-react";
+import { Edit, InspectionPanelIcon, PlusCircle, Search, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 
@@ -15,10 +16,22 @@ const MyQuiz: FC = () => {
     const { user, isAuthenticated, logout, isLoadingUser } = useUser();
     const [quiz, setQuiz] = useState<Quiz[]>([]);
     const [search, setSearch] = useState("");
+    const [deleteQuizBtn, setDeleteQuizBtn] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState(false);
+
+    // Edit Quiz
+    const [category, setCategory] = useState<string>("");
+    const [level, setLevel] = useState<number>(1);
+    const [title, setTitle] = useState<string>("");
+    const [content, setContent] = useState<Quiz['content']>({});
 
     if (!isAuthenticated || !user) {
         router.push("/user/signin");
     }
+
+    useEffect(() => {
+        <Modal title={"Hello world"}/>
+    }, [isOpen])
 
     useEffect(() => {
         if (isLoadingUser) return;
@@ -35,6 +48,7 @@ const MyQuiz: FC = () => {
 
                 if (data.success) {
                     setQuiz(data.quiz);
+                    setDeleteQuizBtn(false);
                 } else {
                     console.error("Erreur lors de la récupération des quiz:", data.error);
                 }
@@ -44,7 +58,7 @@ const MyQuiz: FC = () => {
         }
 
         fetchData();
-    }, [user, deleteQuiz]);
+    }, [user, deleteQuizBtn]);
 
     const handleLogout = async () => {
         try {
@@ -56,26 +70,6 @@ const MyQuiz: FC = () => {
             addToast("Erreur lors de la déconnexion", "error");
         }
     };
-
-    async function editQuiz() {
-        try {
-            const response = await fetch("/api/user/editQuiz", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ }),
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                addToast("Quiz modifié avec succès", "success");
-            } else {
-                console.error("Erreur lors de la récupération des quiz:", data.error);
-            }
-        } catch (error) {
-            console.error("Erreur lors de la récupération des quiz:", error);
-        }
-    }
 
     async function deleteQuiz(quizId: string) {
         try {
@@ -113,6 +107,10 @@ const MyQuiz: FC = () => {
         const date = new Date(dateString);
         return date.toLocaleDateString("fr-FR", options);
     };
+
+    function goTo(route: string) {
+        router.push(route);
+    }
 
     return (
         <div className="flex h-screen bg-background">
@@ -153,11 +151,13 @@ const MyQuiz: FC = () => {
                                 <div className="flex justify-between items-start mb-4">
                                     <h3 className="text-lg font-semibold text-accent">{q.title}</h3>
                                     <div className="flex space-x-2">
-                                        <button className="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-background-secondary transition-all">
+                                        <button className="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-background-secondary transition-all"
+                                            onClick={() => setIsOpen(true)}
+                                        >
                                             <Edit size={18} />
                                         </button>
                                         <button className="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-background-secondary transition-all"
-                                            onClick={() => {deleteQuiz(q._id)}}
+                                            onClick={() => {deleteQuiz(q._id) ; setDeleteQuizBtn(true);}}
                                         >        
                                             <Trash2 size={18} />
                                         </button>
