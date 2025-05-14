@@ -4,7 +4,7 @@ import { Sidebar } from '@/components/Dashboard/Sidebar';
 import Loading from '@/components/Utilities/Loading';
 import { useToast } from '@/provider/ToastProvider';
 import { useUser } from '@/provider/UserProvider';
-import { Book } from 'lucide-react';
+import { Book, Star } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -26,8 +26,7 @@ const DashboardPage = () => {
 
     useEffect(() => {
         async function fetchData() {
-            setIsLoading(true); // début du chargement
-
+            setIsLoading(true);
             try {
                 const [statsRes, quizRes] = await Promise.all([
                     fetch("/api/user/getStats", {
@@ -48,31 +47,25 @@ const DashboardPage = () => {
                 if (statsData.success) {
                     setQuizCompleted(statsData.quizCompleted);
                     setScore(statsData.score);
-                } else {
-                    console.log("Erreur stats: ", statsData.error);
                 }
-
                 if (quizData.success) {
                     setQuizCreated(quizData.data.length);
-                } else {
-                    console.log("Erreur quiz: ", quizData.error);
                 }
             } catch (error) {
-                console.log("Erreur lors du chargement des données: ", error);
+                console.log("Erreur chargement données: ", error);
+                addToast("Erreur lors du chargement des données", "error");
             } finally {
-                setIsLoading(false); // fin du chargement
+                setIsLoading(false);
             }
         }
 
-        if (user?._id) {
-            fetchData();
-        }
+        if (user?._id) fetchData();
     }, [user]);
 
     const stats = [
-        { title: 'Quiz Créés', value: quizCreated },
-        { title: 'Quiz Complétés', value: quizCompleted },
-        { title: 'Score total', value: score },
+        { title: 'Quiz Créés', value: quizCreated, icon: <Book className="text-accent w-5 h-5" /> },
+        { title: 'Quiz Complétés', value: quizCompleted, icon: <Book className="text-green-500 w-5 h-5" /> },
+        { title: 'Score total', value: score, icon: <Star className="text-yellow-500 w-5 h-5" /> },
     ];
 
     const handleLogout = async () => {
@@ -91,41 +84,44 @@ const DashboardPage = () => {
     return (
         <div className="flex h-screen">
             <Sidebar user={user} nav='dashboard' handleLogout={handleLogout} />
-            <div className="flex-1 overflow-auto">
-                <div className="p-8">
-                    <div className="flex justify-between items-center mb-8">
-                        <h2 className="text-2xl font-bold text-foreground">Tableau de bord</h2>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                        {stats.map((stat) => (
-                            <div key={stat.title} className="bg-background-tertiary p-6 rounded-lg shadow-sm border border-white/10">
-                                <div className="flex justify-between items-center mb-2">
-                                    <p className="text-sm font-medium text-foreground-secondary">{stat.title}</p>
+            <div className="flex-1 overflow-auto bg-background p-8">
+                <div className="flex justify-between items-center mb-8">
+                    <h2 className="text-2xl font-bold text-foreground">Tableau de bord</h2>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+                    {stats.map((stat) => (
+                        <div
+                            key={stat.title}
+                            className="bg-background-tertiary border border-white/10 p-4 rounded-lg shadow-sm hover:shadow-md transition duration-200"
+                        >
+                            <div className="flex items-center gap-3 mb-1">
+                                <div className="text-accent bg-accent/10 rounded-md p-1.5">
+                                    {stat.icon}
                                 </div>
-                                <p className="text-2xl font-bold text-accent">{stat.value}</p>
+                                <p className="text-sm text-foreground-secondary font-medium">{stat.title}</p>
+                            </div>
+                            <p className="text-2xl font-bold text-foreground">{stat.value}</p>
+                        </div>
+                    ))}
+                </div>
+
+                <div className="bg-background-tertiary border border-white/10 p-6 rounded-2xl shadow-md">
+                    <h3 className="text-xl font-semibold text-foreground mb-6">Activité Récente</h3>
+                    <div className="space-y-4">
+                        {[1, 2, 3].map((i) => (
+                            <div key={i} className="flex items-center justify-between py-4 border-b border-white/10 last:border-none">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center">
+                                        <Book className="text-accent" size={24} />
+                                    </div>
+                                    <div>
+                                        <p className="text-base text-foreground font-medium">Quiz Histoire Complété</p>
+                                        <p className="text-sm text-foreground-secondary">Il y a {i * 2} heures</p>
+                                    </div>
+                                </div>
+                                <span className="text-sm font-semibold text-green-400">85% de réussite</span>
                             </div>
                         ))}
-                    </div>
-
-                    <div className="bg-background-tertiary rounded-lg shadow-sm p-6">
-                        <h3 className="text-lg font-semibold text-foreground mb-4">Activité Récente</h3>
-                        <div className="space-y-4">
-                            {[1, 2, 3].map((i) => (
-                                <div key={i} className="flex items-center justify-between py-3 border-b border-accent-secondary last:border-b-0">
-                                    <div className="flex items-center space-x-4">
-                                        <div className="w-10 h-10 rounded-full bg-accent-secondary flex items-center justify-center">
-                                            <Book size={20} className="text-orange-600" />
-                                        </div>
-                                        <div>
-                                            <p className="font-medium text-foreground-secondary">Quiz Histoire Complété</p>
-                                            <p className="text-sm text-foreground-secondary">Il y a {i * 2} heures</p>
-                                        </div>
-                                    </div>
-                                    <span className="text-foreground-secondary">85% de réussite</span>
-                                </div>
-                            ))}
-                        </div>
                     </div>
                 </div>
             </div>

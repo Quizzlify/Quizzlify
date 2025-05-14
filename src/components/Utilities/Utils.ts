@@ -7,8 +7,8 @@ export function getGravatarUserIcon(email: string): Promise<string> {
         const hashArray = Array.from(new Uint8Array(hashBuffer));
         const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
-        return `https://www.gravatar.com/avatar/${hashHex}?d=identicon`;
+        return `https://www.gravatar.com/avatar/${hashHex}?d=retro`;
     }).catch(() => {
-        return `https://www.gravatar.com/avatar/0?d=identicon`;
+        return `https://www.gravatar.com/avatar/0?d=retro`;
     });
 }
