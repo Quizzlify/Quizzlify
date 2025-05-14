@@ -170,7 +170,7 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
                                                     className="w-full text-left px-4 py-3 text-sm text-foreground hover:bg-background-tertiary flex items-center">
                                                     <BarChart3 size={16} className="mr-3 text-accent" /> Tableau de bord
                                                 </button>
-                                                <button onClick={() => { goTo('/dashboard/quiz'); setDropdownOpen(false); }}
+                                                <button onClick={() => { goTo('/dashboard/myquiz'); setDropdownOpen(false); }}
                                                     className="w-full text-left px-4 py-3 text-sm text-foreground hover:bg-background-tertiary flex items-center">
                                                     <BookOpen size={16} className="mr-3 text-accent" /> Mes quiz
                                                 </button>

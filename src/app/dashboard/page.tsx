@@ -122,7 +122,7 @@ const DashboardPage = () => {
                                             <p className="text-sm text-foreground-secondary">Il y a {i * 2} heures</p>
                                         </div>
                                     </div>
-                                    <span className="text-gray-600">85% de réussite</span>
+                                    <span className="text-foreground-secondary">85% de réussite</span>
                                 </div>
                             ))}
                         </div>

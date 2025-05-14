@@ -57,6 +57,46 @@ const MyQuiz: FC = () => {
         }
     };
 
+    async function editQuiz() {
+        try {
+            const response = await fetch("/api/user/editQuiz", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                addToast("Quiz modifié avec succès", "success");
+            } else {
+                console.error("Erreur lors de la récupération des quiz:", data.error);
+            }
+        } catch (error) {
+            console.error("Erreur lors de la récupération des quiz:", error);
+        }
+    }
+
+    async function deleteQuiz(quizId: string) {
+        try {
+            const response = await fetch("/api/user/deleteQuiz", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ quizId }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                addToast("Quiz supprimé avec succès", "success");
+            } else {
+                console.error("Erreur lors de la récupération des quiz:", data.error);
+            }
+        } catch (error) {
+            console.error("Erreur lors de la récupération des quiz:", error);
+        }
+    }
+
     const filteredQuiz = quiz.filter(q =>
         q.title.toLowerCase().includes(search.toLowerCase())
     );
@@ -116,7 +156,9 @@ const MyQuiz: FC = () => {
                                         <button className="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-background-secondary transition-all">
                                             <Edit size={18} />
                                         </button>
-                                        <button className="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-background-secondary transition-all">
+                                        <button className="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-background-secondary transition-all"
+                                            onClick={() => {deleteQuiz(q._id)}}
+                                        >        
                                             <Trash2 size={18} />
                                         </button>
                                     </div>
