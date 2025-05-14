@@ -1,5 +1,5 @@
-import { BarChart, Book, ChevronLeft, ChevronRight, Home, LogOut, MenuIcon, Settings, XIcon } from "lucide-react";
-import { FC, useEffect, useState } from "react";
+import { BarChart, Book, Home, LogOut, Settings } from "lucide-react";
+import { FC, useEffect, useRef, useState } from "react";
 import Link from 'next/link';
 import { getGravatarUserIcon } from "../Utilities/Utils";
 import Image from "next/image";
@@ -21,6 +21,10 @@ interface NavItem {
 export const Sidebar: FC<SidebarProps> = ({ user, nav, handleLogout }) => {
     const [collapsed, setCollapsed] = useState(false);
     const [gravatar, setGravatar] = useState<string | null>(null);
+    const [hoveredItem, setHoveredItem] = useState<number | null>(null);
+    const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const [tooltipTop, setTooltipTop] = useState<number | null>(null);
+    const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
     const sidebarItems: NavItem[] = [
         { name: 'Tableau de bord', nav: 'dashboard', icon: <Home size={20} />, path: '/dashboard' },
@@ -29,6 +33,36 @@ export const Sidebar: FC<SidebarProps> = ({ user, nav, handleLogout }) => {
         { name: 'Paramètres', nav: 'settings', icon: <Settings size={20} />, path: '/dashboard/settings' },
     ]
 
+    const handleMouseEnter = (index: number) => {
+        if (hoverTimeoutRef.current) {
+            clearTimeout(hoverTimeoutRef.current);
+        }
+        setHoveredItem(index);
+
+        const itemEl = itemRefs.current[index];
+        if (itemEl) {
+            const rect = itemEl.getBoundingClientRect();
+            const sidebarRect = itemEl.offsetParent?.getBoundingClientRect();
+            if (sidebarRect) {
+                setTooltipTop(rect.top - sidebarRect.top);
+            }
+        }
+    };
+
+
+    const handleMouseLeave = () => {
+        hoverTimeoutRef.current = setTimeout(() => {
+            setHoveredItem(null);
+        }, 400);
+    };
+
+    useEffect(() => {
+        return () => {
+            if (hoverTimeoutRef.current) {
+                clearTimeout(hoverTimeoutRef.current);
+            }
+        };
+    }, []);
 
     useEffect(() => {
         if (user && user.email) {
@@ -38,7 +72,7 @@ export const Sidebar: FC<SidebarProps> = ({ user, nav, handleLogout }) => {
 
     return (
         <div className="relative h-screen">
-            <aside className={`h-full bg-background-tertiary border-r border-white/10 transition-all duration-300 ${collapsed ? 'w-16' : 'w-64'}`}>
+            <aside className={`relative h-full bg-background-tertiary border-r border-white/10 transition-all duration-300 ${collapsed ? 'w-16' : 'w-64'}`}>
                 <div className="h-16 flex items-center justify-between border-b border-white/10 px-3">
                     {!collapsed && (
                         <Link href="/" className="flex items-center gap-2 overflow-hidden">
@@ -76,27 +110,38 @@ export const Sidebar: FC<SidebarProps> = ({ user, nav, handleLogout }) => {
                     </button>
                 </div>
 
+                {collapsed && hoveredItem !== null && (
+                    <div
+                        className="absolute z-20 px-3 whitespace-nowrap py-1.5 text-sm font-medium text-foreground bg-background shadow-lg border border-white/10 rounded-md transition-all duration-200 ease-in-out pointer-events-none opacity-100"
+                        style={{
+                            top: `${tooltipTop}px`,
+                            left: '100%',
+                            marginLeft: '4px'
+                        }}
+                    >
+                        {sidebarItems[hoveredItem].name}
+                    </div>
+                )}
+                
                 <nav className="p-3 space-y-1">
-                    {sidebarItems.map((item) => (
+                    {sidebarItems.map((item, index) => (
                         <Link
                             key={item.name}
                             href={item.path}
-                            className={`flex items-center ${collapsed ? 'justify-center' : 'justify-start'} p-2 rounded-lg transition-all group
+                            ref={(el) => itemRefs.current[index] = el}
+                            className={`relative flex items-center will-change-transform ${collapsed ? 'justify-center' : 'justify-start'} p-2 rounded-lg transition-all group
                                 ${nav === item.nav
                                     ? 'bg-accent/10 text-accent font-medium border border-white/10'
                                     : 'text-foreground-secondary hover:bg-background hover:text-foreground'
                                 }`}
+                            onMouseEnter={() => handleMouseEnter(index)}
+                            onMouseLeave={handleMouseLeave}
                         >
-                            <span className={`${collapsed ? '' : 'mr-3'} flex-shrink-0`}>
+                            <span className={`${!collapsed && 'mr-3'} flex-shrink-0`}>
                                 {item.icon}
                             </span>
                             {!collapsed && (
                                 <span className="truncate">{item.name}</span>
-                            )}
-                            {collapsed && (
-                                <span className="absolute left-full bg-background-tertiary text-foreground rounded-md px-2 py-1 ml-2 text-sm opacity-0 group-hover:opacity-100 pointer-events-none z-10">
-                                    {item.name}
-                                </span>
                             )}
                         </Link>
                     ))}
