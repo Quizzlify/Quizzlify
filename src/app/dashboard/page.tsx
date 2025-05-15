@@ -1,28 +1,19 @@
 "use client";
 
-import { Sidebar } from '@/components/Dashboard/Sidebar';
 import Loading from '@/components/Utilities/Loading';
 import { useToast } from '@/provider/ToastProvider';
 import { useUser } from '@/provider/UserProvider';
 import { Book, Star } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const DashboardPage = () => {
-    const { user, isAuthenticated, logout } = useUser();
-    const router = useRouter();
+    const { user } = useUser();
     const { addToast } = useToast();
 
     const [quizCompleted, setQuizCompleted] = useState<number>(0);
     const [quizCreated, setQuizCreated] = useState<number>(0);
     const [score, setScore] = useState<number>(0);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-
-    useEffect(() => {
-        if (!isAuthenticated) {
-            router.push('/user/signin');
-        }
-    }, [isAuthenticated, router]);
 
     useEffect(() => {
         async function fetchData() {
@@ -71,47 +62,44 @@ const DashboardPage = () => {
     if (isLoading) return <Loading />;
 
     return (
-        <div className="flex h-screen">
-            <Sidebar user={user} nav='dashboard' />
-            <div className="flex-1 overflow-auto bg-background p-8">
-                <div className="flex justify-between items-center mb-8">
-                    <h2 className="text-2xl font-bold text-foreground">Tableau de bord</h2>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-                    {stats.map((stat) => (
-                        <div
-                            key={stat.title}
-                            className="bg-background-tertiary border border-white/10 p-4 rounded-lg shadow-sm hover:shadow-md transition duration-200"
-                        >
-                            <div className="flex items-center gap-3 mb-1">
-                                <div className="text-accent bg-accent/10 rounded-md p-1.5">
-                                    {stat.icon}
-                                </div>
-                                <p className="text-sm text-foreground-secondary font-medium">{stat.title}</p>
+        <div className="flex-1 overflow-auto bg-background p-8">
+            <div className="flex justify-between items-center mb-8">
+                <h2 className="text-2xl font-bold text-foreground">Tableau de bord</h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+                {stats.map((stat) => (
+                    <div
+                        key={stat.title}
+                        className="bg-background-tertiary border border-white/10 p-4 rounded-lg shadow-sm hover:shadow-md transition duration-200"
+                    >
+                        <div className="flex items-center gap-3 mb-1">
+                            <div className="text-accent bg-accent/10 rounded-md p-1.5">
+                                {stat.icon}
                             </div>
-                            <p className="text-2xl font-bold text-foreground">{stat.value}</p>
+                            <p className="text-sm text-foreground-secondary font-medium">{stat.title}</p>
+                        </div>
+                        <p className="text-2xl font-bold text-foreground">{stat.value}</p>
+                    </div>
+                ))}
+            </div>
+
+            <div className="bg-background-tertiary border border-white/10 p-6 rounded-2xl shadow-md">
+                <h3 className="text-xl font-semibold text-foreground mb-6">Activité Récente</h3>
+                <div className="space-y-4">
+                    {[1, 2, 3].map((i) => (
+                        <div key={i} className="flex items-center justify-between py-4 border-b border-white/10 last:border-none">
+                            <div className="flex items-center gap-4">
+                                <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center">
+                                    <Book className="text-accent" size={24} />
+                                </div>
+                                <div>
+                                    <p className="text-base text-foreground font-medium">Quiz Histoire Complété</p>
+                                    <p className="text-sm text-foreground-secondary">Il y a {i * 2} heures</p>
+                                </div>
+                            </div>
+                            <span className="text-sm font-semibold text-green-400">85% de réussite</span>
                         </div>
                     ))}
-                </div>
-
-                <div className="bg-background-tertiary border border-white/10 p-6 rounded-2xl shadow-md">
-                    <h3 className="text-xl font-semibold text-foreground mb-6">Activité Récente</h3>
-                    <div className="space-y-4">
-                        {[1, 2, 3].map((i) => (
-                            <div key={i} className="flex items-center justify-between py-4 border-b border-white/10 last:border-none">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center">
-                                        <Book className="text-accent" size={24} />
-                                    </div>
-                                    <div>
-                                        <p className="text-base text-foreground font-medium">Quiz Histoire Complété</p>
-                                        <p className="text-sm text-foreground-secondary">Il y a {i * 2} heures</p>
-                                    </div>
-                                </div>
-                                <span className="text-sm font-semibold text-green-400">85% de réussite</span>
-                            </div>
-                        ))}
-                    </div>
                 </div>
             </div>
         </div>

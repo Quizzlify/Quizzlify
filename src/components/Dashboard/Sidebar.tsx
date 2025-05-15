@@ -6,7 +6,7 @@ import Image from "next/image";
 
 interface SidebarProps {
     user: User | null;
-    nav: 'dashboard' | 'quiz';
+    nav: string;
 }
 
 interface NavItem {
@@ -26,7 +26,7 @@ export const Sidebar: FC<SidebarProps> = ({ user, nav }) => {
 
     const sidebarItems: NavItem[] = [
         { name: 'Tableau de bord', nav: 'dashboard', icon: <Home size={20} />, path: '/dashboard' },
-        { name: 'Mes Quiz', nav: 'quiz', icon: <Book size={20} />, path: '/dashboard/myquiz' },
+        { name: 'Mes Quiz', nav: 'myquiz', icon: <Book size={20} />, path: '/dashboard/myquiz' },
         { name: 'Statistiques', nav: 'stats', icon: <BarChart size={20} />, path: '/dashboard/stats' },
         { name: 'Paramètres', nav: 'settings', icon: <Settings size={20} />, path: '/dashboard/settings' },
     ]
@@ -130,7 +130,7 @@ export const Sidebar: FC<SidebarProps> = ({ user, nav }) => {
                             className={`relative flex items-center will-change-transform ${collapsed ? 'justify-center' : 'justify-start'} px-4 py-2.5 rounded-lg transition-all group
                                 ${nav === item.nav
                                     ? 'bg-accent/10 text-accent font-medium border border-white/10'
-                                    : 'text-foreground-secondary hover:bg-background hover:text-foreground'
+                                    : 'text-foreground-secondary hover:bg-background hover:text-foreground border border-transparent'
                                 }`}
                             onMouseEnter={() => handleMouseEnter(index)}
                             onMouseLeave={handleMouseLeave}

@@ -30,7 +30,7 @@ const MyQuiz: FC = () => {
     }
 
     useEffect(() => {
-        <Modal title={"Hello world"}/>
+        <Modal title={"Hello world"} />
     }, [isOpen])
 
     useEffect(() => {
@@ -109,60 +109,54 @@ const MyQuiz: FC = () => {
     };
 
     return (
-        <div className="flex h-screen bg-background">
-            <Sidebar user={user} nav="quiz" />
+        <div className="p-8">
+            <div className="flex justify-between items-center mb-8">
+                <h2 className="text-2xl font-bold">Mes Quiz</h2>
+                <QButton
+                    icon={<PlusCircle size={20} />}
+                    text="Créer un Quiz"
+                    onClick={() => router.push("/createQuiz/default")}
+                />
+            </div>
 
-            <main className="flex-1 overflow-auto">
-                <div className="p-8">
-                    <div className="flex justify-between items-center mb-8">
-                        <h2 className="text-2xl font-bold">Mes Quiz</h2>
-                        <QButton
-                            icon={<PlusCircle size={20} />}
-                            text="Créer un Quiz"
-                            onClick={() => router.push("/createQuiz/default")}
-                        />
-                    </div>
+            <div className="relative mb-6">
+                <QInput
+                    icon={<Search className="absolute left-3 top-1/2 transform -translate-y-1/2" size={20} />}
+                    type="text"
+                    placeholder="Rechercher un quiz..."
+                    className="w-full"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                />
+            </div>
 
-                    <div className="relative mb-6">
-                        <QInput
-                            icon={<Search className="absolute left-3 top-1/2 transform -translate-y-1/2" size={20} />}
-                            type="text"
-                            placeholder="Rechercher un quiz..."
-                            className="w-full"
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                        />
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {filteredQuiz.map((q) => (
-                            <div
-                                key={q._id}
-                                className="bg-background-tertiary border-2 border-accent rounded-xl shadow-md p-5 hover:shadow-lg transition-shadow"
-                            >
-                                <div className="flex justify-between items-start mb-4">
-                                    <h3 className="text-lg font-semibold text-accent">{q.title}</h3>
-                                    <div className="flex space-x-2">
-                                        <button className="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-background-secondary transition-all"
-                                            onClick={() => setIsOpen(true)}
-                                        >
-                                            <Edit size={18} />
-                                        </button>
-                                        <button className="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-background-secondary transition-all"
-                                            onClick={() => {deleteQuiz(q._id) ; setDeleteQuizBtn(true);}}
-                                        >        
-                                            <Trash2 size={18} />
-                                        </button>
-                                    </div>
-                                </div>
-                                <p className="text-sm text-gray-200 mb-1">Catégorie : <span className="font-medium">{q.category}</span></p>
-                                <p className="text-sm text-gray-200 mb-1">Niveau : <span className="font-medium">{q.level}</span></p>
-                                <p className="text-sm text-gray-200">Créé le : <span className="font-medium">{formatDate(q.created_at)}</span></p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredQuiz.map((q) => (
+                    <div
+                        key={q._id}
+                        className="bg-background-tertiary border-2 border-accent rounded-xl shadow-md p-5 hover:shadow-lg transition-shadow"
+                    >
+                        <div className="flex justify-between items-start mb-4">
+                            <h3 className="text-lg font-semibold text-accent">{q.title}</h3>
+                            <div className="flex space-x-2">
+                                <button className="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-background-secondary transition-all"
+                                    onClick={() => setIsOpen(true)}
+                                >
+                                    <Edit size={18} />
+                                </button>
+                                <button className="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-background-secondary transition-all"
+                                    onClick={() => { deleteQuiz(q._id); setDeleteQuizBtn(true); }}
+                                >
+                                    <Trash2 size={18} />
+                                </button>
                             </div>
-                        ))}
+                        </div>
+                        <p className="text-sm text-gray-200 mb-1">Catégorie : <span className="font-medium">{q.category}</span></p>
+                        <p className="text-sm text-gray-200 mb-1">Niveau : <span className="font-medium">{q.level}</span></p>
+                        <p className="text-sm text-gray-200">Créé le : <span className="font-medium">{formatDate(q.created_at)}</span></p>
                     </div>
-                </div>
-            </main>
+                ))}
+            </div>
         </div>
     );
 };
