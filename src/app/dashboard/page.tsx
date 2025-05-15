@@ -68,22 +68,11 @@ const DashboardPage = () => {
         { title: 'Score total', value: score, icon: <Star className="text-yellow-500 w-5 h-5" /> },
     ];
 
-    const handleLogout = async () => {
-        try {
-            await logout();
-            addToast('Déconnexion réussie !', 'success');
-            router.push('/user/signin');
-        } catch (error) {
-            console.error('Erreur lors de la déconnexion:', error);
-            addToast('Erreur lors de la déconnexion', 'error');
-        }
-    };
-
     if (isLoading) return <Loading />;
 
     return (
         <div className="flex h-screen">
-            <Sidebar user={user} nav='dashboard' handleLogout={handleLogout} />
+            <Sidebar user={user} nav='dashboard' />
             <div className="flex-1 overflow-auto bg-background p-8">
                 <div className="flex justify-between items-center mb-8">
                     <h2 className="text-2xl font-bold text-foreground">Tableau de bord</h2>

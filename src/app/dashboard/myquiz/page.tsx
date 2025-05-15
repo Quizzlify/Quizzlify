@@ -110,16 +110,12 @@ const MyQuiz: FC = () => {
 
     return (
         <div className="flex h-screen bg-background">
-            <Sidebar user={user} nav="quiz" handleLogout={handleLogout} />
+            <Sidebar user={user} nav="quiz" />
 
             <main className="flex-1 overflow-auto">
                 <div className="p-8">
                     <div className="flex justify-between items-center mb-8">
                         <h2 className="text-2xl font-bold">Mes Quiz</h2>
-                        {/* <button className="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-hover transition-colors">
-                            <PlusCircle className="inline-block mr-2" size={20} />
-                            Créer un Quiz
-                        </button> */}
                         <QButton
                             icon={<PlusCircle size={20} />}
                             text="Créer un Quiz"

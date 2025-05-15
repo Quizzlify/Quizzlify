@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { getGravatarUserIcon } from "./Utils";
+import { getGravatarUserIcon, handleLogout } from "./Utils";
 
 type NavbarProp = {
     currentPage: 'leaderboard' | 'quiz' | 'create-quiz' | 'user' | 'home';
@@ -46,17 +46,6 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
         return () => document.removeEventListener('click', handleClickOutside);
     }, []);
 
-    async function handleLogout() {
-        try {
-            await logout();
-            addToast("Déconnexion réussie", "success");
-            router.push("/");
-        } catch (error) {
-            console.error("Erreur lors de la déconnexion:", error);
-            addToast("Erreur lors de la déconnexion", "error");
-        }
-    }
-
     function goTo(route: string) {
         router.push(route);
         setMobileMenuOpen(false);
@@ -75,9 +64,9 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
         }`;
 
     const ActiveIndicator = ({ isActive }: { isActive: boolean }) => (
-        isActive ? (
+        isActive && (
             <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent rounded-full mx-auto w-2/3"></span>
-        ) : null
+        )
     );
 
     return (
