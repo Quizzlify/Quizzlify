@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/config/MongoDB";
+import { ObjectId } from "mongodb";
 
 export async function POST(req: Request) {
     try {
@@ -7,7 +8,7 @@ export async function POST(req: Request) {
         const client = await clientPromise;
         const db = client.db("quizzlify");
         const collection = db.collection<Quiz>("quiz");
-        
+        console.log(id)
         const result = await collection.updateOne(
             { _id: id },
             { $set: { category, level, title, content } }
@@ -16,11 +17,10 @@ export async function POST(req: Request) {
         if (result.matchedCount === 0) {
             throw new Error("Quiz non trouvé");
         }
-  
+
         return NextResponse.json({ success: true });
       
     } catch (error) {
-        console.error("Erreur lors de la récupération:", error);
         return NextResponse.json(
             { success: false, error: `Erreur lors de la récupération: ${error}.` },
             { status: 500 }

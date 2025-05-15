@@ -18,20 +18,11 @@ const MyQuiz: FC = () => {
     const [search, setSearch] = useState("");
     const [deleteQuizBtn, setDeleteQuizBtn] = useState<boolean>(false);
     const [isOpen, setIsOpen] = useState(false);
-
-    // Edit Quiz
-    // const [category, setCategory] = useState<string>("");
-    // const [level, setLevel] = useState<number>(1);
-    // const [title, setTitle] = useState<string>("");
-    // const [content, setContent] = useState<Quiz['content']>({});
+    const [selectedQuiz, setSelectedQuiz] = useState<Quiz | null>(null);
 
     if (!isAuthenticated || !user) {
         router.push("/user/signin");
     }
-
-    useEffect(() => {
-        <Modal title={"Hello world"}/>
-    }, [isOpen])
 
     useEffect(() => {
         if (isLoadingUser) return;
@@ -83,13 +74,38 @@ const MyQuiz: FC = () => {
 
             if (data.success) {
                 addToast("Quiz supprimé avec succès", "success");
+                setDeleteQuizBtn(true);
             } else {
-                console.error("Erreur lors de la récupération des quiz:", data.error);
+                console.error("Erreur lors de la suppression du quiz:", data.error);
+                addToast("Erreur lors de la suppression du quiz", "error");
             }
         } catch (error) {
-            console.error("Erreur lors de la récupération des quiz:", error);
+            console.error("Erreur lors de la suppression du quiz:", error);
+            addToast("Erreur lors de la suppression du quiz", "error");
         }
     }
+
+    async function editQuiz(category: string, level: number, title: string, content: Quiz['content']) {
+        try {
+            const response = await fetch("/api/quiz/editQuiz", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ _id: selectedQuiz?._id, category, level, title, content }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                addToast("Quiz mis à jour avec succès", "success");
+            } else {
+                console.error("Erreur lors de la mise à jour du quiz:", data.error);
+                addToast("Erreur lors de la mise à jour du quiz", "error");
+            }
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour du quiz:", error);
+            addToast("Erreur lors de la mise à jour du quiz", "error");
+        }
+    };
 
     const filteredQuiz = quiz.filter(q =>
         q.title.toLowerCase().includes(search.toLowerCase())
@@ -116,10 +132,6 @@ const MyQuiz: FC = () => {
                 <div className="p-8">
                     <div className="flex justify-between items-center mb-8">
                         <h2 className="text-2xl font-bold">Mes Quiz</h2>
-                        {/* <button className="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-hover transition-colors">
-                            <PlusCircle className="inline-block mr-2" size={20} />
-                            Créer un Quiz
-                        </button> */}
                         <QButton
                             icon={<PlusCircle size={20} />}
                             text="Créer un Quiz"
@@ -148,12 +160,12 @@ const MyQuiz: FC = () => {
                                     <h3 className="text-lg font-semibold text-accent">{q.title}</h3>
                                     <div className="flex space-x-2">
                                         <button className="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-background-secondary transition-all"
-                                            onClick={() => setIsOpen(true)}
+                                            onClick={() => {setSelectedQuiz(q); setIsOpen(true)}}
                                         >
                                             <Edit size={18} />
                                         </button>
                                         <button className="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-background-secondary transition-all"
-                                            onClick={() => {deleteQuiz(q._id) ; setDeleteQuizBtn(true);}}
+                                            onClick={() => {deleteQuiz(q._id)}}
                                         >        
                                             <Trash2 size={18} />
                                         </button>
@@ -167,6 +179,16 @@ const MyQuiz: FC = () => {
                     </div>
                 </div>
             </main>
+
+            <Modal
+                isOpen={isOpen}
+                onClose={() => {
+                    setIsOpen(false);
+                    setSelectedQuiz(null);
+                }}
+                quiz={selectedQuiz || undefined}
+                onSave={editQuiz}
+            />
         </div>
     );
 };
