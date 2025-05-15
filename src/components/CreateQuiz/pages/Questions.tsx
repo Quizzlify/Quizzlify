@@ -39,6 +39,7 @@ const Questions: React.FC<QuestionsProps> = ({ questionIndices, setQuestionIndic
                         disabled={false}
                         iconPosition={'left'}
                         onClick={addQuestions}
+                        variant="secondary"
                     />
                     <QButton
                         className="w-[40rem]"
@@ -47,6 +48,7 @@ const Questions: React.FC<QuestionsProps> = ({ questionIndices, setQuestionIndic
                         disabled={false}
                         iconPosition={'left'}
                         onClick={() => setCreerQuiz(true)}
+                        variant="primary"
                     />
                 </div>
             </div>

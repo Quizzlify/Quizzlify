@@ -57,6 +57,7 @@ const Details: React.FC<DetailsProps> = ({ nextStep }) => {
                     disabled={false}
                     iconPosition="left"
                     onClick={() => nextStep('Questions')}
+                    variant="primary"
                 />
             </div>
         </div>

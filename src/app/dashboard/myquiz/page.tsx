@@ -52,17 +52,6 @@ const MyQuiz: FC = () => {
         fetchData();
     }, [user, deleteQuizBtn, isLoadingUser]);
 
-    const handleLogout = async () => {
-        try {
-            await logout();
-            addToast("Déconnexion réussie", "success");
-            router.push("/user/signin");
-        } catch (error) {
-            console.error("Erreur lors de la déconnexion:", error);
-            addToast("Erreur lors de la déconnexion", "error");
-        }
-    };
-
     async function deleteQuiz(quizId: string) {
         try {
             const response = await fetch("/api/quiz/deleteQuiz", {
@@ -139,9 +128,11 @@ const MyQuiz: FC = () => {
                         </button> */}
                         <QButton
                             icon={<PlusCircle size={20} />}
-                            text="Créer un Quiz"
+                            as="button"
+                    text="Créer un Quiz"
                             onClick={() => router.push("/createQuiz/default")}
-                        />
+                            variant="primary"
+                />
                     </div>
 
             <div className="relative mb-6">

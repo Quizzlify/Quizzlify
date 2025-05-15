@@ -67,8 +67,8 @@ export default function LoginPage() {
               onClick={handleLogin}
               text={isSubmitting ? "Connexion..." : "Se connecter"}
               icon={<LogInIcon size={18} />}
-            >
-            </QButton>
+              variant="primary"
+            />
           </div>
 
           <div className="text-center text-sm text-foreground-secondary">

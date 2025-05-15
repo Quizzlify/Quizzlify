@@ -108,8 +108,8 @@ export default function Page() {
                             onClick={handleSignup}
                             text={isSubmitting ? "Création du compte..." : "Créer un compte"}
                             icon={<UserPlus size={18} />}
-                        >
-                        </QButton>
+                            variant="primary"
+                        />
                     </div>
 
                     <div className="text-center text-sm text-foreground-secondary">

@@ -1,22 +1,31 @@
-import React, { MouseEventHandler } from 'react';
+import React, { MouseEventHandler, forwardRef } from 'react';
 import clsx from 'clsx';
 
+type VariantType = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'success';
+type SizeType = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+
 interface BaseButtonProps {
-  text?: string;
+  text?: string | React.ReactNode;
   className?: string;
   disabled?: boolean;
+  loading?: boolean;
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
+  variant?: VariantType;
+  size?: SizeType;
+  fullWidth?: boolean;
+  rounded?: boolean;
+  children?: React.ReactNode;
 }
 
-interface ButtonElementProps extends BaseButtonProps, React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonElementProps extends BaseButtonProps, Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'size'> {
   as?: 'button';
   type?: 'button' | 'submit' | 'reset';
   onClick?: MouseEventHandler<HTMLButtonElement>;
   href?: never;
 }
 
-interface AnchorElementProps extends BaseButtonProps, React.AnchorHTMLAttributes<HTMLAnchorElement> {
+interface AnchorElementProps extends BaseButtonProps, Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'size'> {
   as: 'a';
   href: string;
   type?: never;
@@ -24,65 +33,88 @@ interface AnchorElementProps extends BaseButtonProps, React.AnchorHTMLAttributes
 
 type ButtonProps = ButtonElementProps | AnchorElementProps;
 
-const QButton: React.FC<ButtonProps> = ({
+const QButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(({
   text,
   className = '',
   onClick,
   disabled = false,
   icon,
   iconPosition = 'left',
+  variant = 'primary',
+  size = 'md',
+  fullWidth = false,
+  rounded = false,
   type = 'button',
   as = 'button',
   href,
+  children,
   ...rest
-}) => {
+}, ref) => {
+  const variantClasses = {
+    primary: 'bg-accent text-white hover:bg-accent/90 active:bg-accent/80',
+    secondary: 'bg-gray-200 text-gray-800 bg-gray-600 hover:bg-gray-700 text-white',
+    outline: 'border border-accent text-accent hover:bg-accent/10',
+    ghost: 'text-accent hover:bg-accent/10',
+    danger: 'bg-red-500 text-white hover:bg-red-600 active:bg-red-700',
+    success: 'bg-green-500 text-white hover:bg-green-600 active:bg-green-700',
+  };
+
+  const sizeClasses = {
+    xs: 'text-xs px-2 py-1 gap-1',
+    sm: 'text-sm px-3 py-1.5 gap-1.5',
+    md: 'text-base px-4 py-2 gap-2',
+    lg: 'text-lg px-5 py-2.5 gap-2.5',
+    xl: 'text-xl px-6 py-3 gap-3',
+  };
+
+  const interactionClasses =
+    disabled && 'opacity-60 cursor-not-allowed';
+
   const classes = clsx(
-    'inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl',
-    'text-white font-semibold text-lg bg-accent',
-    'hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]',
-    'transition-all duration-300 ease-in-out',
-    {
-      'flex-row-reverse': iconPosition === 'right',
-      'opacity-50 cursor-not-allowed': disabled,
-      'cursor-pointer': !disabled,
-    },
+    'relative inline-flex items-center justify-center font-medium transition-all duration-150 ease-in-out',
+    variantClasses[variant],
+    sizeClasses[size],
+    rounded ? 'rounded-full' : 'rounded-xl',
+    fullWidth && 'w-full',
+    interactionClasses,
+    'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent/50',
     className
+  );
+
+  const content = (
+    <>
+      {icon && iconPosition === 'left' && <span className="mr-2">{icon}</span>}
+      {children || text}
+      {icon && iconPosition === 'right' && <span className="ml-2">{icon}</span>}
+    </>
   );
 
   if (as === 'a') {
     return (
       <a
-        className={classes}
-        href={href}
-        rel="noopener noreferrer"
+        className={clsx(classes, 'group')}
+        href={disabled ? undefined : href}
+        ref={ref as React.ForwardedRef<HTMLAnchorElement>}
         {...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
       >
-        {icon && (
-          <span className="transition-transform group-hover:translate-x-[2px] group-hover:scale-105">
-            {icon}
-          </span>
-        )}
-        {text}
+        {content}
       </a>
     );
   }
 
   return (
     <button
-      className={classes}
-      onClick={disabled ? undefined : (as === 'button' ? (onClick as MouseEventHandler<HTMLButtonElement>) : undefined)}
+      className={clsx(classes, 'group')}
       disabled={disabled}
       type={type}
+      onClick={disabled ? undefined : (onClick as React.MouseEventHandler<HTMLButtonElement>)}
+      ref={ref as React.ForwardedRef<HTMLButtonElement>}
       {...(rest as React.ButtonHTMLAttributes<HTMLButtonElement>)}
     >
-      {icon && (
-        <span className="transition-transform group-hover:translate-x-[2px] group-hover:scale-105">
-          {icon}
-        </span>
-      )}
-      {text}
+      {content}
     </button>
   );
-};
+});
 
+QButton.displayName = 'QButton';
 export default QButton;
