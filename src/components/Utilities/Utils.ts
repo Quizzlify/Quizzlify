@@ -1,3 +1,7 @@
+import { useToast } from "@/provider/ToastProvider";
+import { useUser } from "@/provider/UserProvider";
+import { useRouter } from "next/navigation";
+
 export function getGravatarUserIcon(email: string): Promise<string> {
     const normalizedEmail = email.trim().toLowerCase();
     const encoder = new TextEncoder();
@@ -11,4 +15,22 @@ export function getGravatarUserIcon(email: string): Promise<string> {
     }).catch(() => {
         return `https://www.gravatar.com/avatar/0?d=retro`;
     });
+}
+
+export async function handleLogout() {
+    const { logout, isAuthenticated } = useUser();
+    const { addToast } = useToast();
+    const router = useRouter();
+    if (!isAuthenticated) {
+        addToast("Vous n'êtes pas connecté", "error");
+        return;
+    }
+    try {
+        await logout();
+        addToast("Déconnexion réussie", "success");
+        router.push("/");
+    } catch (error) {
+        console.error("Erreur lors de la déconnexion:", error);
+        addToast("Erreur lors de la déconnexion", "error");
+    }
 }

@@ -1,15 +1,13 @@
 import { BarChart, Book, Home, LogOut, Settings } from "lucide-react";
 import { FC, useEffect, useRef, useState } from "react";
 import Link from 'next/link';
-import { getGravatarUserIcon } from "../Utilities/Utils";
+import { getGravatarUserIcon, handleLogout } from "../Utilities/Utils";
 import Image from "next/image";
 
 interface SidebarProps {
     user: User | null;
-    handleLogout: () => void;
-    nav: 'dashboard' | 'quiz';
+    nav: string;
 }
-
 
 interface NavItem {
     name: string;
@@ -18,7 +16,7 @@ interface NavItem {
     path: string;
 }
 
-export const Sidebar: FC<SidebarProps> = ({ user, nav, handleLogout }) => {
+export const Sidebar: FC<SidebarProps> = ({ user, nav }) => {
     const [collapsed, setCollapsed] = useState(false);
     const [gravatar, setGravatar] = useState<string | null>(null);
     const [hoveredItem, setHoveredItem] = useState<number | null>(null);
@@ -28,7 +26,7 @@ export const Sidebar: FC<SidebarProps> = ({ user, nav, handleLogout }) => {
 
     const sidebarItems: NavItem[] = [
         { name: 'Tableau de bord', nav: 'dashboard', icon: <Home size={20} />, path: '/dashboard' },
-        { name: 'Mes Quiz', nav: 'quiz', icon: <Book size={20} />, path: '/dashboard/myquiz' },
+        { name: 'Mes Quiz', nav: 'myquiz', icon: <Book size={20} />, path: '/dashboard/myquiz' },
         { name: 'Statistiques', nav: 'stats', icon: <BarChart size={20} />, path: '/dashboard/stats' },
         { name: 'Paramètres', nav: 'settings', icon: <Settings size={20} />, path: '/dashboard/settings' },
     ]
@@ -112,7 +110,7 @@ export const Sidebar: FC<SidebarProps> = ({ user, nav, handleLogout }) => {
 
                 {collapsed && hoveredItem !== null && (
                     <div
-                        className="absolute z-20 px-3 whitespace-nowrap py-1.5 text-sm font-medium text-foreground bg-background shadow-lg border border-white/10 rounded-md transition-all duration-200 ease-in-out pointer-events-none opacity-100"
+                        className="absolute z-20 px-4 whitespace-nowrap py-2.5 text-sm font-medium text-foreground bg-background shadow-lg border border-white/10 rounded-md transition-all duration-200 ease-in-out pointer-events-none opacity-100"
                         style={{
                             top: `${tooltipTop}px`,
                             left: '100%',
@@ -123,16 +121,16 @@ export const Sidebar: FC<SidebarProps> = ({ user, nav, handleLogout }) => {
                     </div>
                 )}
                 
-                <nav className="p-3 space-y-1">
+                <nav className="p-3 space-y-2">
                     {sidebarItems.map((item, index) => (
                         <Link
                             key={item.name}
                             href={item.path}
                             ref={(el) => itemRefs.current[index] = el}
-                            className={`relative flex items-center will-change-transform ${collapsed ? 'justify-center' : 'justify-start'} p-2 rounded-lg transition-all group
+                            className={`relative flex items-center will-change-transform ${collapsed ? 'justify-center' : 'justify-start'} px-4 py-2.5 rounded-lg transition-all group
                                 ${nav === item.nav
                                     ? 'bg-accent/10 text-accent font-medium border border-white/10'
-                                    : 'text-foreground-secondary hover:bg-background hover:text-foreground'
+                                    : 'text-foreground-secondary hover:bg-background hover:text-foreground border border-transparent'
                                 }`}
                             onMouseEnter={() => handleMouseEnter(index)}
                             onMouseLeave={handleMouseLeave}

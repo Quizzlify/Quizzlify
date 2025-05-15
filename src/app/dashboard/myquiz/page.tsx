@@ -24,6 +24,7 @@ const MyQuiz: FC = () => {
         router.push("/user/signin");
     }
 
+
     useEffect(() => {
         if (isLoadingUser) return;
 
@@ -132,6 +133,10 @@ const MyQuiz: FC = () => {
                 <div className="p-8">
                     <div className="flex justify-between items-center mb-8">
                         <h2 className="text-2xl font-bold">Mes Quiz</h2>
+                        {/* <button className="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-hover transition-colors">
+                            <PlusCircle className="inline-block mr-2" size={20} />
+                            Créer un Quiz
+                        </button> */}
                         <QButton
                             icon={<PlusCircle size={20} />}
                             text="Créer un Quiz"
@@ -139,16 +144,16 @@ const MyQuiz: FC = () => {
                         />
                     </div>
 
-                    <div className="relative mb-6">
-                        <QInput
-                            icon={<Search className="absolute left-3 top-1/2 transform -translate-y-1/2" size={20} />}
-                            type="text"
-                            placeholder="Rechercher un quiz..."
-                            className="w-full"
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                        />
-                    </div>
+            <div className="relative mb-6">
+                <QInput
+                    icon={<Search className="absolute left-3 top-1/2 transform -translate-y-1/2" size={20} />}
+                    type="text"
+                    placeholder="Rechercher un quiz..."
+                    className="w-full"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                />
+            </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {filteredQuiz.map((q) => (
@@ -160,12 +165,12 @@ const MyQuiz: FC = () => {
                                     <h3 className="text-lg font-semibold text-accent">{q.title}</h3>
                                     <div className="flex space-x-2">
                                         <button className="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-background-secondary transition-all"
-                                            onClick={() => {setSelectedQuiz(q); setIsOpen(true)}}
+                                            onClick={() => setIsOpen(true)}
                                         >
                                             <Edit size={18} />
                                         </button>
                                         <button className="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-background-secondary transition-all"
-                                            onClick={() => {deleteQuiz(q._id)}}
+                                            onClick={() => {deleteQuiz(q._id) ; setDeleteQuizBtn(true);}}
                                         >        
                                             <Trash2 size={18} />
                                         </button>
@@ -179,16 +184,6 @@ const MyQuiz: FC = () => {
                     </div>
                 </div>
             </main>
-
-            <Modal
-                isOpen={isOpen}
-                onClose={() => {
-                    setIsOpen(false);
-                    setSelectedQuiz(null);
-                }}
-                quiz={selectedQuiz || undefined}
-                onSave={editQuiz}
-            />
         </div>
     );
 };
