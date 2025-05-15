@@ -83,12 +83,12 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
     return (
         <>
             <nav className={`fixed z-50 text-foreground w-full transition-all duration-300 ${isScrolled
-                    ? 'py-3 px-6'
-                    : 'px-6 py-5'
+                ? 'py-3 px-6'
+                : 'px-6 py-5'
                 }`}>
                 <div className={`mx-auto transition-all duration-300 ${isScrolled
-                        ? 'max-w-7xl bg-nav-bg backdrop-blur-lg rounded-2xl shadow-navbar py-3 px-6'
-                        : 'max-w-7xl bg-transparent'
+                    ? 'max-w-7xl bg-nav-bg backdrop-blur-lg rounded-2xl shadow-navbar py-3 px-6'
+                    : 'max-w-7xl bg-transparent'
                     }`}>
                     <div className="flex items-center justify-between">
                         <div className="flex items-center">
@@ -159,33 +159,53 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
                                     </button>
 
                                     {dropdownOpen && (
-                                        <div className="absolute right-0 mt-2 w-64 rounded-xl shadow-lg py-1 bg-background-secondary border border-border animate-fade-in z-50">
-                                            <div className="px-4 py-3 border-b border-border">
+                                        <div className="absolute right-0 mt-2 w-64 rounded-xl shadow-lg py-1 bg-background-secondary border border-border z-50 overflow-hidden">
+                                            <div className="px-4 py-3 border-b border-border bg-background-secondary/80">
                                                 <p className="text-sm text-foreground-secondary">Connecté en tant que</p>
                                                 <p className="text-sm font-medium text-foreground truncate">{user?.email}</p>
                                             </div>
 
-                                            <div className="py-1">
-                                                <button onClick={() => { goTo('/dashboard'); setDropdownOpen(false); }}
-                                                    className="w-full text-left px-4 py-3 text-sm text-foreground hover:bg-background-tertiary flex items-center">
-                                                    <BarChart3 size={16} className="mr-3 text-accent" /> Tableau de bord
+                                            <div className="py-2 px-2">
+                                                <button
+                                                    onClick={() => { goTo('/dashboard'); setDropdownOpen(false); }}
+                                                    className="w-full text-left rounded-lg px-3 py-2 text-sm text-foreground hover:bg-background-tertiary transition-colors duration-150 flex items-center mb-1"
+                                                >
+                                                    <div className="w-7 h-7 rounded-md bg-accent/10 flex items-center justify-center mr-3">
+                                                        <BarChart3 size={15} className="text-accent" />
+                                                    </div>
+                                                    Tableau de bord
                                                 </button>
-                                                <button onClick={() => { goTo('/dashboard/myquiz'); setDropdownOpen(false); }}
-                                                    className="w-full text-left px-4 py-3 text-sm text-foreground hover:bg-background-tertiary flex items-center">
-                                                    <BookOpen size={16} className="mr-3 text-accent" /> Mes quiz
+
+                                                <button
+                                                    onClick={() => { goTo('/dashboard/myquiz'); setDropdownOpen(false); }}
+                                                    className="w-full text-left rounded-lg px-3 py-2 text-sm text-foreground hover:bg-background-tertiary transition-colors duration-150 flex items-center mb-1"
+                                                >
+                                                    <div className="w-7 h-7 rounded-md bg-accent/10 flex items-center justify-center mr-3">
+                                                        <BookOpen size={15} className="text-accent" />
+                                                    </div>
+                                                    Mes quiz
                                                 </button>
-                                                <button onClick={() => { goTo('/dashboard/settings'); setDropdownOpen(false); }}
-                                                    className="w-full text-left px-4 py-3 text-sm text-foreground hover:bg-background-tertiary flex items-center">
-                                                    <Settings size={16} className="mr-3 text-accent" /> Paramètres
+
+                                                <button
+                                                    onClick={() => { goTo('/dashboard/settings'); setDropdownOpen(false); }}
+                                                    className="w-full text-left rounded-lg px-3 py-2 text-sm text-foreground hover:bg-background-tertiary transition-colors duration-150 flex items-center"
+                                                >
+                                                    <div className="w-7 h-7 rounded-md bg-accent/10 flex items-center justify-center mr-3">
+                                                        <Settings size={15} className="text-accent" />
+                                                    </div>
+                                                    Paramètres
                                                 </button>
                                             </div>
 
-                                            <div className="border-t border-border">
+                                            <div className="border-t border-border px-2 py-2">
                                                 <button
                                                     onClick={() => { handleLogout(); setDropdownOpen(false); }}
-                                                    className="w-full text-left block px-4 py-3 text-sm text-danger hover:bg-background-tertiary flex items-center"
+                                                    className="w-full text-left rounded-lg px-3 py-2 text-sm text-danger hover:bg-background-tertiary transition-colors duration-150 flex items-center"
                                                 >
-                                                    <LogOut size={16} className="mr-3" /> Se déconnecter
+                                                    <div className="w-7 h-7 rounded-md bg-danger/10 flex items-center justify-center mr-3">
+                                                        <LogOut size={15} className="text-danger" />
+                                                    </div>
+                                                    Se déconnecter
                                                 </button>
                                             </div>
                                         </div>
