@@ -2,7 +2,7 @@
 
 Bienvenue sur **Quizzlify**, la plateforme ultime pour créer et jouer à des quiz ! Testez vos connaissances, défiez vos amis et grimpez dans le classement ! 🚀
 
-![Quizzlify Banner](screenshots/banner.png)
+![Quizzlify Banner](public/banner.png)
 
 ## ✨ Fonctionnalités principales
 
