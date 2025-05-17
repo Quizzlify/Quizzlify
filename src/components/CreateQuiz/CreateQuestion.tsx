@@ -80,6 +80,8 @@ const CreateQuestion: React.FC<CreateQuestionProps> = ({ questionNum, removeQues
                 type="input"
                 className="w-24 [&>div]:!border-border text-xl"
                 required
+                min={1}
+                max={5}
               />
             </div>
           )}

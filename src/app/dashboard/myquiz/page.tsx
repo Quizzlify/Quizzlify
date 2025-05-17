@@ -101,8 +101,12 @@ const MyQuiz: FC = () => {
         }
         
         if (updatedQuiz.level !== 3) {
-            if ("points" in updatedQuiz) {
-                delete (updatedQuiz.content as any).points;
+            if (updatedQuiz.content && typeof updatedQuiz.content === "object") {
+                Object.keys(updatedQuiz.content).forEach((key) => {
+                    if (updatedQuiz.content && updatedQuiz.content[key]) {
+                        delete (updatedQuiz.content[key] as any).points;
+                    }
+                });
             }
         }
 
