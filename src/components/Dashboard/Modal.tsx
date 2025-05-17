@@ -1,7 +1,7 @@
 "use client"
 
-import React, { useState, useEffect } from "react";
-import { X, Plus, Trash, CheckCircle, CircleAlert } from "lucide-react";
+import React, { useState } from "react";
+import { X, Trash, CheckCircle, CircleAlert } from "lucide-react";
 import QButton from "@/components/Utilities/QButton";
 import QInput from "@/components/Utilities/QInput";
 
@@ -41,7 +41,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
         category: null,
     });
     
-    const handleQuestionChange = (questionKey: string, field: string, value: any) => {
+    const handleQuestionChange = (questionKey: string, field: string, value: string | number) => {
       setEditedQuiz(prev => {
         if (!prev) return prev;
 
@@ -50,7 +50,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
             setShowAlert(true);
             setEmptyInput(true);
 
-        } else if (field === "points" && (value < 1 || value > 5)) {
+        } else if (field === "points" && (Number(value) < 1 || Number(value) > 5)) {
             setAlertMessage("Le nombre de points doit être compris entre 1 et 5.");
             setShowAlert(true);
             setEmptyInput(true);
@@ -70,20 +70,20 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
       });
     };
 
-    const handleInfoChange = (field: string, value: any) => {
+    const handleInfoChange = (field: string, value: string | number) => {
         setEditedQuiz(prev => {
             if (!prev) return prev;
             if (value === "" || value === null || value === undefined) {
                 setAlertMessage(`Le champ ${field} ne peut pas être vide.`);
                 setShowAlert(true);
                 setEmptyInput(true);
-            } else if (field === "level" && (value < 1 || value > 3)) {
+            } else if (field === "level" && (Number(value) < 1 || Number(value) > 3)) {
                 setAlertMessage("Le niveau doit être compris entre 1 et 3.");
                 setShowAlert(true);
                 setEmptyInput(true);
             } else {setShowAlert(false); setEmptyInput(false);}
 
-            return { ...prev, [field]: field === "level" ? parseInt(value) : value };
+            return { ...prev, [field]: field === "level" ? Number(value) : value };
         });
     };
   
@@ -99,7 +99,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
 
         const updatedContent = prev.content !== null && prev.content !== undefined
             ? { ...prev.content }
-            : { ...((quiz?.content as any) ?? {}) };
+            : { ...((quiz?.content as EditedQuiz['content']) ?? {}) };
         
         if (!updatedContent[questionKey]) {
           return prev;
@@ -130,7 +130,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
 
         const updatedContent = prev.content !== null && prev.content !== undefined
             ? { ...prev.content }
-            : { ...((quiz?.content as any) ?? {}) };
+            : { ...((quiz?.content as Quiz['content']) ?? {}) };
         updatedContent[questionKey] = {
           ...updatedContent[questionKey],
           correctAnswer: answerIndex
@@ -356,7 +356,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                                             })}
                                         </div>
                                         <p className="text-xs text-gray-400 mt-2">
-                                            Cliquez sur l'icône à gauche pour définir la réponse correcte
+                                            Cliquez sur l&apos;icône à gauche pour définir la réponse correcte
                                         </p>
                                     </div>
                                 </div>

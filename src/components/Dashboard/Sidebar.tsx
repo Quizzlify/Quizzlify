@@ -1,7 +1,7 @@
 import { BarChart, Book, Home, LogOut, Settings } from "lucide-react";
 import { FC, useEffect, useRef, useState } from "react";
 import Link from 'next/link';
-import { getGravatarUserIcon, handleLogout } from "../Utilities/Utils";
+import { getGravatarUserIcon, useHandleLogout } from "../Utilities/Utils";
 import Image from "next/image";
 
 interface SidebarProps {
@@ -163,7 +163,7 @@ export const Sidebar: FC<SidebarProps> = ({ user, nav }) => {
                                     <p className="text-xs text-foreground-secondary truncate">{user?.email || "email@exemple.com"}</p>
                                 </div>
                                 <button
-                                    onClick={handleLogout}
+                                    onClick={useHandleLogout}
                                     className="p-2 text-foreground-secondary hover:bg-background-secondary rounded-lg hover:text-danger transition-colors flex-shrink-0"
                                     title="Se déconnecter"
                                     aria-label="Se déconnecter"
@@ -195,7 +195,7 @@ export const Sidebar: FC<SidebarProps> = ({ user, nav }) => {
                                     <p className="text-xs text-foreground-secondary truncate">{user?.email || "email@exemple.com"}</p>
                                 </div>
                                 <button
-                                    onClick={handleLogout}
+                                    onClick={useHandleLogout}
                                     className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-md bg-background hover:bg-background-secondary text-foreground-secondary hover:text-danger transition-colors text-sm"
                                 >
                                     <LogOut size={16} />

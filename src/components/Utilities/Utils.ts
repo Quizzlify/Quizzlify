@@ -17,20 +17,23 @@ export function getGravatarUserIcon(email: string): Promise<string> {
     });
 }
 
-export async function handleLogout() {
+export function useHandleLogout() {
     const { logout, isAuthenticated } = useUser();
     const { addToast } = useToast();
     const router = useRouter();
-    if (!isAuthenticated) {
-        addToast("Vous n'êtes pas connecté", "error");
-        return;
-    }
-    try {
-        await logout();
-        addToast("Déconnexion réussie", "success");
-        router.push("/");
-    } catch (error) {
-        console.error("Erreur lors de la déconnexion:", error);
-        addToast("Erreur lors de la déconnexion", "error");
-    }
+
+    return async function handleLogout() {
+        if (!isAuthenticated) {
+            addToast("Vous n'êtes pas connecté", "error");
+            return;
+        }
+        try {
+            await logout();
+            addToast("Déconnexion réussie", "success");
+            router.push("/");
+        } catch (error) {
+            console.error("Erreur lors de la déconnexion:", error);
+            addToast("Erreur lors de la déconnexion", "error");
+        }
+    };
 }

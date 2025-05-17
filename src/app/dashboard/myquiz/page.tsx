@@ -26,7 +26,7 @@ type EditedQuiz = {
 const MyQuiz: FC = () => {
     const router = useRouter();
     const { addToast } = useToast();
-    const { user, isAuthenticated, logout, isLoadingUser } = useUser();
+    const { user, isAuthenticated, isLoadingUser } = useUser();
     const [quiz, setQuiz] = useState<Quiz[]>([]);
     const [search, setSearch] = useState("");
     const [deleteQuizBtn, setDeleteQuizBtn] = useState<boolean>(false);
@@ -97,14 +97,15 @@ const MyQuiz: FC = () => {
         if (editedQuiz.title !== null) updatedQuiz.title = editedQuiz.title;
         if (editedQuiz.category !== null) updatedQuiz.category = editedQuiz.category;
         if ("_id" in updatedQuiz) {
-            delete (updatedQuiz as any)._id;
+            // TypeScript workaround: use type assertion to object with index signature
+            delete (updatedQuiz as { [key: string]: unknown })._id;
         }
         
         if (updatedQuiz.level !== 3) {
             if (updatedQuiz.content && typeof updatedQuiz.content === "object") {
                 Object.keys(updatedQuiz.content).forEach((key) => {
                     if (updatedQuiz.content && updatedQuiz.content[key]) {
-                        delete (updatedQuiz.content[key] as any).points;
+                        delete (updatedQuiz.content[key] as { points?: number }).points;
                     }
                 });
             }

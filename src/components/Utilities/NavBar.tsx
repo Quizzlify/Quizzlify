@@ -1,13 +1,12 @@
 "use client";
 
-import { useToast } from "@/provider/ToastProvider";
 import { useUser } from "@/provider/UserProvider";
 import { BarChart3, BookOpen, LogOut, Settings, UserIcon, Menu, X, PlusCircle, Lightbulb, TrophyIcon, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { getGravatarUserIcon, handleLogout } from "./Utils";
+import { getGravatarUserIcon, useHandleLogout } from "./Utils";
 
 type NavbarProp = {
     currentPage: 'leaderboard' | 'quiz' | 'create-quiz' | 'user' | 'home';
@@ -15,8 +14,7 @@ type NavbarProp = {
 
 const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
     const router = useRouter();
-    const { user, isAuthenticated, logout } = useUser();
-    const { addToast } = useToast();
+    const { user, isAuthenticated } = useUser();
 
     const [isScrolled, setIsScrolled] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -24,6 +22,8 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
 
     const dropdownRef = useRef<HTMLLIElement>(null);
     const [gravatar, setGravatar] = useState<string>("");
+
+    const handleLogout = useHandleLogout()
 
     useEffect(() => {
         const handleScroll = () => {
