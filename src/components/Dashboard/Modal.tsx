@@ -279,8 +279,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                                     </button>
                                     <div className="flex justify-between items-center">
                                         <span className="text-sm truncate">
-                                            {editedQuiz?.content[key].question.substring(0, 30)}
-                                            {editedQuiz?.content[key].question && editedQuiz.content[key].question.length > 30 ? '...' : ''}
+                                            {editedQuiz?.content && editedQuiz.content[key].question.substring(0, 30)}
+                                            {editedQuiz?.content && editedQuiz.content[key].question && editedQuiz.content[key].question.length > 30 ? '...' : ''}
                                         </span>
                                     </div>
                                 </div>
@@ -294,7 +294,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                                         <label className="block text-sm font-medium mb-1">Question</label>
                                         <QInput
                                             type="text"
-                                            value={editedQuiz?.content[activeQuestionKey].question}
+                                            value={editedQuiz?.content && editedQuiz.content[activeQuestionKey].question}
                                             onChange={(e) => handleQuestionChange(activeQuestionKey, "question", e.target.value)}
                                             placeholder="Texte de la question"
                                         />
@@ -305,7 +305,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                                             <label className="block text-sm font-medium mb-1">Points</label>
                                                 <QInput
                                                 type="number"
-                                                value={editedQuiz?.content[activeQuestionKey].points || 1}
+                                                value={editedQuiz?.content && editedQuiz.content[activeQuestionKey].points || 1}
                                                 onChange={(e) => handleQuestionChange(activeQuestionKey, "points", parseInt(e.target.value) || null)}
                                                 placeholder="Nombre de points"
                                                 min={1}
@@ -317,11 +317,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                                     <div>
                                         <label className="block text-sm font-medium mb-1">Réponses</label>
                                         <div className="space-y-2">
-                                            {editedQuiz?.content[activeQuestionKey].answers.map((answer, idx) => (
+                                            {editedQuiz?.content && editedQuiz.content[activeQuestionKey].answers.map((answer, idx) => (
                                                 <div key={idx} className="flex items-center space-x-2">
                                                     <button
                                                         onClick={() => handleCorrectAnswerChange(activeQuestionKey, idx)}
-                                                        className={`flex-shrink-0 ${editedQuiz.content[activeQuestionKey].correctAnswer === idx ? 'text-green-500' : 'text-gray-400'}`}
+                                                        className={`flex-shrink-0 ${editedQuiz?.content && editedQuiz.content[activeQuestionKey].correctAnswer === idx ? 'text-green-500' : 'text-gray-400'}`}
                                                     >
                                                         <CheckCircle size={20} />
                                                     </button>
