@@ -205,7 +205,7 @@ const MyQuiz: FC = () => {
                     {filteredQuiz.map((q) => (
                         <div
                             key={q._id}
-                            className="bg-background-tertiary border-2 border-accent rounded-xl shadow-md p-5 hover:shadow-lg transition-shadow"
+                            className="bg-background-tertiary border-2 border-accent-secondary rounded-xl shadow-md p-5 hover:shadow-lg transition-shadow"
                         >
                             <div className="flex justify-between items-start mb-4">
                                 <h3 className="text-lg font-semibold text-accent">{q.title}</h3>

@@ -140,25 +140,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
       });
     };
   
-    const addNewQuestion = () => {
-      const newKey = `q${Object.keys(editedQuiz?.content || {}).length + 1}`;
-      
-      setEditedQuiz(prev => {
-        if (!prev) return prev;
-        
-        const updatedContent = { ...prev.content };
-        updatedContent[newKey] = {
-          question: "Nouvelle question",
-          points: 1,
-          correctAnswer: 0,
-          answers: ["Réponse 1", "Réponse 2"]
-        };
-        
-        return { ...prev, content: updatedContent };
-      });
-      setActiveQuestionKey(newKey);
-    };
-  
     const removeQuestion = (questionKey: string) => {
         setEditedQuiz((prevQuiz) => {
             if (!prevQuiz) return prevQuiz;
@@ -260,16 +241,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                 {activeTab === 'questions' && (
                     <div className="flex">
                         <div className="w-1/3 pr-4 border-r border-gray-600">
-                            <div className="flex justify-between items-center mb-3">
-                                <h3 className="font-medium">Questions</h3>
-                                <button 
-                                    onClick={addNewQuestion}
-                                    className="text-accent hover:text-accent-hover"
-                                >
-                                    <Plus size={20} />
-                                </button>
-                            </div>
-                    
                             {Object.keys(editedQuiz?.content ?? quiz?.content ?? {}).map((key) => (
                                 <div onClick={() => setActiveQuestionKey(key)} key={key} className={`p-2 rounded-md cursor-pointer flex flex-row gap-3 ${activeQuestionKey === key ? 'bg-accent bg-opacity-20 border border-accent' : 'hover:bg-gray-700'}`}>
                                     <button
@@ -392,12 +363,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                             ) : (
                                 <div className="flex flex-col items-center justify-center h-full text-gray-400">
                                     <p>Aucune question sélectionnée</p>
-                                    <button 
-                                        onClick={addNewQuestion}
-                                        className="mt-2 text-accent hover:text-accent-hover"
-                                    >
-                                        <Plus size={20} /> Ajouter une question
-                                    </button>
                                 </div>
                             )}
                         </div>
