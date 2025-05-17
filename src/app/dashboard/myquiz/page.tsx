@@ -1,7 +1,6 @@
-"use client";
+"use client"
 
 import Modal from "@/components/Dashboard/Modal";
-import { Sidebar } from "@/components/Dashboard/Sidebar";
 import QButton from "@/components/Utilities/QButton";
 import QInput from "@/components/Utilities/QInput";
 import { useToast } from "@/provider/ToastProvider";
@@ -9,6 +8,20 @@ import { useUser } from "@/provider/UserProvider";
 import { Edit, PlusCircle, Search, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
+
+type EditedQuiz = {
+    level: number | null;
+    title: string | null;
+    content: {
+      [key: string]: {
+        question: string | null;
+        points: number | null;
+        correctAnswer: number | null;
+        answers: string[] | null;
+      };
+    } | null;
+    category: string | null;
+}
 
 const MyQuiz: FC = () => {
     const router = useRouter();
@@ -18,7 +31,7 @@ const MyQuiz: FC = () => {
     const [search, setSearch] = useState("");
     const [deleteQuizBtn, setDeleteQuizBtn] = useState<boolean>(false);
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedQuiz, setSelectedQuiz] = useState<Quiz | null>(null);
+    const [selectedQuiz, setSelectedQuiz] = useState<Quiz | null>();
 
     if (!isAuthenticated || !user) {
         router.push("/user/signin");
@@ -73,14 +86,57 @@ const MyQuiz: FC = () => {
             console.error("Erreur lors de la suppression du quiz:", error);
             addToast("Erreur lors de la suppression du quiz", "error");
         }
-    }
+    }   
 
-    async function editQuiz(category: string, level: number, title: string, content: Quiz['content']) {
+    async function editQuiz(editedQuiz: EditedQuiz) {
+        if (!selectedQuiz) return;
+
+        const updatedQuiz = { ...selectedQuiz };
+
+        if (editedQuiz.level !== null) updatedQuiz.level = editedQuiz.level;
+        if (editedQuiz.title !== null) updatedQuiz.title = editedQuiz.title;
+        if (editedQuiz.category !== null) updatedQuiz.category = editedQuiz.category;
+        if ("_id" in updatedQuiz) {
+            delete (updatedQuiz as any)._id;
+        }
+        
+        if (updatedQuiz.level !== 3) {
+            if ("points" in updatedQuiz) {
+                delete (updatedQuiz.content as any).points;
+            }
+        }
+
+        // Mise à jour du contenu du quiz (questions)
+        if (editedQuiz.content !== null) {
+            updatedQuiz.content = { ...updatedQuiz.content };
+            
+            for (const key in editedQuiz.content) {
+                // Fusion des propriétés existantes avec les propriétés modifiées
+                // en ignorant les valeurs null
+
+                const existingQuestion = updatedQuiz.content[key];
+
+                const questionEdits = editedQuiz.content[key];
+                // on ignore les propriétés null
+                const validEdits: { [property: string]: string | number | string[] | null } = {};
+                for (const [property, value] of Object.entries(questionEdits)) {
+                    if (value !== null) {
+                        validEdits[property] = value;
+                    }
+                }
+
+                updatedQuiz.content[key] = {
+                    ...existingQuestion,
+                    ...validEdits
+                };
+            }
+        }
+        
         try {
             const response = await fetch("/api/quiz/editQuiz", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ _id: selectedQuiz?._id, category, level, title, content }),
+                body: JSON.stringify({ id: selectedQuiz?._id, updatedQuiz }),
             });
 
             const data = await response.json();
@@ -151,7 +207,7 @@ const MyQuiz: FC = () => {
                                 <h3 className="text-lg font-semibold text-accent">{q.title}</h3>
                                 <div className="flex space-x-2">
                                     <button className="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-background-secondary transition-all"
-                                        onClick={() => setIsOpen(true)}
+                                        onClick={() => { setSelectedQuiz(q); setIsOpen(true); console.log('aa');}}
                                     >
                                         <Edit size={18} />
                                     </button>
@@ -173,6 +229,16 @@ const MyQuiz: FC = () => {
                     <p className="text-gray-500">Aucun quiz trouvé.</p>
                 </div>
             )}
+
+            <Modal
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+                onSave={(editedQuiz: EditedQuiz) => {
+                    editQuiz(editedQuiz);
+                    setIsOpen(false);
+                }}
+                quiz={selectedQuiz || null}
+            />
         </div>
     );
 };

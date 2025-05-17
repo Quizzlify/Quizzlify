@@ -1,75 +1,47 @@
+"use client"
+
 import React, { useState, useEffect } from "react";
 import { X, Plus, Trash, CheckCircle } from "lucide-react";
 import QButton from "@/components/Utilities/QButton";
 import QInput from "@/components/Utilities/QInput";
 
+type EditedQuiz = {
+    level: number | null;
+    title: string | null;
+    content: {
+      [key: string]: {
+        question: string | null;
+        points: number | null;
+        correctAnswer: number | null;
+        answers: string[] | null;
+      };
+    } | null;
+    category: string | null;
+}
 
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
-    quiz?: Quiz;
-    onSave: (category: string, level: number, title: string, content: Quiz['content']) => void;
-}
-
-type EditedQuiz = {
-    level: number | undefined;
-    title: string | undefined;
-    content: {
-      [key: string]: {
-        question: string;
-        points: number | null;
-        correctAnswer: number;
-        answers: string[];
-      };
-    } | undefined;
-    category: string | undefined;
+    quiz: Quiz | null;
+    onSave: (editedQuiz: EditedQuiz) => void;
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
     const [activeTab, setActiveTab] = useState<'info' | 'questions'>('info');
     const [activeQuestionKey, setActiveQuestionKey] = useState<string | null>(null);
-  
-    // new variables
-    const [newTitle, setNewTitle] = useState<string | null>(null);
-    const [newCategory, setNewCategory] = useState<string | null>(null);
-    const [newLevel, setNewLevel] = useState<number | null>(null);
-    const [newContent, setNewContent] = useState<Quiz['content'] | null>(null);
-    const [didEditQuiz, setDidEditQuiz] = useState<boolean>(false);
 
-    const [editedQuiz, setEditedQuiz] = useState<EditedQuiz | null>(null);
-
-    const handleSave = () => {
-        console.log(newTitle, newCategory, newLevel, newContent)
-    if (editedQuiz) {
-      const updatedCategory = newCategory !== null ? newCategory : editedQuiz.category;
-      const updatedLevel = newLevel !== null ? newLevel : editedQuiz.level;
-      const updatedTitle = newTitle !== null ? newTitle : editedQuiz.title;
-      const updatedContent = newContent !== null ? newContent : editedQuiz.content;
-
-      if (updatedCategory && updatedLevel && updatedTitle && updatedContent) {
-        onSave(updatedCategory, updatedLevel, updatedTitle, updatedContent);
-        onClose();
-      }
-    }
-    };
-
-    useEffect(() => {
-      if (quiz && didEditQuiz === false) {
-        setEditedQuiz({
-          level: quiz.level,
-          title: quiz.title,
-          content: quiz.content,
-          category: quiz.category
-        });
-        setDidEditQuiz(true)
-      }
-    }, [quiz, didEditQuiz, setDidEditQuiz]);
-
+    const [editedQuiz, setEditedQuiz] = useState<EditedQuiz>({
+        level: null,
+        title: null,
+        content: null,
+        category: null,
+    });
+    
     const handleQuestionChange = (questionKey: string, field: string, value: any) => {
       setEditedQuiz(prev => {
         if (!prev) return prev;
         
-        const updatedContent: Record<string, { question: string; points: number | null; correctAnswer: number; answers: string[] }> = { ...prev.content };
+        const updatedContent: { [key: string]: { question: string | null; points: number | null; correctAnswer: number | null; answers: string[] | null } } = { ...prev.content };
         updatedContent[questionKey] = {
           ...updatedContent[questionKey],
           [field]: value
@@ -77,17 +49,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
         
         return { ...prev, content: updatedContent };
       });
-      
-        setNewContent(prev => {
+    };
+
+    const handleInfoChange = (field: string, value: any) => {
+        setEditedQuiz(prev => {
             if (!prev) return prev;
-
-            const updatedContent = { ...prev };
-            updatedContent[questionKey] = {
-                ...updatedContent[questionKey],
-                question: value
-            };
-
-            return updatedContent;
+            return { ...prev, [field]: value };
         });
     };
   
@@ -96,7 +63,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
         if (!prev) return prev;
         
         const updatedContent = { ...prev.content };
-        const updatedAnswers = [...updatedContent[questionKey].answers];
+        if (!updatedContent[questionKey]) {
+          return prev;
+        }
+        const updatedAnswers = [
+        ...(updatedContent[questionKey].answers ?? quiz?.content[questionKey].answers ?? [])
+        ];
         updatedAnswers[answerIndex] = value;
         
         updatedContent[questionKey] = {
@@ -106,21 +78,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
         
         return { ...prev, content: updatedContent };
       });
-
-        setNewContent(prev => {
-            if (!prev) return prev;
-    
-            const updatedContent = { ...prev };
-            const updatedAnswers = [...updatedContent[questionKey].answers];
-            updatedAnswers[answerIndex] = value;
-    
-            updatedContent[questionKey] = {
-            ...updatedContent[questionKey],
-            answers: updatedAnswers
-            };
-    
-            return updatedContent;
-        });
     };
   
     const handleCorrectAnswerChange = (questionKey: string, answerIndex: number) => {
@@ -135,18 +92,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
         
         return { ...prev, content: updatedContent };
       });
-
-        setNewContent(prev => {
-            if (!prev) return prev;
-    
-            const updatedContent = { ...prev };
-            updatedContent[questionKey] = {
-                ...updatedContent[questionKey],
-                correctAnswer: answerIndex
-            };
-    
-            return updatedContent;
-        });
     };
   
     const addNewQuestion = () => {
@@ -165,25 +110,15 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
         
         return { ...prev, content: updatedContent };
       });
-      
       setActiveQuestionKey(newKey);
     };
   
     const removeQuestion = (questionKey: string) => {
-        setNewContent((prev) => {
-          if (!prev) return prev;
-      
-          const updatedContent: Quiz['content'] = { ...prev };
-          delete updatedContent[questionKey];
-      
-          setActiveQuestionKey(null);
-
-          setEditedQuiz((prevQuiz) => {
+        setEditedQuiz((prevQuiz) => {
             if (!prevQuiz) return prevQuiz;
+            const updatedContent = { ...prevQuiz.content };
+            delete updatedContent[questionKey];
             return { ...prevQuiz, content: updatedContent };
-          });
-      
-          return updatedContent;
         });
     };
   
@@ -223,8 +158,14 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                             <label className="block text-sm font-medium mb-1">Titre</label>
                             <QInput
                                 type="text"
-                                value={editedQuiz?.title || ""}
-                                onChange={(e) => setNewTitle(e.target.value)}
+                                value={
+                                    editedQuiz?.title !== null && editedQuiz?.title !== undefined
+                                        ? editedQuiz.title
+                                        : quiz?.title !== null && quiz?.title !== undefined
+                                            ? quiz.title
+                                            : ""
+                                }
+                                onChange={(e) => handleInfoChange("title", e.target.value)}
                                 placeholder="Titre du quiz"
                             />
                         </div>
@@ -233,8 +174,14 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                             <label className="block text-sm font-medium mb-1">Catégorie</label>
                             <QInput
                                 type="text"
-                                value={editedQuiz?.category|| ""}
-                                onChange={(e) => setNewCategory(e.target.value)}
+                                value={
+                                    editedQuiz?.category !== null && editedQuiz?.category !== undefined
+                                        ? editedQuiz.category
+                                        : quiz?.category !== null && quiz?.category !== undefined
+                                            ? quiz.category
+                                            : ""
+                                }
+                                onChange={(e) => handleInfoChange("category", e.target.value)}
                                 placeholder="Catégorie du quiz"
                             />
                         </div>
@@ -243,8 +190,14 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                             <label className="block text-sm font-medium mb-1">Niveau</label>
                             <QInput
                                 type="number"
-                                value={editedQuiz?.level || 1}
-                                onChange={(e) => setNewLevel(parseInt(e.target.value))}
+                                value={
+                                    editedQuiz?.level !== null && editedQuiz?.level !== undefined
+                                        ? editedQuiz.level
+                                        : quiz?.level !== null && quiz?.level !== undefined
+                                            ? quiz.level
+                                            : ""
+                                }
+                                onChange={(e) => handleInfoChange("level", parseInt(e.target.value))}
                                 placeholder="Niveau de difficulté"
                                 min={1}
                                 max={3}
@@ -266,7 +219,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                                 </button>
                             </div>
                     
-                            {Object.keys(editedQuiz?.content || {}).map((key) => (
+                            {Object.keys(editedQuiz?.content ?? quiz?.content ?? {}).map((key) => (
                                 <div onClick={() => setActiveQuestionKey(key)} key={key} className={`p-2 rounded-md cursor-pointer flex flex-row gap-3 ${activeQuestionKey === key ? 'bg-accent bg-opacity-20 border border-accent' : 'hover:bg-gray-700'}`}>
                                     <button
                                         onClick={(e) => {
@@ -279,8 +232,13 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                                     </button>
                                     <div className="flex justify-between items-center">
                                         <span className="text-sm truncate">
-                                            {editedQuiz?.content && editedQuiz.content[key].question.substring(0, 30)}
-                                            {editedQuiz?.content && editedQuiz.content[key].question && editedQuiz.content[key].question.length > 30 ? '...' : ''}
+                                            {(editedQuiz?.content && editedQuiz.content[key]?.question
+                                                ? editedQuiz.content[key]?.question?.substring(0, 30)
+                                                : quiz?.content && quiz.content[key]?.question
+                                                    ? quiz.content[key]?.question?.substring(0, 30)
+                                                    : ""
+                                            )}
+                                            {editedQuiz?.content && editedQuiz.content[key].question && editedQuiz.content[key].question.length > 30  || quiz?.content[key].question && quiz?.content[key].question.length > 30 ? '...' : ''}
                                         </span>
                                     </div>
                                 </div>
@@ -294,7 +252,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                                         <label className="block text-sm font-medium mb-1">Question</label>
                                         <QInput
                                             type="text"
-                                            value={editedQuiz?.content && editedQuiz.content[activeQuestionKey].question}
+                                            value={editedQuiz?.content && editedQuiz.content[activeQuestionKey].question || quiz?.content[activeQuestionKey].question || ""}
                                             onChange={(e) => handleQuestionChange(activeQuestionKey, "question", e.target.value)}
                                             placeholder="Texte de la question"
                                         />
@@ -305,7 +263,13 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                                             <label className="block text-sm font-medium mb-1">Points</label>
                                                 <QInput
                                                 type="number"
-                                                value={editedQuiz?.content && editedQuiz.content[activeQuestionKey].points || 1}
+                                                value={
+                                                    editedQuiz?.content !== null && editedQuiz?.content !== undefined
+                                                        ? editedQuiz.content[activeQuestionKey].points ?? ""
+                                                        : quiz?.content !== null && quiz?.content !== undefined
+                                                            ? quiz?.content[activeQuestionKey].points ?? ""
+                                                            : 1
+                                                }
                                                 onChange={(e) => handleQuestionChange(activeQuestionKey, "points", parseInt(e.target.value) || null)}
                                                 placeholder="Nombre de points"
                                                 min={1}
@@ -317,7 +281,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                                     <div>
                                         <label className="block text-sm font-medium mb-1">Réponses</label>
                                         <div className="space-y-2">
-                                            {editedQuiz?.content && editedQuiz.content[activeQuestionKey].answers.map((answer, idx) => (
+                                            {(editedQuiz?.content && editedQuiz.content[activeQuestionKey]?.answers
+                                                ? editedQuiz.content[activeQuestionKey].answers
+                                                : quiz?.content && quiz.content[activeQuestionKey]?.answers
+                                                    ? quiz.content[activeQuestionKey].answers
+                                                    : []
+                                            ).map((answer, idx) => (
                                                 <div key={idx} className="flex items-center space-x-2">
                                                     <button
                                                         onClick={() => handleCorrectAnswerChange(activeQuestionKey, idx)}
@@ -328,7 +297,13 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
 
                                                     <QInput
                                                         type="text"
-                                                        value={answer}
+                                                        value={
+                                                            answer !== null && answer !== undefined
+                                                                ? answer
+                                                                : quiz?.content && quiz.content[activeQuestionKey]?.answers[idx] !== null && quiz.content[activeQuestionKey]?.answers[idx] !== undefined
+                                                                    ? quiz.content[activeQuestionKey].answers[idx]
+                                                                    : ""
+                                                        }
                                                         onChange={(e) => handleAnswerChange(activeQuestionKey, idx, e.target.value)}
                                                         placeholder={`Réponse ${idx + 1}`}
                                                         className="flex-grow"
@@ -364,7 +339,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                     />
                     <QButton 
                         text="Enregistrer" 
-                        onClick={handleSave} 
+                        onClick={() => editedQuiz && onSave(editedQuiz)}
                         className="bg-accent hover:bg-accent-hover"
                     />
                 </div>
@@ -373,4 +348,4 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
     )
 };
   
-  export default Modal;
+export default Modal;
