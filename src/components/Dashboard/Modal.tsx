@@ -213,8 +213,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                                 <option value="Autre">Autre</option>
                                 <option value="Sports">Sports</option>
                                 <option value="Musique">Musique</option>
-                                <option value="Sciences">Sciences</option>
+                                <option value="Sciences">Science</option>
                                 <option value="Histoire">Histoire</option>
+                                <option value="Jeux Video">Jeux vidéo</option>
                             </select>
                         </div>
     

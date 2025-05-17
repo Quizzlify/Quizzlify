@@ -81,7 +81,7 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) 
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ 
                         id: user?._id, 
-                        score: currentScore + points 
+                        score: Number(currentScore) + Number(points) 
                     })
                 });
                 const response = await res.json();
