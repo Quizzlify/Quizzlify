@@ -97,7 +97,7 @@ const MyQuiz: FC = () => {
         if (editedQuiz.title !== null) updatedQuiz.title = editedQuiz.title;
         if (editedQuiz.category !== null) updatedQuiz.category = editedQuiz.category;
         if ("_id" in updatedQuiz) {
-            delete (updatedQuiz as { [key: string]: any })._id;
+            delete (updatedQuiz as { [key: string]: unknown })._id;
         }
         
         if (updatedQuiz.level !== 3) {
