@@ -18,17 +18,13 @@ export async function POST(req: Request) {
             );
         }
 
-        // Remove _id from updatedQuiz if present to avoid immutable field error
-        if ('_id' in updatedQuiz) {
-            delete updatedQuiz._id;
-        }
         const result = await collection.updateOne(
             { _id: new ObjectId(id) },
             { $set: updatedQuiz }
         );
 
         if (result.matchedCount === 0) {
-            throw new Error("Quiz non trouvé");
+            throw new Error("Quiz non mis à jour.");
         }
 
         return NextResponse.json({ success: true });

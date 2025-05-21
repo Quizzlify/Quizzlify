@@ -121,12 +121,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
     const handleCorrectAnswerChange = (questionKey: string, answerIndex: number) => {
       setEditedQuiz(prev => {
         if (!prev) return prev;
-        
-        if (!answerIndex) {
-          setAlertMessage("Vous devez choisir une réponse correcte.");
-          setShowAlert(true);
-          setEmptyInput(true);
-        } else {setShowAlert(false); setEmptyInput(false);}
 
         const updatedContent = prev.content !== null && prev.content !== undefined
             ? { ...prev.content }
@@ -242,7 +236,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                 {activeTab === 'questions' && (
                     <div className="flex">
                         <div className="w-1/3 pr-4 border-r border-gray-600">
-                            {Object.keys(editedQuiz?.content ?? quiz?.content ?? {}).map((key) => (
+                            {(editedQuiz?.content && Object.keys(editedQuiz.content).length === Object.keys(quiz?.content ?? {}).length
+                                ? Object.keys(editedQuiz.content)
+                                : Object.keys(quiz?.content ?? {})).map((key) => (
                                 <div onClick={() => setActiveQuestionKey(key)} key={key} className={`p-2 rounded-md cursor-pointer flex flex-row gap-3 ${activeQuestionKey === key ? 'bg-accent bg-opacity-20 border border-accent' : 'hover:bg-gray-700'}`}>
                                     <button
                                         onClick={(e) => {
@@ -251,17 +247,20 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                                         }}
                                         className="text-red-500 hover:text-red-400"
                                     >
-                                        {Object.keys(editedQuiz?.content || {}).length > 1 ? <Trash size={16} /> : null}
+                                        {Object.keys(editedQuiz?.content || quiz?.content || {}).length > 1 ? <Trash size={16} /> : null}
                                     </button>
                                     <div className="flex justify-between items-center">
-                                        <span className="text-sm truncate">
+                                        <span className="text-sm">
                                             {(editedQuiz?.content && editedQuiz.content[key]?.question
-                                                ? editedQuiz.content[key]?.question?.substring(0, 30)
+                                                ? editedQuiz.content[key]?.question?.substring(0, 25)
                                                 : quiz?.content && quiz.content[key]?.question
-                                                    ? quiz.content[key]?.question?.substring(0, 30)
+                                                    ? quiz.content[key]?.question?.substring(0, 25)
                                                     : ""
                                             )}
-                                            {editedQuiz?.content && editedQuiz.content[key].question && editedQuiz.content[key].question.length > 30  || quiz?.content[key].question && quiz?.content[key].question.length > 30 ? '...' : ''}
+                                            {(
+                                                (editedQuiz?.content && editedQuiz.content[key]?.question && editedQuiz.content[key]?.question.length > 25) ||
+                                                (quiz?.content && quiz.content[key]?.question && quiz.content[key]?.question.length > 25)
+                                            ) ? '...' : ''}
                                         </span>
                                     </div>
                                 </div>
@@ -276,7 +275,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                                         <QInput
                                             type="text"
                                             value={
-                                                editedQuiz?.content !== null
+                                                editedQuiz?.content
                                                     ? editedQuiz.content[activeQuestionKey].question ?? ""
                                                     : quiz?.content !== null
                                                         ? quiz?.content[activeQuestionKey].question ?? ""

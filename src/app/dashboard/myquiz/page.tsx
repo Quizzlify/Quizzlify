@@ -97,8 +97,7 @@ const MyQuiz: FC = () => {
         if (editedQuiz.title !== null) updatedQuiz.title = editedQuiz.title;
         if (editedQuiz.category !== null) updatedQuiz.category = editedQuiz.category;
         if ("_id" in updatedQuiz) {
-            // TypeScript workaround: use type assertion to object with index signature
-            delete (updatedQuiz as { [key: string]: unknown })._id;
+            delete (updatedQuiz as { [key: string]: any })._id;
         }
         
         if (updatedQuiz.level !== 3) {
