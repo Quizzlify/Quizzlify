@@ -5,9 +5,10 @@ import QInput from "@/components/Utilities/QInput";
 interface DetailsProps {
     nextStep: (step: string) => void;
     setTitle: (title: string) => void;
+    title: string;
 }
 
-const Details: React.FC<DetailsProps> = ({ nextStep, setTitle = () => { } }) => {
+const Details: React.FC<DetailsProps> = ({ nextStep, setTitle, title = () => { } }) => {
     return (
         <div className="w-full max-w-2xl mx-auto animate-slide-up">
             <h2 className="text-2xl font-bold mb-8 text-center">
@@ -27,7 +28,7 @@ const Details: React.FC<DetailsProps> = ({ nextStep, setTitle = () => { } }) => 
                     className="btn-primary text-lg py-3 px-8 shadow-glow hover:scale-105 transform transition mt-4"
                     text="Créer les questions"
                     icon={<i className="fa-solid fa-play"></i>}
-                    disabled={false}
+                    disabled={title ? false : true}
                     iconPosition="left"
                     onClick={() => nextStep('Questions')}
                     variant="primary"

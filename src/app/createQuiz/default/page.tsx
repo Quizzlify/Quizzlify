@@ -68,7 +68,7 @@ export default function Page() {
             case "Niveau":
                 return <Levels nextStep={setActiveStep} setLevel={setLevel}/>;
             case "Détails":
-                return <Details nextStep={setActiveStep} setTitle={setTitle}/>
+                return <Details nextStep={setActiveStep} setTitle={setTitle} title={title}/>
             case "Questions":
                 return <Questions questionIndices={questionIndices} setQuestionIndices={setQuestionIndices} content={content} setContent={setContent} setCreerQuiz={setCreerQuiz} level={level}/>;
         }

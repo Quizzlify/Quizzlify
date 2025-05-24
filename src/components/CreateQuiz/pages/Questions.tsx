@@ -20,6 +20,16 @@ const Questions: React.FC<QuestionsProps> = ({ questionIndices, setQuestionIndic
         setQuestionIndices(questionIndices.filter((questionId) => questionId !== id));
     };
 
+    const isDisabled =
+        Object.values(content).some(q =>
+            !q.question ||
+            !q.answers ||
+            q.answers.some(answer => !answer) ||
+            !Array.isArray(q.correctAnswers) ||
+            q.correctAnswers.length === 0 ||
+            (level === 3 && (q.points === null))
+        );
+
     return (
         <div className="mt-5 flex items-center w-full flex-col">
             <h2 className="text-xl mb-4">Créez votre quiz.</h2>
@@ -45,7 +55,7 @@ const Questions: React.FC<QuestionsProps> = ({ questionIndices, setQuestionIndic
                         className="w-[40rem]"
                         text="Créer le quiz"
                         icon={<i className="fa-solid fa-plus"></i>}
-                        disabled={false}
+                        disabled={isDisabled}
                         iconPosition={'left'}
                         onClick={() => setCreerQuiz(true)}
                         variant="primary"
