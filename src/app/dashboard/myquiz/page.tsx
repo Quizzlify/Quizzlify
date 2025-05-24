@@ -239,6 +239,7 @@ const MyQuiz: FC = () => {
                 onClose={() => setIsOpen(false)}
                 onSave={(editedQuiz: EditedQuiz) => {
                     editQuiz(editedQuiz);
+                    setSelectedQuiz(null);
                     setIsOpen(false);
                 }}
                 quiz={selectedQuiz || null}

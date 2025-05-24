@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { X, Trash, CircleAlert } from "lucide-react";
 import QButton from "@/components/Utilities/QButton";
 import QInput from "@/components/Utilities/QInput";
@@ -41,6 +41,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
         content: null,
         category: null,
     });
+
     
     const handleQuestionChange = (questionKey: string, field: string, value: string | number) => {
       setEditedQuiz(prev => {
@@ -403,12 +404,15 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                     <div className="flex flex-1 justify-end gap-2">
                         <QButton 
                             text="Annuler" 
-                            onClick={onClose} 
+                            onClick={() => {
+                                onClose();
+                                setEditedQuiz({ level: null, title: null, content: null, category: null });
+                            }} 
                             className="bg-gray-600 hover:bg-gray-700"
                         />
                         <QButton 
                             text="Enregistrer" 
-                            onClick={() => editedQuiz && onSave(editedQuiz)}
+                            onClick={() => {editedQuiz && onSave(editedQuiz); setEditedQuiz({ level: null, title: null, content: null, category: null })}}
                             className="bg-accent hover:bg-accent-hover"
                             disabled={noEmptyInput}
                         />
