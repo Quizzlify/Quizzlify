@@ -21,12 +21,12 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) 
     // Calculate correct answers and score
     const { score, totalPossibleScore } = useMemo(() => {
         const correctAnswersCount = questionKeys.reduce((count, key, index) => {
-            return questions[key].correctAnswer === selectedAnswers[index] ? count + 1 : count;
+            return questions[key].correctAnswers.includes(selectedAnswers[index]) ? count + 1 : count;
         }, 0);
 
         const calculatedScore = level === 3
             ? questionKeys.reduce((total, key, index) => {
-                return questions[key].correctAnswer === selectedAnswers[index] 
+                return questions[key].correctAnswers.includes(selectedAnswers[index])
                     ? total + (questions[key]?.points || 0) 
                     : total;
             }, 0)
@@ -68,7 +68,7 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) 
 
         async function updateUserScore() {
             const points = questionKeys.reduce((total, key, index) => {
-                return questions[key].correctAnswer === selectedAnswers[index] 
+                return questions[key].correctAnswers.includes(selectedAnswers[index])
                     ? total + (questions[key]?.points || 0) 
                     : total;
             }, 0);
@@ -200,7 +200,7 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) 
 
                     <div className="grid grid-cols-2 gap-2">
                         {questionKeys.map((key, index) => {
-                            const isCorrect = selectedAnswers[key - 1] === questions[key].correctAnswer;
+                            const isCorrect = questions[key].correctAnswers.includes(selectedAnswers[key - 1]);
                             return (
                                 <div
                                     key={key}
@@ -211,7 +211,9 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) 
                                         hover:scale-105 cursor-default
                                     `}
                                 >
-                                    <span className="font-medium">Question {index + 1} : {String.fromCharCode(65 + questions[key].correctAnswer)}</span>
+                                    <span className="font-medium">
+                                        Question {index + 1}
+                                    </span>
                                     {isCorrect ? <Check size={24} /> : <X size={24} />}
                                 </div>
                             );

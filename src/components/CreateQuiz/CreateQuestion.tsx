@@ -38,13 +38,28 @@ const CreateQuestion: React.FC<CreateQuestionProps> = ({ questionNum, removeQues
     if (isSelected) {
       const updatedQuestion = {
         ...content[questionNum],
-        correctAnswer: answerIndex,
+        correctAnswers: [
+          ...(content[questionNum]?.correctAnswers || []),
+          answerIndex,
+        ],
       };
 
       if (level !== 3) {
         updatedQuestion.points = null;
       }
 
+      setContent({
+        ...content,
+        [questionNum]: updatedQuestion,
+      });
+    } else {
+      const updatedQuestion = {
+        ...content[questionNum],
+        correctAnswers: (content[questionNum]?.correctAnswers || []).filter(
+          (index) => index !== answerIndex
+        ),
+        points: level === 3 ? content[questionNum]?.points : null,
+      };
       setContent({
         ...content,
         [questionNum]: updatedQuestion,
@@ -99,7 +114,7 @@ const CreateQuestion: React.FC<CreateQuestionProps> = ({ questionNum, removeQues
                 required
               />
               <Switch
-                color="warning"
+                color="success"
                 onValueChange={(isSelected) => handleCorrectAnswerChange(i, isSelected)}
               >
                 Marquer comme correcte

@@ -16,7 +16,7 @@ type EditedQuiz = {
       [key: string]: {
         question: string | null;
         points: number | null;
-        correctAnswer: number | null;
+        correctAnswers: number[] | null;
         answers: string[] | null;
       };
     } | null;
@@ -122,7 +122,7 @@ const MyQuiz: FC = () => {
 
                 const questionEdits = editedQuiz.content[key];
                 // on ignore les propriétés null
-                const validEdits: { [property: string]: string | number | string[] | null } = {};
+                const validEdits: { [property: string]: string | number | string[] | number[] | null } = {};
                 for (const [property, value] of Object.entries(questionEdits)) {
                     if (value !== null) {
                         validEdits[property] = value;

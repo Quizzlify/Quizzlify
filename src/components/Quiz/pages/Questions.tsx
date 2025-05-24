@@ -62,7 +62,7 @@ const Questions: React.FC<QuestionsProps> = ({ nextStep, questions, selectedAnsw
                     
                     <Question
                         answers={questions[questionKeys[questionIndex]].answers}
-                        correctAnswer={questions[questionKeys[questionIndex]].correctAnswer}
+                        correctAnswers={questions[questionKeys[questionIndex]].correctAnswers}
                         selectedAnswer={selectedAnswer}
                         showAnswer={showAnswer}
                         onAnswerSelect={handleAnswerSelection}

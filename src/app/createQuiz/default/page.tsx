@@ -33,6 +33,7 @@ export default function Page() {
 
     useEffect(() => {
         async function createQuiz(category: string, level: number, title: string, content: Quiz['content']) {
+            console.log(content)
             try {
                 console.log(content)
                 const res = await fetch("/api/create-quiz", {

@@ -2,7 +2,7 @@ import { X, Check } from "lucide-react";
 
 interface QuestionProps {
     answers: string[];
-    correctAnswer: number;
+    correctAnswers: number[];
     selectedAnswer: number | null;
     showAnswer: boolean;
     onAnswerSelect: (answerIndex: number) => void;
@@ -10,7 +10,7 @@ interface QuestionProps {
 
 const Question: React.FC<QuestionProps> = ({
     answers,
-    correctAnswer,
+    correctAnswers,
     selectedAnswer,
     showAnswer,
     onAnswerSelect
@@ -19,7 +19,7 @@ const Question: React.FC<QuestionProps> = ({
         <div className="grid grid-cols-2 gap-4">
             {answers.map((answer, index) => {
                 const isSelected = index === selectedAnswer;
-                const isCorrect = index === correctAnswer;
+                const isCorrect = correctAnswers.includes(index);
 
                 const stateClasses = showAnswer
                     ? (isCorrect

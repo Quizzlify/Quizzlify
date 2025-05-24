@@ -26,7 +26,7 @@ declare global {
         [key: string]: {
           question: string;
           points: number | null;
-          correctAnswer: number;
+          correctAnswers: number[];
           answers: string[];
         };
       };

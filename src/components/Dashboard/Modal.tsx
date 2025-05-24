@@ -1,9 +1,10 @@
 "use client"
 
 import React, { useState } from "react";
-import { X, Trash, CheckCircle, CircleAlert } from "lucide-react";
+import { X, Trash, CircleAlert } from "lucide-react";
 import QButton from "@/components/Utilities/QButton";
 import QInput from "@/components/Utilities/QInput";
+import { Switch } from "@heroui/switch";
 
 type EditedQuiz = {
     level: number | null;
@@ -12,7 +13,7 @@ type EditedQuiz = {
       [key: string]: {
         question: string | null;
         points: number | null;
-        correctAnswer: number | null;
+        correctAnswers: number[] | null;
         answers: string[] | null;
       };
     } | null;
@@ -59,13 +60,15 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
             setShowAlert(false);
             setEmptyInput(false);
         }
-        
-        const updatedContent: { [key: string]: { question: string | null; points: number | null; correctAnswer: number | null; answers: string[] | null } } = { ...prev.content };
+
+        const updatedContent: { [key: string]: { question: string | null; points: number | null; correctAnswers: number[] | null; answers: string[] | null } } = { 
+          ...(prev.content ?? (quiz?.content as EditedQuiz['content']) ?? {}) 
+        };
         updatedContent[questionKey] = {
           ...updatedContent[questionKey],
           [field]: value
         };
-        
+
         return { ...prev, content: updatedContent };
       });
     };
@@ -118,20 +121,45 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
       });
     };
   
-    const handleCorrectAnswerChange = (questionKey: string, answerIndex: number) => {
-      setEditedQuiz(prev => {
-        if (!prev) return prev;
+    const handleCorrectAnswerChange = (questionKey: string, answerIndex: number, isSelected: boolean) => {
+        if (isSelected) {
+            setEditedQuiz(prev => {
+                if (!prev) return prev;
 
-        const updatedContent = prev.content !== null && prev.content !== undefined
-            ? { ...prev.content }
-            : { ...((quiz?.content as Quiz['content']) ?? {}) };
-        updatedContent[questionKey] = {
-          ...updatedContent[questionKey],
-          correctAnswer: answerIndex
-        };
-        
-        return { ...prev, content: updatedContent };
-      });
+                const updatedContent = prev.content !== null && prev.content !== undefined
+                    ? { ...prev.content }
+                    : { ...((quiz?.content as Quiz['content']) ?? {}) };
+                    const currentCorrectAnswers = [
+                        ...(updatedContent[questionKey].correctAnswers ?? quiz?.content[questionKey].correctAnswers ?? [])
+                    ];
+                    if (!currentCorrectAnswers.includes(answerIndex)) {
+                        updatedContent[questionKey] = {
+                            ...updatedContent[questionKey],
+                            correctAnswers: [...currentCorrectAnswers, answerIndex],
+                        };
+                    }
+                
+                return { ...prev, content: updatedContent };
+            });
+        } else {
+            setEditedQuiz(prev => {
+                if (!prev) return prev;
+
+                const updatedContent = prev.content !== null && prev.content !== undefined
+                    ? { ...prev.content }
+                    : { ...((quiz?.content as Quiz['content']) ?? {}) };
+                const currentCorrectAnswers = updatedContent[questionKey].correctAnswers ?? quiz?.content[questionKey].correctAnswers ?? [];
+                const updatedCorrectAnswers = currentCorrectAnswers.filter(index => index !== answerIndex);
+                
+                updatedContent[questionKey] = {
+                    ...updatedContent[questionKey],
+                    correctAnswers: updatedCorrectAnswers,
+                };
+                
+                return { ...prev, content: updatedContent };
+            });
+        }
+
     };
   
     const removeQuestion = (questionKey: string) => {
@@ -320,23 +348,19 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                                             ).map((answer, idx) => {
                                                 return (
                                                     <div key={idx} className="flex items-center space-x-2">
-                                                        <button
-                                                            onClick={() => handleCorrectAnswerChange(activeQuestionKey, idx)}
+                                                        <Switch
+                                                            onValueChange={(isSelected) => handleCorrectAnswerChange(activeQuestionKey, idx, isSelected)}
                                                             className={'flex-shrink-0'}
-                                                        >
-                                                            {editedQuiz?.content
-                                                                ? (
-                                                                    editedQuiz.content[activeQuestionKey].correctAnswer === idx
-                                                                        ? <CheckCircle size={20} className="text-green-500" />
-                                                                        : <CheckCircle size={20} className="text-gray-500" />
-                                                                )
-                                                                : (
-                                                                    quiz?.content && quiz.content[activeQuestionKey].correctAnswer === idx
-                                                                        ? <CheckCircle size={20} className="text-green-500" />
-                                                                        : <CheckCircle size={20} className="text-gray-500" />
+                                                            isSelected={
+                                                                (editedQuiz?.content && editedQuiz.content[activeQuestionKey]?.correctAnswers
+                                                                    ? editedQuiz.content[activeQuestionKey].correctAnswers.includes(idx) ? true : false
+                                                                    : quiz?.content && quiz.content[activeQuestionKey]?.correctAnswers
+                                                                        ? quiz.content[activeQuestionKey].correctAnswers.includes(idx)
+                                                                        : false
                                                                 )
                                                             }
-                                                        </button>
+                                                            color="success"
+                                                        />
 
                                                         <QInput
                                                             type="text"
@@ -356,7 +380,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                                             })}
                                         </div>
                                         <p className="text-xs text-gray-400 mt-2">
-                                            Cliquez sur l&apos;icône à gauche pour définir la réponse correcte
+                                            Cliquez sur le bouton à gauche pour définir la/les réponse(s) correcte(s)
                                         </p>
                                     </div>
                                 </div>
