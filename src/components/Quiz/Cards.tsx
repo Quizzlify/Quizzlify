@@ -56,7 +56,7 @@ const Cards: React.FC<CardsProps> = ({ isNiveau, nextStep, setCategory, setLevel
                                 className="bg-background p-6 rounded-xl border border-border hover:border-accent transition-all duration-300 flex flex-col justify-center items-center gap-5 group cursor-pointer hover:shadow-lg"
                                 key={level}
                                 onClick={() => {
-                                    nextStep('Détails');
+                                    nextStep('Questions');
                                     setLevel(level);
                                 }}
                             >

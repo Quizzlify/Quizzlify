@@ -7,7 +7,7 @@ interface BreadcrumbProps {
 }
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({ isCreateQuiz, activeStep, onStepChange }) => {
-    const steps = isCreateQuiz ? ["Catégorie", "Niveau", "Détails", "Questions"] : ["Catégorie", "Niveau", "Détails", "Questions", "Résultats"];
+    const steps = isCreateQuiz ? ["Catégorie", "Niveau", "Détails", "Questions"] : ["Catégorie", "Niveau", "Questions", "Résultats"];
 
     const getStepStatus = (step: string) => {
         const current = steps.indexOf(activeStep);

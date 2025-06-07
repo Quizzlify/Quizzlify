@@ -6,7 +6,6 @@ import Breadcrumb from "@/components/Quiz/Breadcrumb";
 import Categories from "@/components/Quiz/pages/Categories";
 import Levels from "@/components/Quiz/pages/Levels";
 import Results from "@/components/Quiz/pages/Results";
-import Details from "@/components/Quiz/pages/Details";
 import Questions from "@/components/Quiz/pages/Questions";
 
 export default function Page() {
@@ -55,8 +54,6 @@ export default function Page() {
                 return <Categories nextStep={setActiveStep} setCategory={setCategory} />;
             case "Niveau":
                 return <Levels nextStep={setActiveStep} setLevel={setLevel} />;
-            case "Détails":
-                return <Details nextStep={setActiveStep} />;
             case "Questions":
                 return quiz?.content ? <Questions questions={quiz.content} nextStep={setActiveStep} selectedAnswers={selectedAnswers} setSelectedAnswers={setSelectedAnswers} level={level} /> :
                     <div className="text-center mt-10 animate-slide-up">

@@ -164,12 +164,13 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
     };
   
     const removeQuestion = (questionKey: string) => {
-        setEditedQuiz((prevQuiz) => {
-            if (!prevQuiz) return prevQuiz;
-            const updatedContent = { ...prevQuiz.content };
+        setEditedQuiz(prev => {
+            if (!prev) return prev;
+            const updatedContent = { ...prev.content };
             delete updatedContent[questionKey];
-            return { ...prevQuiz, content: updatedContent };
+            return { ...prev, content: updatedContent };
         });
+        console.log(editedQuiz)
     };
   
     if (!isOpen) return null;
@@ -273,6 +274,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             removeQuestion(key);
+                                            setActiveQuestionKey(null)
                                         }}
                                         className="text-red-500 hover:text-red-400"
                                     >
