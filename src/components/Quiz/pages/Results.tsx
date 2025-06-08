@@ -7,9 +7,10 @@ interface ResultsProps {
     questions: Quiz['content'];
     selectedAnswers: number[];
     level: number;
+    quizId: string;
 }
 
-const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) => {
+const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level, quizId }) => {
     const questionKeys = Object.keys(questions).map(Number);
     const [earnedPoints, setEarnedPoints] = useState<number>(0);
     const [currentScore, setCurrentScore] = useState<number | null>(null);
@@ -124,11 +125,32 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level }) 
             }
         }
 
+        async function setUserHistory(id: string, quizId: string, at: Date, answers: Record<string, boolean>) {
+            try {
+                const res = await fetch("/api/user/setHistory", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ id, quizId, at, answers })
+                });
+                const response = await res.json();
+                if (!response.success) {
+                    console.error("Erreur lors de la mise à jour de l'historique: ", response.error);
+                }
+            } catch (error) {
+                console.error("Erreur de connexion à la DB: ", error);
+            }
+        }
+
         if (user?._id && !hasSetQuizCompleted.current) {
             hasSetQuizCompleted.current = true;
             setQuizCompleted(user._id);
+            const answers: Record<string, boolean> = {};
+            questionKeys.forEach((key, index) => {
+                answers[index] = questions[key].correctAnswers.includes(selectedAnswers[index]);
+            });
+            setUserHistory(user._id, quizId, new Date(), answers);
         }
-    }, [user]);
+    }, [user, hasSetQuizCompleted, questionKeys, questions, selectedAnswers, quizId]);
 
     const scorePercentage = (score / totalPossibleScore) * 100;
     const resultTier = useMemo(() => {
