@@ -53,10 +53,10 @@ export default function Page() {
             }
         };
 
-        if (category && level && title && content && creerQuiz) {
+        if (category && level && title && creerQuiz) {
             createQuiz(category, level, title, content);
             setCreerQuiz(false);
-        } else if (!category && creerQuiz || !level && creerQuiz  || !title && creerQuiz) {
+        } else if (creerQuiz && (!category || !level )) {
             addToast("Veuillez remplir tous les champs avant de créer le quiz.", "error");
         }
     }, [category, level, title, content, creerQuiz, addToast, user?._id]);

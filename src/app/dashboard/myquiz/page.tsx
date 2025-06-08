@@ -5,7 +5,7 @@ import QButton from "@/components/Utilities/QButton";
 import QInput from "@/components/Utilities/QInput";
 import { useToast } from "@/provider/ToastProvider";
 import { useUser } from "@/provider/UserProvider";
-import { Edit, PlusCircle, Search, Trash2 } from "lucide-react";
+import { Edit, PlusCircle, Save, Search, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 
@@ -30,13 +30,13 @@ const MyQuiz: FC = () => {
     const [quiz, setQuiz] = useState<Quiz[]>([]);
     const [search, setSearch] = useState("");
     const [deleteQuizBtn, setDeleteQuizBtn] = useState<boolean>(false);
+    const [saveQuizBtn, setSaveQuizBtn] = useState<boolean>(false);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedQuiz, setSelectedQuiz] = useState<Quiz | null>();
 
     if (!isAuthenticated || !user) {
         router.push("/user/signin");
     }
-
 
     useEffect(() => {
         if (isLoadingUser) return;
@@ -63,7 +63,7 @@ const MyQuiz: FC = () => {
         }
 
         fetchData();
-    }, [user, deleteQuizBtn, isLoadingUser]);
+    }, [user, deleteQuizBtn, isLoadingUser, saveQuizBtn]);
 
     async function deleteQuiz(quizId: string) {
         try {
@@ -90,6 +90,7 @@ const MyQuiz: FC = () => {
 
     async function editQuiz(editedQuiz: EditedQuiz) {
         if (!selectedQuiz) return;
+        console.log("editedQuiz", editedQuiz);
 
         const updatedQuiz = { ...selectedQuiz };
 
@@ -155,6 +156,7 @@ const MyQuiz: FC = () => {
             console.error("Erreur lors de la mise à jour du quiz:", error);
             addToast("Erreur lors de la mise à jour du quiz", "error");
         }
+        setSaveQuizBtn(false);
     };
 
     const filteredQuiz = quiz.filter(q =>
@@ -241,6 +243,7 @@ const MyQuiz: FC = () => {
                     editQuiz(editedQuiz);
                     setSelectedQuiz(null);
                     setIsOpen(false);
+                    setSaveQuizBtn(true);
                 }}
                 quiz={selectedQuiz || null}
             />

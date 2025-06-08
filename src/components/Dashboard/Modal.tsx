@@ -36,12 +36,25 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
     const [noEmptyInput, setEmptyInput] = useState<boolean>(false);
     
     const [editedQuiz, setEditedQuiz] = useState<EditedQuiz>({
-        level: null,
-        title: null,
-        content: null,
-        category: null,
+        level: quiz?.level ? quiz.level : null,
+        title: quiz?.title ? quiz.title : null,
+        content: quiz?.content ? {...quiz.content} : null,
+        category: quiz?.category ? quiz.category : null,
     });
 
+    useEffect(() => {
+        if (isOpen && quiz) {
+            setEditedQuiz({
+                level: quiz.level ?? null,
+                title: quiz.title ?? null,
+                content: quiz.content ? { ...quiz.content } : null,
+                category: quiz.category ?? null,
+            });
+        }
+        if (!isOpen) {
+            setEditedQuiz({ level: null, title: null, content: null, category: null });
+        }
+    }, [isOpen, quiz]);
     
     const handleQuestionChange = (questionKey: string, field: string, value: string | number) => {
       setEditedQuiz(prev => {
@@ -165,12 +178,24 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
   
     const removeQuestion = (questionKey: string) => {
         setEditedQuiz(prev => {
-            if (!prev) return prev;
-            const updatedContent = { ...prev.content };
-            delete updatedContent[questionKey];
-            return { ...prev, content: updatedContent };
+            if (
+                prev &&
+                prev.level === null &&
+                prev.title === null &&
+                prev.content === null &&
+                prev.category === null
+            ) {
+                const content = quiz?.content ? { ...quiz.content } : {};
+                delete content[questionKey];
+                return { ...prev, content };
+            } else {
+                const updatedContent = { ...prev.content };
+                delete updatedContent[questionKey];
+
+                return { ...prev, content: updatedContent };
+            }
         });
-        console.log(editedQuiz)
+        setActiveQuestionKey(null);
     };
   
     if (!isOpen) return null;
@@ -266,9 +291,10 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                 {activeTab === 'questions' && (
                     <div className="flex">
                         <div className="w-1/3 pr-4 border-r border-gray-600">
-                            {(editedQuiz?.content && Object.keys(editedQuiz.content).length === Object.keys(quiz?.content ?? {}).length
+                            {(editedQuiz?.content
                                 ? Object.keys(editedQuiz.content)
-                                : Object.keys(quiz?.content ?? {})).map((key) => (
+                                : []
+                            ).map((key) => (
                                 <div onClick={() => setActiveQuestionKey(key)} key={key} className={`p-2 rounded-md cursor-pointer flex flex-row gap-3 ${activeQuestionKey === key ? 'bg-accent bg-opacity-20 border border-accent' : 'hover:bg-gray-700'}`}>
                                     <button
                                         onClick={(e) => {
@@ -278,20 +304,15 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                                         }}
                                         className="text-red-500 hover:text-red-400"
                                     >
-                                        {Object.keys(editedQuiz?.content || quiz?.content || {}).length > 1 ? <Trash size={16} /> : null}
+                                        {Object.keys(editedQuiz?.content || {}).length > 1 ? <Trash size={16} /> : null}
                                     </button>
                                     <div className="flex justify-between items-center">
                                         <span className="text-sm">
-                                            {(editedQuiz?.content && editedQuiz.content[key]?.question
-                                                ? editedQuiz.content[key]?.question?.substring(0, 25)
-                                                : quiz?.content && quiz.content[key]?.question
-                                                    ? quiz.content[key]?.question?.substring(0, 25)
-                                                    : ""
-                                            )}
-                                            {(
-                                                (editedQuiz?.content && editedQuiz.content[key]?.question && editedQuiz.content[key]?.question.length > 25) ||
-                                                (quiz?.content && quiz.content[key]?.question && quiz.content[key]?.question.length > 25)
-                                            ) ? '...' : ''}
+                                            {editedQuiz?.content && editedQuiz.content[key]?.question
+                                                ? editedQuiz.content[key]?.question?.substring(0, 20)
+                                                : ""}
+                                            {editedQuiz?.content && editedQuiz.content[key]?.question && editedQuiz.content[key]?.question.length > 20
+                                                ? '...' : ''}
                                         </span>
                                     </div>
                                 </div>

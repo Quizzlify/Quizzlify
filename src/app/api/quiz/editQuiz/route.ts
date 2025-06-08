@@ -23,6 +23,8 @@ export async function POST(req: Request) {
             { $set: updatedQuiz }
         );
 
+        console.log("result", result);
+
         if (result.matchedCount === 0) {
             throw new Error("Quiz non mis à jour.");
         }
