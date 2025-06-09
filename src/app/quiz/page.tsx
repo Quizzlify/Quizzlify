@@ -61,7 +61,7 @@ export default function Page() {
                         <p className="text-foreground-secondary mt-4">Veuillez essayer une autre combinaison.</p>
                     </div>;
             case "Résultats":
-                return quiz?.content && level !== null ? <Results questions={quiz.content} selectedAnswers={selectedAnswers} category={category} level={level} quizId={quiz._id} /> : null;
+                return quiz?.content && level !== null ? <Results questions={quiz.content} selectedAnswers={selectedAnswers} category={category} level={level} /> : null;
         }
     };
 

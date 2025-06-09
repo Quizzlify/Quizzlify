@@ -98,7 +98,10 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                 setAlertMessage("Le niveau doit être compris entre 1 et 3.");
                 setShowAlert(true);
                 setEmptyInput(true);
-            } else {setShowAlert(false); setEmptyInput(false);}
+            } else {
+                setShowAlert(false);
+                setEmptyInput(false);
+            }
 
             return { ...prev, [field]: field === "level" ? Number(value) : value };
         });
@@ -435,7 +438,10 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                         />
                         <QButton 
                             text="Enregistrer" 
-                            onClick={() => {editedQuiz && onSave(editedQuiz); setEditedQuiz({ level: null, title: null, content: null, category: null })}}
+                            onClick={() => {
+                                if (editedQuiz) onSave(editedQuiz);
+                                setEditedQuiz({ level: null, title: null, content: null, category: null });
+                            }}
                             className="bg-accent hover:bg-accent-hover"
                             disabled={noEmptyInput}
                         />

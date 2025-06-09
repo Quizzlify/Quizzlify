@@ -5,7 +5,7 @@ import QButton from "@/components/Utilities/QButton";
 import QInput from "@/components/Utilities/QInput";
 import { useToast } from "@/provider/ToastProvider";
 import { useUser } from "@/provider/UserProvider";
-import { Edit, PlusCircle, Save, Search, Trash2 } from "lucide-react";
+import { Edit, PlusCircle, Search, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 

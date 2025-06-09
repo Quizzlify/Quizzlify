@@ -8,10 +8,9 @@ interface ResultsProps {
     selectedAnswers: number[];
     category: string;
     level: number;
-    quizId: string;
 }
 
-const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, category, level, quizId }) => {
+const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, category, level }) => {
     const questionKeys = Object.keys(questions).map(Number);
     const [earnedPoints, setEarnedPoints] = useState<number>(0);
     const [currentScore, setCurrentScore] = useState<number | null>(null);
@@ -151,7 +150,7 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, category,
             });
             setUserHistory(user._id, category, new Date(), answers);
         }
-    }, [user, hasSetQuizCompleted, questionKeys, questions, selectedAnswers, quizId]);
+    }, [user, hasSetQuizCompleted, questionKeys, questions, selectedAnswers, category]);
 
     const scorePercentage = (score / totalPossibleScore) * 100;
     const resultTier = useMemo(() => {
