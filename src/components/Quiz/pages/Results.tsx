@@ -6,11 +6,12 @@ import { useToast } from "@/provider/ToastProvider";
 interface ResultsProps {
     questions: Quiz['content'];
     selectedAnswers: number[];
+    category: string;
     level: number;
     quizId: string;
 }
 
-const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level, quizId }) => {
+const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, category, level, quizId }) => {
     const questionKeys = Object.keys(questions).map(Number);
     const [earnedPoints, setEarnedPoints] = useState<number>(0);
     const [currentScore, setCurrentScore] = useState<number | null>(null);
@@ -125,12 +126,12 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level, qu
             }
         }
 
-        async function setUserHistory(id: string, quizId: string, at: Date, answers: Record<string, boolean>) {
+        async function setUserHistory(id: string, category: string, at: Date, answers: Record<string, boolean>) {
             try {
                 const res = await fetch("/api/user/setHistory", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ id, quizId, at, answers })
+                    body: JSON.stringify({ id, category, at, answers })
                 });
                 const response = await res.json();
                 if (!response.success) {
@@ -148,7 +149,7 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, level, qu
             questionKeys.forEach((key, index) => {
                 answers[index] = questions[key].correctAnswers.includes(selectedAnswers[index]);
             });
-            setUserHistory(user._id, quizId, new Date(), answers);
+            setUserHistory(user._id, category, new Date(), answers);
         }
     }, [user, hasSetQuizCompleted, questionKeys, questions, selectedAnswers, quizId]);
 

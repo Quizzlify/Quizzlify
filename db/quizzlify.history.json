@@ -4,7 +4,7 @@
       "$oid": "67b123456d1aeab60ae0402f"
     },
     "userId": "681fc358987826fdb0f468ca",
-    "quizId": "67b123456d1aeab60ae0402f",
+    "category": "Science",
     "at": "2024-03-02T23:00:00.000Z",
     "answers": {
       "0": true,
