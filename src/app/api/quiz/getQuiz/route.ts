@@ -7,10 +7,17 @@ export async function POST(req: Request) {
         const client = await clientPromise;
         const db = client.db("quizzlify");
         const collection = db.collection<Quiz>("quiz");
-        const quizzes = await collection.find({ 
-            category: category,
-            level: level
-          }).toArray();
+
+        let quizzes;
+        if (category && level) {
+            quizzes = await collection.find({ 
+                category: category,
+                level: level,
+                status: "published"
+            }).toArray();
+        } else {
+            quizzes = await collection.find({}).toArray();
+        }
         
         if (!quizzes.length) {
             return NextResponse.json(

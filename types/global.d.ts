@@ -22,6 +22,8 @@ declare global {
       level: number;
       title: string;
       created_at: string;
+      category: string;
+      status: "pending" | "published" | "rejected";
       content: {
         [key: string]: {
           question: string;
@@ -30,6 +32,5 @@ declare global {
           answers: string[];
         };
       };
-      category: string;
     }
 };

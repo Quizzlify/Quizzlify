@@ -141,7 +141,7 @@ const MyQuiz: FC = () => {
             const response = await fetch("/api/quiz/editQuiz", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id: selectedQuiz?._id, updatedQuiz }),
+                body: JSON.stringify({ quizId: selectedQuiz?._id, updatedQuiz }),
             });
 
             const data = await response.json();
@@ -210,7 +210,24 @@ const MyQuiz: FC = () => {
                             className="bg-background-tertiary border-2 border-accent-secondary rounded-xl shadow-md p-5 hover:shadow-lg transition-shadow"
                         >
                             <div className="flex justify-between items-start mb-4">
-                                <h3 className="text-lg font-semibold text-accent">{q.title}</h3>
+                                <h3 className="text-lg font-semibold text-accent flex items-center gap-2">
+                                    {q.title}
+                                    <span
+                                        className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold text-white ${
+                                            q.status === "pending"
+                                                ? "bg-yellow-500"
+                                                : q.status === "published"
+                                                ? "bg-green-400"
+                                                : "bg-red-400"
+                                        }`}
+                                    >
+                                        {q.status === "pending"
+                                            ? "En attente"
+                                            : q.status === "published"
+                                            ? "Validé"
+                                            : "Rejeté"}
+                                    </span>
+                                </h3>
                                 <div className="flex space-x-2">
                                     <button className="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-background-secondary transition-all"
                                         onClick={() => { setSelectedQuiz(q); setIsOpen(true); console.log('aa');}}

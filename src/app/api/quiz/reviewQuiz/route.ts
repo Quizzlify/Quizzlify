@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 
 export async function POST(req: Request) {
     try {
-        const { updatedQuiz, quizId } = await req.json();
+        const { quizId, action } = await req.json();
         const client = await clientPromise;
         const db = client.db("quizzlify");
         const collection = db.collection("quiz");
@@ -20,13 +20,11 @@ export async function POST(req: Request) {
 
         const result = await collection.updateOne(
             { _id: new ObjectId(quizId) },
-            { $set: updatedQuiz }
+            { $set: { status: action } }
         );
 
-        console.log("result", result);
-
         if (result.matchedCount === 0) {
-            throw new Error("Quiz non mis à jour.");
+            throw new Error("Quiz non rejeté.");
         }
 
         return NextResponse.json({ success: true });
