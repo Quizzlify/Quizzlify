@@ -27,7 +27,6 @@ export const Sidebar: FC<SidebarProps> = ({ user, nav }) => {
     const sidebarItems: NavItem[] = [
         { name: 'Tableau de bord', nav: 'dashboard', icon: <Home size={20} />, path: '/dashboard' },
         { name: 'Mes Quiz', nav: 'myquiz', icon: <Book size={20} />, path: '/dashboard/myquiz' },
-        { name: 'Statistiques', nav: 'stats', icon: <BarChart size={20} />, path: '/dashboard/stats' },
         { name: 'Paramètres', nav: 'settings', icon: <Settings size={20} />, path: '/dashboard/settings' },
     ]
 
