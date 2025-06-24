@@ -1,4 +1,4 @@
-import { BarChart, Book, Home, LogOut, Settings } from "lucide-react";
+import { Book, Home, LogOut, Settings, ShieldEllipsis } from "lucide-react";
 import { FC, useEffect, useRef, useState } from "react";
 import Link from 'next/link';
 import { getGravatarUserIcon, useHandleLogout } from "../Utilities/Utils";
@@ -142,6 +142,25 @@ export const Sidebar: FC<SidebarProps> = ({ user, nav }) => {
                             )}
                         </Link>
                     ))}
+                    {user?.role === "admin" && (
+                        <Link
+                            href="/dashboard/admin"
+                            className={`relative flex items-center will-change-transform ${collapsed ? 'justify-center' : 'justify-start'} px-4 py-2.5 rounded-lg transition-all group
+                                ${nav === 'admin'
+                                    ? 'bg-accent/10 text-accent font-medium border border-white/10'
+                                    : 'text-foreground-secondary hover:bg-background hover:text-foreground border border-transparent'
+                                }`}
+                            onMouseEnter={() => handleMouseEnter(sidebarItems.length)}
+                            onMouseLeave={handleMouseLeave}
+                        >
+                            <span className={`${!collapsed && 'mr-3'} flex-shrink-0`}>
+                                <ShieldEllipsis size={20} />
+                            </span>
+                            {!collapsed && (
+                                <span className="truncate">Panel Admin</span>
+                            )}
+                        </Link>
+                    )}
                 </nav>
 
                 <div className={`absolute bottom-4 w-full px-3 ${collapsed ? 'flex justify-center' : ''}`}>

@@ -95,6 +95,8 @@ const DashboardPage = () => {
 
     if (isLoading) return <Loading />;
 
+    if (!user) return <div>Loading...</div>;
+
     return (
         <div className="flex-1 overflow-auto bg-background p-8">
             <div className="flex justify-between items-center mb-8">
