@@ -1,7 +1,7 @@
 "use client";
 
 import { useUser } from "@/provider/UserProvider";
-import { BarChart3, BookOpen, LogOut, Settings, UserIcon, Menu, X, PlusCircle, Lightbulb, TrophyIcon, ChevronDown } from "lucide-react";
+import { BarChart3, BookOpen, LogOut, Settings, UserIcon, Menu, X, PlusCircle, Lightbulb, TrophyIcon, ChevronDown, ShieldEllipsis } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import { getGravatarUserIcon, useHandleLogout } from "./Utils";
 
 type NavbarProp = {
-    currentPage: 'leaderboard' | 'quiz' | 'create-quiz' | 'user' | 'home';
+    currentPage: 'leaderboard' | 'quiz' | 'create-quiz' | 'user' | 'home' | 'admin';
 }
 
 const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
@@ -130,6 +130,19 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
                                 <ActiveIndicator isActive={currentPage === "leaderboard"} />
                             </button>
 
+                            {user?.role === "admin" && (
+                                <button
+                                    className={navLinkClass("admin")}
+                                    onClick={() => goTo('/admin')}
+                                >
+                                    <div className="flex items-center space-x-2">
+                                        <ShieldEllipsis size={18} className="text-accent" />
+                                        <span>Admin</span>
+                                    </div>
+                                    <ActiveIndicator isActive={currentPage === "admin"} />
+                                </button>
+                            )}
+
                             {isAuthenticated && user ? (
                                 <li className="relative list-none" ref={dropdownRef}>
                                     <button
@@ -218,7 +231,7 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
                     <div className="flex flex-col h-full pt-20 pb-6 px-6">
                         <div className="flex flex-col space-y-4">
                             <button
-                                className={`p-4 rounded-lg ${currentPage === "create-quiz" ? "bg-accent-secondary text-accent" : "text-foreground"}`}
+                                className={`p-2 rounded-lg ${currentPage === "create-quiz" ? "bg-accent-secondary text-accent" : "text-foreground"}`}
                                 onClick={() => isAuthenticated ? goTo('/createQuiz/default') : goTo('/createQuiz/noAccount')}
                             >
                                 <div className="flex items-center space-x-3">
@@ -228,7 +241,7 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
                             </button>
 
                             <button
-                                className={`p-4 rounded-lg ${currentPage === "quiz" ? "bg-accent-secondary text-accent" : "text-foreground"}`}
+                                className={`p-2 rounded-lg ${currentPage === "quiz" ? "bg-accent-secondary text-accent" : "text-foreground"}`}
                                 onClick={() => goTo('/quiz')}
                             >
                                 <div className="flex items-center space-x-3">
@@ -238,7 +251,7 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
                             </button>
 
                             <button
-                                className={`p-4 rounded-lg ${currentPage === "leaderboard" ? "bg-accent-secondary text-accent" : "text-foreground"}`}
+                                className={`p-2 rounded-lg ${currentPage === "leaderboard" ? "bg-accent-secondary text-accent" : "text-foreground"}`}
                                 onClick={() => goTo('/leaderboard')}
                             >
                                 <div className="flex items-center space-x-3">
@@ -246,6 +259,18 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
                                     <span className="text-lg">Classement</span>
                                 </div>
                             </button>
+
+                            {user?.role === "admin" && (
+                                <button
+                                    className={`p-2 rounded-lg ${currentPage === "admin" ? "bg-accent-secondary text-accent" : "text-foreground"}`}
+                                    onClick={() => goTo('/admin')}
+                                >
+                                    <div className="flex items-center space-x-3">
+                                        <i className="fa-solid fa-shield-halved text-xl"></i>
+                                        <span className="text-lg">Admin</span>
+                                    </div>
+                                </button>
+                            )}
                         </div>
 
                         <div className="mt-auto border-t border-border pt-4">
@@ -254,6 +279,7 @@ const NavBar: React.FC<NavbarProp> = ({ currentPage }) => {
                                     <div className="flex items-center p-4 border-b border-border">
                                         <Image
                                             width={40}
+                                            height={40}
                                             src={gravatar || "https://www.gravatar.com/avatar/0?d=identicon"}
                                             alt="User Avatar"
                                             className="rounded-full border border-border mr-3"

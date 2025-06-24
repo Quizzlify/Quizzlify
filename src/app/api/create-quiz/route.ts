@@ -8,7 +8,7 @@ export async function POST(req: Request) {
 
         const client = await clientPromise;
         const db = client.db("quizzlify");
-        const collection = db.collection("quiz");
+        const collection = db.collection("pendingQuiz");
 
         const quizCount = await collection.countDocuments();
         await collection.insertOne({ index: quizCount === 0 ? 0 : quizCount+1, author, title, created_at, content, category, level});

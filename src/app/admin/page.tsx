@@ -40,7 +40,7 @@ const AdminDashboardPage: FC = () => {
     const stats = [
         { title: 'Utilisateurs', value: userCount, icon: <Users className="text-accent w-5 h-5" /> },
         { title: 'Total de points', value: totalPoints, icon: <Book className="text-accent w-5 h-5" /> },
-        { title: 'Quiz en attente', value: pendingQuiz, icon: <AlertTriangle className="text-warning w-5 h-5" /> },
+        // { title: 'Quiz en attente', value: pendingQuiz, icon: <AlertTriangle className="text-warning w-5 h-5" /> },
     ];
 
     if (user?.role !== "admin") { return <div className="p-8">Accès refusé</div>; }
