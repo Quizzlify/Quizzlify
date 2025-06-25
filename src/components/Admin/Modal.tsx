@@ -218,12 +218,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, quiz, onClose, onReject, onAccept
                     <div className="flex flex-1 justify-end gap-2">
                         <QButton 
                             text="Rejeter" 
-                            onClick={() => {onClose(), onReject(quiz?._id ?? null)}}
+                            onClick={() => { onClose(); onReject(quiz?._id ?? null); }}
                             className="bg-accent hover:bg-accent-hover"
                         />
                         <QButton 
                             text="Accepter" 
-                            onClick={() => {onClose(), onAccept(quiz?._id ?? null)}}
+                            onClick={() => { onClose(); onAccept(quiz?._id ?? null); }}
                             className="bg-accent hover:bg-accent-hover"
                         />
                     </div>

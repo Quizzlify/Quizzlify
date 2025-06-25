@@ -33,9 +33,7 @@ export default function Page() {
 
     useEffect(() => {
         async function createQuiz(category: string, level: number, title: string, content: Quiz['content']) {
-            console.log(content)
             try {
-                console.log(content)
                 const res = await fetch("/api/create-quiz", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -44,7 +42,7 @@ export default function Page() {
     
                 const response = await res.json();
                 if (response.success) {
-                    addToast("Le quiz a été crée avec succès.", "success");
+                    addToast("Le quiz a été crée avec succès. Il sera accepté ou non durant la prochaine semaine.", "success");
                 } else {
                     addToast(`Une erreur est survenue: ${response.error}`, "error");
                 }

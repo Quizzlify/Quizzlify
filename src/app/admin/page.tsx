@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
-import { Users, Book, AlertTriangle, CircleAlert } from "lucide-react";
+import { Users, Book, AlertTriangle } from "lucide-react";
 import { useUser } from "@/provider/UserProvider";
 import QButton from "@/components/Utilities/QButton";
 import Modal from "@/components/Admin/Modal";

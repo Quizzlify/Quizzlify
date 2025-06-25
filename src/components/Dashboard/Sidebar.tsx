@@ -1,4 +1,4 @@
-import { Book, Home, LogOut, Settings, ShieldEllipsis } from "lucide-react";
+import { Book, Home, LogOut, Settings } from "lucide-react";
 import { FC, useEffect, useRef, useState } from "react";
 import Link from 'next/link';
 import { getGravatarUserIcon, useHandleLogout } from "../Utilities/Utils";
