@@ -9,6 +9,7 @@ import Questions from "@/components/CreateQuiz/pages/Questions";
 import Details from "@/components/CreateQuiz/pages/Details";
 import { useToast } from "@/provider/ToastProvider";
 import { useUser } from "@/provider/UserProvider";
+import { Info } from "lucide-react";
 
 
 export default function Page() {
@@ -22,6 +23,7 @@ export default function Page() {
     const [category, setCategory] = useState<string>("");
     const [level, setLevel] = useState<number>(1);
     const [title, setTitle] = useState<string>("");
+    const [quizId, setQuizId] = useState<string>("");
 
     // Quiz content
     const [creerQuiz, setCreerQuiz] = useState<boolean>(false); // indicateur si l'utilisateur a cliqué sur le bouton "Créer le quiz"
@@ -43,6 +45,7 @@ export default function Page() {
                 const response = await res.json();
                 if (response.success) {
                     addToast("Le quiz a été crée avec succès. Il sera accepté ou non durant la prochaine semaine.", "success");
+                    setQuizId(response.quizId);
                 } else {
                     addToast(`Une erreur est survenue: ${response.error}`, "error");
                 }
@@ -95,6 +98,23 @@ export default function Page() {
                     />
                     {renderStepContent()}
                 </div>
+                {quizId && (
+                    <div className="flex items-start gap-2 mt-3 bg-yellow-500/10 backdrop-blur-lg border border-yellow-500 text-yellow-500 rounded-lg px-4 py-2 animate-slide-up">
+                        <Info size={18} />
+                        <span className="text-sm">
+                            Lorsque votre quiz sera accepté, vous pourrez le partager grâce à cette adresse <br />
+                            <a
+                                href={`${window.location.origin}/quiz/${quizId}`}
+                                target="_blank"
+                                className="ml-1 font-mono text-accent"
+                            >
+                                {typeof window !== "undefined" && quizId
+                                    ? `${window.location.origin}/quiz/${quizId}`
+                                    : ""}
+                            </a>
+                        </span>
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -90,7 +90,6 @@ const MyQuiz: FC = () => {
 
     async function editQuiz(editedQuiz: EditedQuiz) {
         if (!selectedQuiz) return;
-        console.log("editedQuiz", editedQuiz);
 
         const updatedQuiz = { ...selectedQuiz };
 
@@ -129,13 +128,14 @@ const MyQuiz: FC = () => {
                         validEdits[property] = value;
                     }
                 }
-
                 updatedQuiz.content[key] = {
                     ...existingQuestion,
                     ...validEdits
                 };
             }
         }
+
+        updatedQuiz.status = "pending";
         
         try {
             const response = await fetch("/api/quiz/editQuiz", {

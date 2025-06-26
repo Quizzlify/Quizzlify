@@ -42,7 +42,7 @@ const DashboardPage = () => {
                     fetch("api/user/getHistory", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ userId: user?._id, limit: 5 }),
+                        body: JSON.stringify({ userId: user?._id, limit: 4 }),
                     }),
                 ]);
 
@@ -122,22 +122,25 @@ const DashboardPage = () => {
             <div className="bg-background-tertiary border border-white/10 p-6 rounded-2xl shadow-md">
                 <h3 className="text-xl font-semibold text-foreground mb-6">Activité Récente</h3>
                 <div className="space-y-4">
-                    {history?.map((entry, i) => (
-                        <div key={i} className="flex items-center justify-between py-4 border-b border-white/10 last:border-none">
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center">
-                                    <Book className="text-accent" size={24} />
+                    {history
+                        ?.slice()
+                        .sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime())
+                        .map((entry, i) => (
+                            <div key={i} className="flex items-center justify-between py-4 border-b border-white/10 last:border-none">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center">
+                                        <Book className="text-accent" size={24} />
+                                    </div>
+                                    <div>
+                                        <p className="text-base text-foreground font-medium">Quiz {entry.category} Complété</p>
+                                        <p className="text-sm text-foreground-secondary">
+                                            {getTimeAgo(new Date(entry.at))}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="text-base text-foreground font-medium">Quiz {entry.category} Complété</p>
-                                    <p className="text-sm text-foreground-secondary">
-                                        {getTimeAgo(new Date(entry.at))}
-                                    </p>
-                                </div>
+                                <span className="text-sm font-semibold text-green-400">{getPercentage(entry.answers)}% de réussite</span>
                             </div>
-                            <span className="text-sm font-semibold text-green-400">{getPercentage(entry.answers)}% de réussite</span>
-                        </div>
-                    ))}
+                        ))}
                 </div>
             </div>
         </div>

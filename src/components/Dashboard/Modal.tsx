@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react";
-import { X, Trash, CircleAlert } from "lucide-react";
+import { X, Trash, CircleAlert, Info } from "lucide-react";
 import QButton from "@/components/Utilities/QButton";
 import QInput from "@/components/Utilities/QInput";
 import { Switch } from "@heroui/switch";
@@ -427,27 +427,50 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, quiz, onSave }) => {
                             <span className="text-sm">{alertMessage}</span>
                         </div>
                     )}
-                    <div className="flex flex-1 justify-end gap-2">
-                        <QButton 
-                            text="Annuler" 
-                            onClick={() => {
-                                onClose();
-                                setEditedQuiz({ level: null, title: null, content: null, category: null });
-                            }} 
-                            className="bg-gray-600 hover:bg-gray-700"
-                        />
-                        <QButton 
-                            text="Enregistrer" 
-                            onClick={() => {
-                                if (editedQuiz) onSave(editedQuiz);
-                                setEditedQuiz({ level: null, title: null, content: null, category: null });
-                            }}
-                            className="bg-accent hover:bg-accent-hover"
-                            disabled={noEmptyInput}
-                        />
-                    </div>
+                    <div className="flex flex-col gap-2 flex flex-1 justify-end">
+                        <div className="flex flex-1 justify-end gap-2">
+                            <QButton 
+                                text="Annuler" 
+                                onClick={() => {
+                                    onClose();
+                                    setEditedQuiz({ level: null, title: null, content: null, category: null });
+                                }} 
+                                className="bg-gray-600 hover:bg-gray-700"
+                            />
 
+                            <QButton 
+                                text="Enregistrer"
+                                onClick={() => {
+                                    if (editedQuiz) onSave(editedQuiz);
+                                    setEditedQuiz({ level: null, title: null, content: null, category: null });
+                                }}
+                                className="bg-accent hover:bg-accent-hover"
+                                disabled={noEmptyInput}
+                            />
+                        </div>
+                        <span className="text-xs text-gray-400 flex flex-1 justify-end">
+                            Toute modification soumettra à nouveau le quiz à une vérification.
+                        </span>
+                    </div>
                 </div>
+                
+                { quiz?.status === "published" && (
+                    <div className="flex items-start gap-2 mt-3 bg-yellow-500/10 backdrop-blur-lg border border-yellow-500 text-yellow-500 rounded-lg px-4 py-2 animate-slide-up">
+                        <Info size={18} />
+                        <span className="text-sm">
+                            Partagez votre quiz avec cette adresse: <br />
+                            <a
+                                href={`${window.location.origin}/quiz/${quiz?._id}`}
+                                target="_blank"
+                                className="ml-1 font-mono text-accent"
+                            >
+                                {typeof window !== "undefined" && quiz?._id
+                                    ? `${window.location.origin}/quiz/${quiz._id}`
+                                    : ""}
+                            </a>
+                        </span>
+                    </div>
+                )}
             </div>
         </div>
     )

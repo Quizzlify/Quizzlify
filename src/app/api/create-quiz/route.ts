@@ -11,10 +11,11 @@ export async function POST(req: Request) {
         const collection = db.collection("quiz");
 
         const quizCount = await collection.countDocuments();
-        await collection.insertOne({ index: quizCount === 0 ? 0 : quizCount+1, author, title, created_at, content, category, level, status: "pending" });
 
+        const result = await collection.insertOne({ index: quizCount === 0 ? 0 : quizCount+1, author, title, created_at, content, category, level, status: "pending" });
+        
         return NextResponse.json(
-            { success: true, message: "Quiz ajouté." },
+            { success: true, message: "Quiz ajouté.", quizId: result.insertedId },
             { status: 201 }
         );
 

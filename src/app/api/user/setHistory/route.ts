@@ -15,7 +15,20 @@ export async function POST(req: Request) {
             at: at,
             answers: answers
         });
-        
+
+        const count = await collection.countDocuments({ userId: id });
+        if (count > 4) {
+            const oldest = await collection
+                .find({ userId: id })
+                .sort({ at: 1 })
+                .limit(count - 4)
+                .toArray();
+            const oldestIds = oldest.map(doc => doc._id);
+            if (oldestIds.length > 0) {
+                await collection.deleteMany({ _id: { $in: oldestIds } });
+            }
+        }
+
         return NextResponse.json(
             { success: true, message: "Historique mis à jour avec succès." },
             { status: 200 }

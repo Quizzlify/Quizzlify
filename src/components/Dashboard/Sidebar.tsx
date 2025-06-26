@@ -68,7 +68,7 @@ export const Sidebar: FC<SidebarProps> = ({ user, nav }) => {
     }, [user]);
 
     return (
-        <div className="relative h-screen">
+        <div className="relative h-screen ">
             <aside className={`relative h-full bg-background-tertiary border-r border-white/10 transition-all duration-300 ${collapsed ? 'w-16' : 'w-64'}`}>
                 <div className="h-16 flex items-center justify-between border-b border-white/10 px-3">
                     {!collapsed && (
