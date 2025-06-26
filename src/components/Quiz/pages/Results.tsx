@@ -27,10 +27,11 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, category,
 
         const calculatedScore = level === 3
             ? questionKeys.reduce((total, key, index) => {
+                const points = questions[key]?.points || 0;
                 return questions[key].correctAnswers.includes(selectedAnswers[index])
-                    ? total + (questions[key]?.points || 0) 
-                    : total;
-            }, 0)
+                    ? total + points
+                    : total - points;
+                }, 0)
             : correctAnswersCount;
 
         const totalScore = level === 3
@@ -68,13 +69,15 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, category,
         }
 
         async function updateUserScore() {
-            const points = questionKeys.reduce((total, key, index) => {
-                return questions[key].correctAnswers.includes(selectedAnswers[index])
-                    ? total + (questions[key]?.points || 0) 
-                    : total;
-            }, 0);
+            const points =
+                questionKeys.reduce((total, key, index) => {
+                    const points = questions[key]?.points || 0;
+                    return questions[key].correctAnswers.includes(selectedAnswers[index])
+                        ? total + points
+                        : total - points;
+                    }, 0)
 
-            if (points === 0 || currentScore === null) return;
+            if (currentScore === null) return;
 
             try {
                 const res = await fetch("/api/user/setScore", {
@@ -88,8 +91,13 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, category,
                 const response = await res.json();
 
                 if (response.success) {
-                    setEarnedPoints(points);
-                    addToast(`Vous avez gagné ${points} points !`, "success");
+                    if (points > 0) {
+                        addToast(`Vous avez gagné ${points} points !`, "success");
+                    } else if (points < 0) {
+                        addToast(`Vous avez perdu ${Math.abs(points)} points.`, "error");
+                    } else {
+                        addToast("Aucun point gagné ou perdu.", "info");
+                    }
                 } else {
                     console.error("Erreur lors de la mise à jour du score: ", response.error);
                 }
@@ -241,14 +249,6 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, category,
                             );
                         })}
                     </div>
-
-                    {level === 3 && earnedPoints > 0 && (
-                        <div className="mt-4 text-center text-foreground-secondary">
-                            <p className="text-sm">
-                                Vous avez gagné <span className="font-bold text-accent">{earnedPoints} points</span> supplémentaires !
-                            </p>
-                        </div>
-                    )}
                 </div>
             </div>
         </div>
