@@ -41,11 +41,7 @@ export default function Page() {
     }
 
     if (!quiz) {
-        return (
-            <div className="min-h-screen flex items-center justify-center">
-                <span className="text-2xl">Chargement...</span>
-            </div>
-        );
+        return null
     }
 
     return (
@@ -59,23 +55,32 @@ export default function Page() {
                         onStepChange={setActiveStep}
                     />
                     <div className="mt-8">
-                        {activeStep === "Questions" && (
-                            <Questions
-                                questions={quiz.content}
-                                nextStep={setActiveStep}
-                                selectedAnswers={selectedAnswers}
-                                setSelectedAnswers={setSelectedAnswers}
-                                level={quiz.level}
-                            />
-                        )}
-                        {activeStep === "Résultats" && (
-                            <Results
-                                questions={quiz.content}
-                                selectedAnswers={selectedAnswers}
-                                category={quiz.category}
-                                level={quiz.level}
-                            />
-                        )}
+                        {(() => {
+                            switch (activeStep) {
+                                case "Questions":
+                                    return (
+                                        <Questions
+                                            questions={quiz.content}
+                                            nextStep={setActiveStep}
+                                            selectedAnswers={selectedAnswers}
+                                            setSelectedAnswers={setSelectedAnswers}
+                                            level={quiz.level}
+                                        />
+                                    );
+                                case "Résultats":
+                                    return (
+                                        <Results
+                                            questions={quiz.content}
+                                            selectedAnswers={selectedAnswers}
+                                            category={quiz.category}
+                                            level={quiz.level}
+                                            quizId={quiz._id}
+                                        />
+                                    );
+                                default:
+                                    return null;
+                            }
+                        })()}
                     </div>
                 </div>
             </div>

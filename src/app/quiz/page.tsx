@@ -5,15 +5,12 @@ import NavBar from "@/components/Utilities/NavBar";
 import Breadcrumb from "@/components/Quiz/Breadcrumb";
 import Categories from "@/components/Quiz/pages/Categories";
 import Levels from "@/components/Quiz/pages/Levels";
-import Results from "@/components/Quiz/pages/Results";
-import Questions from "@/components/Quiz/pages/Questions";
 
 export default function Page() {
     const [activeStep, setActiveStep] = useState<string>("Catégorie");
     const [category, setCategory] = useState<string>('');
     const [level, setLevel] = useState<number | null>(null);
     const [quiz, setQuiz] = useState<Quiz | null>(null);
-    const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
     const [isVisible, setIsVisible] = useState(false);
 
     async function getQuiz(category: string, level: number) {
@@ -55,13 +52,14 @@ export default function Page() {
             case "Niveau":
                 return <Levels nextStep={setActiveStep} setLevel={setLevel} />;
             case "Questions":
-                return quiz?.content ? <Questions questions={quiz.content} nextStep={setActiveStep} selectedAnswers={selectedAnswers} setSelectedAnswers={setSelectedAnswers} level={level} /> :
-                    <div className="text-center mt-10 animate-slide-up">
-                        <h1 className="text-2xl font-bold text-foreground">Aucun quiz ne correspond à la catégorie ou au niveau choisi.</h1>
-                        <p className="text-foreground-secondary mt-4">Veuillez essayer une autre combinaison.</p>
-                    </div>;
-            case "Résultats":
-                return quiz?.content && level !== null ? <Results questions={quiz.content} selectedAnswers={selectedAnswers} category={category} level={level} /> : null;
+                if (!quiz) {
+                    return null
+                }
+                if (quiz && typeof window !== "undefined") {
+                    window.location.href = `/quiz/${quiz._id}`;
+                    return null;
+                }
+                return null;
         }
     };
 

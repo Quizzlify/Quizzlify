@@ -8,11 +8,11 @@ interface ResultsProps {
     selectedAnswers: number[];
     category: string;
     level: number;
+    quizId: string;
 }
 
-const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, category, level }) => {
+const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, category, level, quizId }) => {
     const questionKeys = Object.keys(questions).map(Number);
-    const [earnedPoints, setEarnedPoints] = useState<number>(0);
     const [currentScore, setCurrentScore] = useState<number | null>(null);
     const hasSetQuizCompleted = useRef(false);
     const { user } = useUser();
@@ -250,6 +250,10 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, category,
                         })}
                     </div>
                 </div>
+                <p className="mt-4 text-foreground-secondary">Vous avez trouvé ce quiz amusant, et vous voulez le partagez à vos amis?</p>
+                <p className="text-foreground-secondary">Vous pouvez leur envoyer ce lien !&nbsp;
+                    <a href={`/quiz/${quizId}`} target="_blank" className="text-accent">{`${window.location.origin}/quiz/${quizId}`}</a>
+                </p>
             </div>
         </div>
     );
