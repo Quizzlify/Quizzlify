@@ -80,7 +80,7 @@ export default function Page() {
         }
 
         fetchData();
-    }, [id, user.user?._id]);
+    }, [id, user.user?._id, quiz?.level]);
 
     if (loading) {
         return <Loading />

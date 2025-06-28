@@ -161,7 +161,7 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, category,
                 setUserHistory(user._id, category, new Date(), answers);
             }
         }
-    }, [user, hasSetQuizCompleted, questionKeys, questions, selectedAnswers, category, quizId]);
+    }, [user, hasSetQuizCompleted, questionKeys, questions, selectedAnswers, category, quizId, level]);
 
     const scorePercentage = (score / totalPossibleScore) * 100;
     const resultTier = useMemo(() => {

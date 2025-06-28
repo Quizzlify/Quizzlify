@@ -87,7 +87,7 @@ export default function Page() {
         }
         
         if (level === 1 || level === 2) {
-            findQuiz
+            findQuiz();
         } else {
             findUniqueQuiz();
         }
