@@ -6,42 +6,96 @@ import NavBar from "@/components/Utilities/NavBar";
 import Breadcrumb from "@/components/Quiz/Breadcrumb";
 import Questions from "@/components/Quiz/pages/Questions";
 import Results from "@/components/Quiz/pages/Results";
+import { useUser } from "@/provider/UserProvider";
+import Loading from "@/components/Utilities/Loading";
 
 export default function Page() {
     const { id } = useParams<{ id: string }>();
-    const [quiz, setQuiz] = useState<Quiz | null>(null);
     const [activeStep, setActiveStep] = useState<string>("Questions");
     const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
-    const [error, setError] = useState<string | null>(null);
 
+    const [error, setError] = useState<string | null>(null);
+    const [quiz, setQuiz] = useState<Quiz | null>(null);
+    const [valid, setValid] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
+
+    const user = useUser();
 
     useEffect(() => {
-        async function fetchQuiz() {
-            const res = await fetch("/api/quiz/getQuizById", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id }),
-            });
-            const data = await res.json();
-            if (data.success) {
-                setQuiz(data.quiz)
-            } else {
-                setError(data.error || "Une erreur est survenue lors de la récupération du quiz.");
-            };
+        async function fetchRecentQuizIds() {
+            try {
+                const res = await fetch("/api/user/getHistory", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ userId: user.user?._id, limit: 3 })
+                });
+                const response = await res.json();
+                if (response.success) {
+                    return response.data.map((q: History) => q.quizId?.toString?.() ?? q.quizId);
+                }
+            } catch (error) {
+                console.log("Erreur lors de la récupération de l'historique :", error);
+            }
+            return [];
         }
-        if (id) fetchQuiz();
-    }, [id]);
+
+        async function getQuizById() {
+            try {
+                const res = await fetch("/api/quiz/getQuizById", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ id }),
+                });
+                const data = await res.json();
+                if (data.success) {
+                    setQuiz(data.quiz);
+                    setError(null);
+                } else {
+                    setQuiz(null);
+                    setError(data.error || "Une erreur est survenue lors de la récupération du quiz.");
+                }
+            } catch (error) {
+                setQuiz(null);
+                setError(error instanceof Error ? error.message : String(error));
+            }
+        }
+
+        async function fetchData() {
+            const [recentQuizIds] = await Promise.all([
+                fetchRecentQuizIds(),
+                getQuizById()
+            ]);
+
+            if (recentQuizIds && recentQuizIds.includes(id)) {
+                setValid(false);
+            } else {
+                setValid(true);
+            }
+
+            setLoading(false);
+        }
+
+        fetchData();
+    }, [id, user.user?._id]);
+
+    if (loading) {
+        return <Loading />
+    }
 
     if (error) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <span className="text-2xl">{error}</span>
+                <span className="text-2xl">{error || "Quiz introuvable."}</span>
             </div>
         );
     }
 
-    if (!quiz) {
-        return null
+    if (!valid || !quiz) {
+        return (
+            <div className="h-screen w-screen flex justify-center items-center">
+                <p className="text-2xl">Ce quiz fait partie de vos 3 derniers quiz joués.</p>
+            </div>
+        )
     }
 
     return (

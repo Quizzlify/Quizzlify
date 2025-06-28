@@ -138,7 +138,7 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, category,
                 const res = await fetch("/api/user/setHistory", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ id, category, at, answers })
+                    body: JSON.stringify({ id, quizId, category, at, answers })
                 });
                 const response = await res.json();
                 if (!response.success) {
@@ -158,7 +158,7 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, category,
             });
             setUserHistory(user._id, category, new Date(), answers);
         }
-    }, [user, hasSetQuizCompleted, questionKeys, questions, selectedAnswers, category]);
+    }, [user, hasSetQuizCompleted, questionKeys, questions, selectedAnswers, category, quizId]);
 
     const scorePercentage = (score / totalPossibleScore) * 100;
     const resultTier = useMemo(() => {

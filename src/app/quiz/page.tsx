@@ -5,41 +5,84 @@ import NavBar from "@/components/Utilities/NavBar";
 import Breadcrumb from "@/components/Quiz/Breadcrumb";
 import Categories from "@/components/Quiz/pages/Categories";
 import Levels from "@/components/Quiz/pages/Levels";
+import { useUser } from "@/provider/UserProvider";
 
 export default function Page() {
     const [activeStep, setActiveStep] = useState<string>("Catégorie");
     const [category, setCategory] = useState<string>('');
     const [level, setLevel] = useState<number | null>(null);
-    const [quiz, setQuiz] = useState<Quiz | null>(null);
     const [isVisible, setIsVisible] = useState(false);
 
-    async function getQuiz(category: string, level: number) {
-        try {
-            const res = await fetch("/api/quiz/getQuiz", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ category, level })
-            });
+    const [playableQuiz, setPlayableQuiz] = useState<Quiz | null>(null)
 
-            const response = await res.json();
-            if (response.success) {
-                const randomIndex = Math.floor(Math.random() * response.data.length);
-                const randomQuiz = response.data[randomIndex];
-                setQuiz(randomQuiz);
-            } else {
-                console.log("Une erreur est survenue: ", response.error);
-            }
-        } catch (error) {
-            console.log("Une erreur est survenue avec la connexion à la DB: ", error);
-        }
-    }
+    const user = useUser();
 
     useEffect(() => {
-        if (category && level) {
-            setQuiz(null);
-            getQuiz(category, level);
+        async function fetchRecentQuizIds() {
+            try {
+                const res = await fetch("/api/user/getHistory", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ userId: user.user?._id, limit: 3 })
+                });
+                const response = await res.json();
+                if (response.success) {
+                    return response.data.map((q: History) => q.quizId?.toString?.() ?? q.quizId);
+                }
+            } catch (error) {
+                console.log("Erreur lors de la récupération de l'historique :", error);
+            }
+            return [];
         }
-    }, [category, level]);
+
+        async function getQuiz() {
+            try {
+                const res = await fetch("/api/quiz/getQuiz", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ category, level })
+                });
+                const response = await res.json();
+                if (response.success && response.data.length > 0) {
+                    return response.data;
+                } else {
+                    console.log("Une erreur est survenue: ", response.error);
+                }
+            } catch (error) {
+                console.log("Une erreur est survenue avec la connexion à la DB: ", error);
+            }
+            return [];
+        }
+
+        async function findUniqueQuiz() {
+            if (!category || !level) return;
+
+            const recentIds = await fetchRecentQuizIds();
+            const quizzes = await getQuiz();
+            if (!quizzes.length) {
+                setPlayableQuiz(null);
+                return;
+            }
+
+            let uniqueQuiz: Quiz | null = null;
+            let tries = 0;
+            while (tries < 3 && quizzes.length > 0) {
+                const randomIndex = Math.floor(Math.random() * quizzes.length);
+                const candidate = quizzes[randomIndex];
+                if (!recentIds.includes(candidate._id)) {
+                    uniqueQuiz = candidate;
+                    break;
+                } else {
+                    quizzes.splice(randomIndex, 1);
+                }
+                tries++;
+            }
+            setPlayableQuiz(uniqueQuiz);
+        }
+
+        findUniqueQuiz();
+    }, [category, level, user.user?._id]);
+
 
     useEffect(() => {
         setIsVisible(true);
@@ -52,11 +95,11 @@ export default function Page() {
             case "Niveau":
                 return <Levels nextStep={setActiveStep} setLevel={setLevel} />;
             case "Questions":
-                if (!quiz) {
-                    return null
+                if (playableQuiz === null) {
+                    <p className="text-2xl">Impossible de trouver un quiz disponible pour cette catégorie et ce niveau. Veuillez réessayer ou choisir d&apos;autres options.</p>
                 }
-                if (quiz && typeof window !== "undefined") {
-                    window.location.href = `/quiz/${quiz._id}`;
+                if (playableQuiz && typeof window !== "undefined") {
+                    window.location.href = `/quiz/${playableQuiz._id}`;
                     return null;
                 }
                 return null;

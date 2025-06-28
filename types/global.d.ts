@@ -15,8 +15,21 @@ declare global {
         updated_at: Date;
     };
 
+    interface History {
+      _id: ObjectId;
+      userId: string;
+      quizId: string;
+      category: string;
+      at: Date;
+      answers: {
+        [key: number]: {
+            isCorrect: boolean;
+        }
+      }
+    }
+
     interface Quiz {
-      _id: string;
+      _id: ObjectId;
       index: number;
       author: string;
       level: number;

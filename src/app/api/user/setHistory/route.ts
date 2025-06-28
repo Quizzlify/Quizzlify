@@ -3,7 +3,7 @@ import clientPromise from "@/config/MongoDB";
 
 export async function POST(req: Request) {
     try {
-        const { id, category, at, answers } = await req.json();
+        const { id, quizId, category, at, answers } = await req.json();
 
         const client = await clientPromise;
         const db = client.db("quizzlify");
@@ -11,6 +11,7 @@ export async function POST(req: Request) {
 
         await collection.insertOne({
             userId: id,
+            quizId: quizId,
             category: category,
             at: at,
             answers: answers

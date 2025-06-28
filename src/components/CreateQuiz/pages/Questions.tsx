@@ -1,6 +1,5 @@
 import CreateQuestion from "@/components/CreateQuiz/CreateQuestion";
 import QButton from "@/components/Utilities/QButton";
-import { Info } from "lucide-react";
 
 interface QuestionsProps {
     questionIndices: number[];

@@ -11,7 +11,7 @@ export async function POST(req: Request) {
         const history = await collection.find({ userId: userId }).toArray();
         const limitedHistory = history
             .sort((a, b) => (b.date ? new Date(b.date).getTime() : 0) - (a.date ? new Date(a.date).getTime() : 0))
-            .slice(0, 4);
+            .slice(0, limit);
         if (!history) {
             return NextResponse.json(
                 { success: false, error: "L'utilisateur n'a pas encore effectué de quiz." },
