@@ -10,7 +10,8 @@ interface UserList {
     _id: string,
     username: string,
     score: number,
-    you: boolean
+    you: boolean,
+    role: 'user' | 'admin'
 };
 
 export default function Page() {
@@ -31,7 +32,9 @@ export default function Page() {
 
                 const response = await res.json();
                 if (response.success) {
-                    const formattedUsers = (response.data).map((userList: UserList) => {
+                    const formattedUsers = (response.data)
+                        .filter((userList: UserList) => userList.role !== "admin") // <-- Ignore les admins ici
+                        .map((userList: UserList) => {
                         return {
                             _id: userList._id,
                             username: userList.username,
