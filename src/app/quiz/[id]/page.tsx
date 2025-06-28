@@ -66,8 +66,12 @@ export default function Page() {
                 getQuizById()
             ]);
 
-            if (recentQuizIds && recentQuizIds.includes(id)) {
-                setValid(false);
+            if (quiz?.level === 3) {
+                if (recentQuizIds && recentQuizIds.includes(id)) {
+                    setValid(false);
+                } else {
+                    setValid(true);
+                }
             } else {
                 setValid(true);
             }

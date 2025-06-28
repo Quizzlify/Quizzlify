@@ -54,7 +54,7 @@ export default function Page() {
             return [];
         }
 
-        async function findUniqueQuiz() {
+        async function findUniqueQuiz() { // pour les quiz niveau 3
             if (!category || !level) return;
 
             const recentIds = await fetchRecentQuizIds();
@@ -80,7 +80,17 @@ export default function Page() {
             setPlayableQuiz(uniqueQuiz);
         }
 
-        findUniqueQuiz();
+        async function findQuiz() { // pour les quiz niveau 1 et 2
+            const quizzes = await getQuiz();
+            const randomIndex = Math.floor(Math.random() * quizzes.length);
+            setPlayableQuiz(quizzes[randomIndex]);
+        }
+        
+        if (level === 1 || level === 2) {
+            findQuiz
+        } else {
+            findUniqueQuiz();
+        }
     }, [category, level, user.user?._id]);
 
 

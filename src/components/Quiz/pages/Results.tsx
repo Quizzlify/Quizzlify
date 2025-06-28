@@ -156,7 +156,10 @@ const Results: React.FC<ResultsProps> = ({ questions, selectedAnswers, category,
             questionKeys.forEach((key, index) => {
                 answers[index] = questions[key].correctAnswers.includes(selectedAnswers[index]);
             });
-            setUserHistory(user._id, category, new Date(), answers);
+
+            if (level === 3) {
+                setUserHistory(user._id, category, new Date(), answers);
+            }
         }
     }, [user, hasSetQuizCompleted, questionKeys, questions, selectedAnswers, category, quizId]);
 
