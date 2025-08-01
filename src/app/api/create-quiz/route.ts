@@ -32,7 +32,7 @@ export async function POST(req: Request) {
       content,
       category,
       level,
-      status: "pending",
+      status: author === "StudyFlow" ? "published" : pending",
     });
 
     return NextResponse.json(
